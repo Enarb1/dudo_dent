@@ -1,0 +1,29 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Django-specific files
+*.log
+db.sqlite3  # Remove if not using SQLite locally
+media/
+staticfiles/
+
+# Environment variable files
+.env
+.env.*
+
+# PyCharm project files
+.idea/
+
+# macOS system files
+.DS_Store
+
+# Coverage reports
+htmlcov/
+.coverage
