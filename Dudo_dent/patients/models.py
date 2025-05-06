@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 from Dudo_dent.patients.choices import PatientGenderChoices
 
@@ -46,6 +47,6 @@ class Patient(models.Model):
         super().save(*args, **kwargs)
         
         if not self.slug:
-            self.slug = f"{self.id}-{self.full_name}"
+            self.slug = slugify(f"{self.id}-{self.full_name}")
             
         super().save(*args, **kwargs)

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dudo Dent - {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="{% static 'images/logo.png' %}" alt="Dudo Dent Logo" />
+      <h1>DUDO DENT</h1>
+    </div>
+    <nav class="nav-buttons">
+      <a href="{% url 'home' %}"><button>Home</button></a>
+      <a href="{% url 'all-patients' %}"><button>Patients</button></a>
+      <a href="{% url 'all-visits' %}"><button>Visits</button></a>
+      <a href="{% url 'all-procedures' %}"><button>Procedures</button></a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>

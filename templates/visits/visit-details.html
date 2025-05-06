@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Patient Details{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/patient-details.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <main class="main-content">
+    <section class="patient-info">
+      <div class="info-header">
+        <h2>{{ visit.patient.full_name }} - {{ visit.date }}</h2>
+        <button class="edit-button">Edit</button>
+      </div>
+      <ul>
+        <li><strong>Date:</strong> {{ visit.date }}</li>
+        <li><strong>Patient Name:</strong> {{ visit.patient.full_name }}</li>
+        <li><strong>Procedure/s:</strong> {{ visit.get_procedures }}</li>  
+        <li><strong>Additional Info:</strong> {{ visit.additional_info }}</li>
+      </ul>
+    </section>
+  </main>
+{% endblock %}

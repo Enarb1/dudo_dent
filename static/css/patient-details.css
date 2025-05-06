@@ -1,0 +1,59 @@
+.patient-info {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .patient-info h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .patient-info ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .patient-info li {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .visit-history h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .visit-card {
+    background-color: #fdfdfd;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.edit-button {
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #ec971f;
+}

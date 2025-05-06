@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Patient Details{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/patient-details.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <main class="main-content">
+    <section class="visit-history">
+      <h3>All Procedures</h3>
+        {% for procedure in procedures %}
+            <div class="visit-card">{{ procedure }}</div>
+        {% endfor %}
+    </section>
+  </main>
+{% endblock %}

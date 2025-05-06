@@ -18,5 +18,16 @@ class Visit(models.Model):
         related_name='visits',
     )
 
+    additional_info = models.TextField(
+        blank=True,
+        null=True
+    )
+
+
+    def get_procedures(self):
+        return ', '.join(p.name for p in self.procedure.all())
+
+
     def __str__(self):
-        return f"{self.date}-{self.patient.full_name}"
+        formatted_date = self.date.strftime('%d.%m.%Y')
+        return f"{formatted_date} - {self.patient.full_name} - {self.get_procedures()}"
