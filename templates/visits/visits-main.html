@@ -11,7 +11,13 @@
     <section class="visit-history">
       <h3>All Visits</h3>
         {% for visit in visits %}
-            <div class="visit-card">{{ visit }}</div>
+            <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
+                {{ visit }}
+            </button>
+        {% empty %}
+              <div class="info-header">
+                  <h4>No Visits yet</h4>
+              </div>    
         {% endfor %}
     </section>
   </main>

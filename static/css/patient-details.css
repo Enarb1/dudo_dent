@@ -1,48 +1,90 @@
 .patient-info {
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
+  position: relative; /* Enable absolute positioning inside */
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
-  .patient-info h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
+.patient-info h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
 
-  .patient-info ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+.patient-info ul {
+  list-style-type: none;
+  padding-left: 0;
+}
 
-  .patient-info li {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.patient-info li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-  .visit-history h3 {
-    font-size: 22px;
-    margin-bottom: 15px;
-  }
+.visit-history h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
 
-  .visit-card {
-    background-color: #fdfdfd;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    font-size: 16px;
-  }
+.visit-card {
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 16px;
+}
 
-  .info-header {
+.visit-card-button {
+  width: 100%;
+  text-align: left;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.visit-card-button:hover {
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.info-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
 }
 
+/* Buttons inside .patient-info box */
+.edit-button-wrapper {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.delete-button-wrapper {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.delete-button-wrapper form {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  display: inline; /* Prevents it from acting like a block */
+}
+
+/* Reuse existing button style, but customize per button type */
 .edit-button {
   background-color: #4A90E2;
   color: white;
@@ -55,5 +97,69 @@
 }
 
 .edit-button:hover {
-  background-color: #ec971f;
+  background-color: #357ABD;
 }
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #b02a37;
+}
+
+/* Form styling (used on add/edit pages) */
+form {
+  background-color: #ffffff;
+  padding: 30px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+}
+
+form button {
+  margin-top: 25px;
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #357ABD;
+}
+
+
+
