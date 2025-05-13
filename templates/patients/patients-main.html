@@ -10,18 +10,23 @@
   <main class="main-content">
     <div class="top-bar">
       <h2>All Patients</h2>
-      <button class="add-button">Add Patient</button>
+        <a href="{% url 'add-patient' %}"><button class="add-button">Add Patient</button></a>
     </div>
 
     <section class="patients-header">
-      <input type="text" placeholder="Search Patient..." class="search-bar" />
+      <form class="search-form" action="{% url 'all-patients' %}" method="get">
+          {{ form.query }}
       <button class="search-button">Search</button>
+      </form>    
     </section>
-
     <section class="patients-list">
-      <!-- Patient cards -->
         {% for patient in patients %}
-            <div class="patient-card">{{ patient.full_name }}</div>
+            <button
+                class="patient-card-button"
+                onclick="window.location.href='{% url 'patient-details' patient.slug %}'"
+             >
+                {{ patient.full_name }}
+            </button>
         {% endfor %}
     </section>
   </main>
