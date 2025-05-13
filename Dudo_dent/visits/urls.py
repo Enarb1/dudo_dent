@@ -3,4 +3,5 @@ from Dudo_dent.visits import views
 urlpatterns = [
     path('', views.all_visits, name='all-visits'),
     path('<int:pk>/', views.visit_by_id, name='visit-details'),
+    path('add-visit/', views.add_visit, name='add-visit'),
 ]

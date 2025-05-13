@@ -161,5 +161,16 @@ form button:hover {
   background-color: #357ABD;
 }
 
+ul.errorlist {
+  display: none;
+}
+
+.form-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
 
 
