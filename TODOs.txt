@@ -1,5 +1,4 @@
 #TODO Home Screen:
-- add a add visit button
 - add search fild , which can search by patient
 
 #TODO Visits:
