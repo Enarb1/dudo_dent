@@ -10,7 +10,33 @@
   <main class="main-content">
     <h2 class="form-title">Add Visit</h2>  
     <form action="{% url 'add-visit' %}" method="POST" >
-        {{ form }}
+        <div class="form-group">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+        </div>
+
+        <div class="form-group patient-visit-row">
+        <div class="patient-label">
+            {{ form.patient.label_tag }}
+        </div>
+        <div class="patient-visit-select-wrapper">
+            {{ form.patient }}
+            <a href="{% url 'add-patient' %}?return_to=add-visit" class="add-plus-button" title="Click to add patient">+</a>
+        </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.procedure.label_tag }}
+            <div class="patient-visit-select-wrapper">
+                {{ form.procedure }}
+                <a href="#" class="add-plus-button" title="Click to add patient">+</a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.additional_info.label_tag }}
+            {{ form.additional_info }}
+        </div>
         {% csrf_token %}
         <button>Save</button>
     </form>
