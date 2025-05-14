@@ -8,7 +8,7 @@
 
 {% block content %}
   <main class="main-content">
-    <form action="{% url 'add-patient' %}" method="POST" >
+    <form action="{% url 'add-patient' %}?return_to={{ request.GET.return_to }}" method="POST" >
         {{ form }}
         {% csrf_token %}
         <button>Save</button>

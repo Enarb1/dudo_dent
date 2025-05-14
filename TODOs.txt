@@ -3,7 +3,6 @@
 - add search fild , which can search by patient
 
 #TODO Visits:
-- make an add visit form, from where you can also add a patient and a procedure
 - add a search field, which searches by patient
 - try to add a filter in which you can filter by year and also by patient
 - add an edit form for the visits

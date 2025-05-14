@@ -173,4 +173,30 @@ ul.errorlist {
   color: #333;
 }
 
+.patient-visit-row {
+  margin-bottom: 20px;
+}
+
+.patient-visit-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-plus-button {
+  display: inline-block;
+  background-color: #4A90E2;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.add-plus-button:hover {
+  background-color: #357ABD;
+}
 

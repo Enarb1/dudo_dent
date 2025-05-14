@@ -39,9 +39,13 @@ def patient_details(request, patient_slug: str):
 
 def add_patient(request):
     form = PatientCreateForm(request.POST or None)
+    return_to = request.GET.get('return_to')
 
     if request.method == 'POST' and form.is_valid():
         form.save()
+
+        if return_to == 'add-visit':
+            return redirect('add-visit')
         return redirect('all-patients')
     else:
         print(form.errors)
