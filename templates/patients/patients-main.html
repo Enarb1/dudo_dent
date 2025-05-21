@@ -11,10 +11,7 @@
     <div class="top-bar">
         <div class="top-bar-left">
             <h2>All Patients</h2>
-            <form class="search-form" action="{% url 'all-patients' %}" method="get">
-                {{ form.query }}
-                <button class="search-button">Search</button>
-            </form>
+            {% include 'common/search-patient.html' %}
         </div>
         <a href="{% url 'add-patient' %}">
             <button class="add-button">Add Patient</button>

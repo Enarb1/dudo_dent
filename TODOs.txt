@@ -1,9 +1,6 @@
 #TODO Home Screen:
-- add search fild , which can search by patient
 
 #TODO Visits:
-- fix the add visit form
-- move the "All Visits" to top center
 - try to add a filter in which you can filter by year and also by patient
 - add an edit form for the visits
 - add a delete logic for the visits

@@ -21,7 +21,7 @@
         </div>
         <div class="patient-visit-select-wrapper">
             {{ form.patient }}
-            <a href="{% url 'add-patient' %}?return_to=add-visit" class="add-plus-button" title="Click to add patient">+</a>
+            <a href="{% url 'add-patient' %}?return_to=add-visit" class="add-plus-button" title="Click to add patient"><i class="bi bi-plus-circle"></i></a>
         </div>
         </div>
 
@@ -29,7 +29,7 @@
             {{ form.procedure.label_tag }}
             <div class="patient-visit-select-wrapper">
                 {{ form.procedure }}
-                <a href="#" class="add-plus-button" title="Click to add patient">+</a>
+                <a href="#" class="add-plus-button" title="Click to add patient"><i class="bi bi-plus-circle"></i></a>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
             {{ form.additional_info }}
         </div>
         {% csrf_token %}
-        <button>Save</button>
+        <button type="submit">Save</button>
     </form>
   </main>
 {% endblock %}
