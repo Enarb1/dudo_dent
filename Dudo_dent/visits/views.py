@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from Dudo_dent.patients.forms import SearchPatientForm
-from Dudo_dent.visits.forms import VisitBaseForm
+from Dudo_dent.visits.forms import VisitBaseForm, VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
 
 
@@ -35,7 +35,7 @@ def visit_by_id(request, pk):
 
 
 def add_visit(request):
-    form= VisitBaseForm(request.POST or None)
+    form= VisitCreateForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
         form.save()
@@ -50,3 +50,33 @@ def add_visit(request):
 
     return render(request, 'visits/add-visit.html', context)
 
+
+def edit_visit(request, pk):
+    visit = get_object_or_404(Visit, pk=pk)
+
+    if request.method == 'POST':
+        form = VisitEditForm(request.POST, instance=visit)
+
+        if form.is_valid():
+            form.save()
+            return redirect('visit-details', pk=visit.pk)
+
+    else:
+        form = VisitEditForm(instance=visit)
+
+    context = {
+        'form': form,
+        'visit': visit
+    }
+
+    return render(request,'visits/edit-visit.html', context)
+
+
+
+def delete_visit(request, pk):
+    visit = get_object_or_404(Visit, pk=pk)
+    if request.method == 'POST':
+        visit.delete()
+        return redirect('all-visits',)
+
+    return redirect('visit-details', pk=visit.pk)

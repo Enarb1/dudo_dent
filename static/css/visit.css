@@ -63,3 +63,13 @@
   line-height: 1.5;
   margin-top: 10px;
 }
+
+.patient-info {
+  position: relative; /* Required for absolute positioning inside */
+}
+
+.edit-button-wrapper {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}

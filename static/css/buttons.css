@@ -34,7 +34,6 @@ button:hover,
   background-color: #b02a37;
 }
 
-
 .patient-visit-select-wrapper {
   display: flex;
   flex-direction: column; /* stack elements vertically */

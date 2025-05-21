@@ -11,3 +11,17 @@ class VisitBaseForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date'}),
             'additional_info': forms.Textarea()
         }
+
+
+class VisitCreateForm(VisitBaseForm):
+    pass
+
+
+class VisitEditForm(VisitBaseForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class VisitDeleteForm(VisitBaseForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

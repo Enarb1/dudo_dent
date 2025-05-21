@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Add Patient{% endblock %}
+{% block title %}Edit Visit{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 {% endblock %}
 
 {% block content %}
-  <main class="main-content">
-    <form action="{% url 'edit-patient' patient.slug %}" method="POST" ></form>
+    <main class="main-content">
+    <form action="{% url 'edit-visit' visit.pk %}" method="POST" >
         {{ form }}
         {% csrf_token %}
         <button>Save</button>
