@@ -42,7 +42,7 @@ form button {
 }
 
 form h2 {
-  font-family: inherit;       /* Use the global font */
+  font-family: inherit;
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;

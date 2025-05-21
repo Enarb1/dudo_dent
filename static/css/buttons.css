@@ -34,3 +34,22 @@ button:hover,
   background-color: #b02a37;
 }
 
+
+.patient-visit-select-wrapper {
+  display: flex;
+  flex-direction: column; /* stack elements vertically */
+  align-items: flex-end;  /* align button to the right */
+  gap: 8px;
+}
+
+/* Ensure the form fields grow properly */
+.patient-visit-select-wrapper select,
+.patient-visit-select-wrapper textarea {
+  flex-grow: 1;
+}
+
+.add-plus-button {
+  padding: 6px 10px;
+  font-size: 18px;
+}
+

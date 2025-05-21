@@ -10,10 +10,10 @@
   <main class="main-content">
   
     <section class="patients-header">
-      <form class="search-form" action="{% url 'all-visits' %}" method="get">
-          {{ form.query }}
+      <form class="search-form" action="{% url 'all-visits' %}" method="get" >
+          {{ form.query}}
       <button class="search-button">Search</button>
-      </form>    
+      </form>
     </section>
   
     <section class="visit-history">
