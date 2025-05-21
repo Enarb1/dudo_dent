@@ -1,8 +1,6 @@
 #TODO Home Screen:
 
 #TODO Visits:
-- add an edit form for the visits
-- add a delete logic for the visits
 - try to add a filter in which you can filter by year and also by patient
 - image uploads in the add visit form should be possible
 
@@ -11,12 +9,7 @@
 - fix the patient card in the all patients view when the name is too long
 
 #TODO Procedures:
-- fix the whole procedures view
-- make the procedure blocks active buttons
-- make a procedure details page
-- make an add form
-- make an edit form
-- make a delete logic
+
 
 #TODO Final improvements:
 -  DRY up HTMLs
