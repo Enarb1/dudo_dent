@@ -2,16 +2,19 @@
 - add search fild , which can search by patient
 
 #TODO Visits:
-- add a search field, which searches by patient
+- fix the add visit form
+- move the "All Visits" to top center
 - try to add a filter in which you can filter by year and also by patient
 - add an edit form for the visits
 - add a delete logic for the visits
 - image uploads in the add visit form should be possible
 
 #TODO Patients:
+- fix the view when a patient does not have any visits
 
 
 #TODO Procedures:
+- fix the whole procedures view
 - make the procedure blocks active buttons
 - make a procedure details page
 - make an add form

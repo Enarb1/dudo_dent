@@ -1,0 +1,36 @@
+button,
+.nav-buttons button,
+.section-buttons button,
+.add-button,
+.edit-button,
+.delete-button,
+.search-button,
+.add-plus-button {
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+.nav-buttons button:hover,
+.section-buttons button:hover,
+.add-button:hover,
+.edit-button:hover,
+.search-button:hover,
+.add-plus-button:hover {
+  background-color: #357ABD;
+}
+
+.delete-button {
+  background-color: #dc3545;
+}
+
+.delete-button:hover {
+  background-color: #b02a37;
+}
+

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitBaseForm
 from Dudo_dent.visits.models import Visit
 
@@ -9,9 +10,16 @@ from Dudo_dent.visits.models import Visit
 
 def all_visits(request):
     visits = Visit.objects.all().order_by('-date')
+    form = SearchPatientForm(request.GET)
+
+    if request.method == 'GET':
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            visits = visits.filter(patient__full_name__icontains=query).order_by('-date')
 
     context = {
-        'visits': visits
+        'visits': visits,
+        'form': form
     }
 
     return render(request, 'visits/visits-main.html', context)

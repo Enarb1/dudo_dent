@@ -1,63 +1,9 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-  }
-
-  .header {
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-
-  .logo img {
-    width: 50px;
-    height: auto;
-    margin-right: 10px;
-  }
-
-  .logo h1 {
-    font-size: 24px;
-    color: #2c3e50;
-  }
-
-  .nav-buttons button {
-    background-color: #4A90E2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-left: 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .nav-buttons button:hover {
-    background-color: #357ABD;
-  }
-
-  .main-content {
-    padding: 60px 40px;
-    text-align: left;
-  }
-
-  .main-content h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-  
+@import url('base.css');
+@import url('layout.css');
+@import url('buttons.css');
+@import url('forms.css');
+@import url('cards.css');
+@import url('search.css');
+@import url('home.css');
+@import url('patient.css');
+@import url('visit.css');
