@@ -1,0 +1,87 @@
+.header {
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.main-content {
+  padding: 60px 40px;
+  text-align: left;
+}
+
+/* Top bar with title + button on opposite ends */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Header sections like under page titles */
+.patients-header {
+  margin-bottom: 30px;
+}
+
+/* General search form layout */
+.search-form {
+  display: flex;
+  gap: 10px;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Center and spacing for search areas globally */
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* General search form styling (used across modules) */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Search input field look */
+.search-form input[type="text"],
+.search-form input {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+/* Shared button look */
+.search-button {
+  background-color: #4A90E2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #357ABD;
+}

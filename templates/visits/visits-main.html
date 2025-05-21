@@ -3,11 +3,19 @@
 
 {% block title %}Patient Details{% endblock %}
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/patient-details.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 {% endblock %}
 
 {% block content %}
   <main class="main-content">
+  
+    <section class="patients-header">
+      <form class="search-form" action="{% url 'all-visits' %}" method="get">
+          {{ form.query }}
+      <button class="search-button">Search</button>
+      </form>    
+    </section>
+  
     <section class="visit-history">
       <h3>All Visits</h3>
         {% for visit in visits %}

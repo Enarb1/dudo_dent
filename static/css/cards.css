@@ -1,0 +1,20 @@
+.patient-card-button,
+.visit-card-button {
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+}
+
+.patient-card-button:hover,
+.visit-card-button:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}

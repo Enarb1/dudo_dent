@@ -3,12 +3,13 @@
 
 {% block title %}Add Patient{% endblock %}
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/patient-details.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 {% endblock %}
 
 {% block content %}
   <main class="main-content">
     <form action="{% url 'add-patient' %}?return_to={{ request.GET.return_to }}" method="POST" >
+        <h2>Add Patient</h2>
         {{ form }}
         {% csrf_token %}
         <button>Save</button>

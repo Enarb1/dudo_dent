@@ -3,32 +3,34 @@
 
 {% block title %}Dudo Dent - Patients{% endblock %}
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static '/css/patients.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
 {% endblock %}
 {% block content %}
 
   <main class="main-content">
     <div class="top-bar">
-      <h2>All Patients</h2>
-        <a href="{% url 'add-patient' %}"><button class="add-button">Add Patient</button></a>
+        <div class="top-bar-left">
+            <h2>All Patients</h2>
+            <form class="search-form" action="{% url 'all-patients' %}" method="get">
+                {{ form.query }}
+                <button class="search-button">Search</button>
+            </form>
+        </div>
+        <a href="{% url 'add-patient' %}">
+            <button class="add-button">Add Patient</button>
+        </a>
     </div>
 
-    <section class="patients-header">
-      <form class="search-form" action="{% url 'all-patients' %}" method="get">
-          {{ form.query }}
-      <button class="search-button">Search</button>
-      </form>    
-    </section>
-    <section class="patients-list">
-        {% for patient in patients %}
-            <button
-                class="patient-card-button"
-                onclick="window.location.href='{% url 'patient-details' patient.slug %}'"
-             >
-                {{ patient.full_name }}
-            </button>
-        {% endfor %}
-    </section>
-  </main>
+  <section class="patients-list">
+    {% for patient in patients %}
+      <button
+        class="patient-card-button"
+        onclick="window.location.href='{% url 'patient-details' patient.slug %}'">
+        {{ patient.full_name }}
+      </button>
+    {% endfor %}
+  </section>
+</main>
+
 {% endblock %}
 

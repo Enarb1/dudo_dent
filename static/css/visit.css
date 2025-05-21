@@ -1,0 +1,65 @@
+.patient-info,
+.visit-history,
+.visit-card,
+.info-header {
+  margin-bottom: 15px;
+}
+
+.patient-info {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+
+.patient-info ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.patient-info li {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+
+/* Edit button: top-right inside white box */
+.edit-button-wrapper {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+/* Delete button: bottom-right inside white box */
+.delete-button-wrapper {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.delete-button-wrapper form {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  display: inline;
+}
+
+/* Visit History section spacing */
+.visit-history {
+  margin-top: 40px;
+}
+
+/* Visit cards: improve readability */
+.visit-card-button {
+  text-align: left;
+  white-space: normal;
+  font-size: 18px;
+  padding: 15px 20px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
