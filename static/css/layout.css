@@ -85,3 +85,7 @@
 .search-button:hover {
   background-color: #357ABD;
 }
+
+h3 {
+  font-weight: bold;
+}
