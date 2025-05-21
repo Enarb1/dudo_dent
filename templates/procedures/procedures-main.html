@@ -1,18 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Patient Details{% endblock %}
+{% block title %}Dudo Dent - Procedures{% endblock %}
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
+{% endblock %}
+{% block content %}
+
+  <main class="main-content">
+{#    <section class="patients-header">#}
+{#      <form class="search-form" action="{% url 'all-visits' %}" method="get" >#}
+{#          {{ form.query}}#}
+{#      <button class="search-button">Search</button>#}
+{#      </form>#}
+{#    </section>#}
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <h2>All Procedures</h2>
+        </div>
+        <a href="#">
+            <button class="add-button">Add Procedure</button>
+        </a>
+    </div>
+
+  <section class="patients-list">
+    {% for procedure in procedures %}
+      <button
+        class="patient-card-button"
+        onclick="window.location.href='{% url 'procedure-details' procedure.pk%}'">
+        {{ procedure.name }}
+      </button>
+    {% endfor %}
+  </section>
+</main>
+
 {% endblock %}
 
-{% block content %}
-  <main class="main-content">
-    <section class="visit-history">
-      <h3>All Procedures</h3>
-        {% for procedure in procedures %}
-            <div class="visit-card">{{ procedure }}</div>
-        {% endfor %}
-    </section>
-  </main>
-{% endblock %}
