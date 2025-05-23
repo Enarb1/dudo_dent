@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitBaseForm, VisitCreateForm, VisitEditForm
@@ -35,14 +36,25 @@ def visit_by_id(request, pk):
 
 
 def add_visit(request):
-    form= VisitCreateForm(request.POST or None)
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return redirect('all-visits')
+    if 'visit_form_data' in request.session:
+        form = VisitCreateForm(request.session.pop('visit_form_data'))
     else:
-        print(form.errors)
+        form= VisitCreateForm(request.POST or None)
 
+    if request.method == 'POST':
+
+        if 'add-patient' in request.POST:
+            request.session['visit_form_data'] = request.POST
+            return redirect(reverse('add-patient') + '?return_to=add-visit')
+
+        if 'add-procedure' in request.POST:
+            request.session['visit_form_data'] = request.POST
+            return redirect(reverse('add-procedure') + '?return_to=add-visit')
+
+        if form.is_valid():
+            form.save()
+            return redirect('all-visits')
 
     context = {
         'form': form

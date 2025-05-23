@@ -28,14 +28,18 @@ def procedure_details(request, pk):
 
 def add_procedure(request):
     form = ProcedureAddForm(request.POST or None)
+    return_to = request.GET.get('return_to') or request.POST.get('return_to')
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('all-procedures')
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+
+        if return_to == 'add-visit':
+            return redirect('add-visit')
+        return redirect('all-procedures')
 
     context = {
-        'form': form
+        'form': form,
+        'return_to': return_to
     }
 
     return render(request, 'procedures/add-procedure.html', context)

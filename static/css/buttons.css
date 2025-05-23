@@ -52,3 +52,15 @@ button:hover,
   font-size: 18px;
 }
 
+.add-plus-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4A90E2;
+  font-size: 20px;
+  cursor: pointer;
+}
+.add-plus-button:hover {
+  color: #357ABD;
+}
+

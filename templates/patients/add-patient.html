@@ -8,10 +8,16 @@
 
 {% block content %}
   <main class="main-content">
-    <form action="{% url 'add-patient' %}?return_to={{ request.GET.return_to }}" method="POST" >
+    <form action="{% url 'add-patient' %}" method="POST" >
         <h2>Add Patient</h2>
+        
+        {% if return_to %}
+            <input type="hidden" name="return_to" value="{{ return_to }}">
+        {% endif %}
+        
         {{ form }}
         {% csrf_token %}
+        
         <button>Save</button>
     </form>
   </main>
