@@ -1,7 +1,7 @@
 #TODO Home Screen:
 
 #TODO Visits:
-- make the form so that you can add a multiple procedures chosen from a dropdown
+- make the form to redirect to da Visit form , when you have added a new patient through it
 - try to add a filter in which you can filter by year and also by patient
 - image uploads in the add visit form should be possible
 
@@ -9,7 +9,7 @@
 - fix the patient card in the all patients view when the name is too long
 
 #TODO Procedures:
-
+- make an Add Procedures button
 
 #TODO Final improvements:
 -  DRY up HTMLs

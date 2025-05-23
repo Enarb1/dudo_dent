@@ -10,8 +10,14 @@
     <main class="main-content">
     <form action="{% url 'add-procedure' %}" method="POST" >
         <h2>Add Procedure</h2>
+        
+        {% if return_to %}
+            <input type="hidden" name="return_to" value="{{ return_to }}">
+        {% endif %}
+    
         {{ form }}
         {% csrf_token %}
+    
         <button>Save</button>
     </form>
   </main>

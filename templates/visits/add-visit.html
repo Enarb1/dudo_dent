@@ -10,6 +10,7 @@
   <main class="main-content">
     <h2 class="form-title">Add Visit</h2>  
     <form action="{% url 'add-visit' %}" method="POST" >
+        {% csrf_token %}
         <div class="form-group">
             {{ form.date.label_tag }}
             {{ form.date }}
@@ -21,7 +22,9 @@
         </div>
         <div class="patient-visit-select-wrapper">
             {{ form.patient }}
-            <a href="{% url 'add-patient' %}?return_to=add-visit" class="add-plus-button" title="Click to add patient"><i class="bi bi-plus-circle"></i></a>
+            <button type="submit" name="add-patient" class="add-plus-button" title="Click to add patient" formnovalidate>
+                <i class="bi bi-plus-circle"></i>
+            </button>
         </div>
         </div>
 
@@ -29,7 +32,9 @@
             {{ form.procedure.label_tag }}
             <div class="patient-visit-select-wrapper">
                 {{ form.procedure }}
-                <a href="#" class="add-plus-button" title="Click to add patient"><i class="bi bi-plus-circle"></i></a>
+                <button type="submit" name="add-procedure" class="add-plus-button" title="Click to add procedure" formnovalidate>
+                    <i class="bi bi-plus-circle"></i>
+                </button>
             </div>
         </div>
 
@@ -37,7 +42,7 @@
             {{ form.additional_info.label_tag }}
             {{ form.additional_info }}
         </div>
-        {% csrf_token %}
+        
         <button type="submit">Save</button>
     </form>
   </main>
