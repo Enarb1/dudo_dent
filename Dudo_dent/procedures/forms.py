@@ -20,3 +20,17 @@ class ProcedureEditForm(ProcedureBaseForm):
 class ProcedureDeleteForm(ProcedureBaseForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class SearchProcedureForm(forms.Form):
+    query = forms.CharField(
+        label='',
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Search for procedure...',
+                'class': 'search-input',
+            }
+        )
+    )

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from Dudo_dent.procedures.models import Procedure
-from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm
+from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
 
 # Create your views here.
@@ -9,9 +9,16 @@ from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm
 
 def all_procedures(request):
     procedures = Procedure.objects.all().order_by('name')
+    form = SearchProcedureForm(request.GET)
+
+    if request.method == 'GET':
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            procedures = procedures.filter(name__icontains=query).order_by('name')
 
     context = {
-        'procedures': procedures
+        'procedures': procedures,
+        'form': form
     }
 
     return render(request, 'procedures/procedures-main.html', context)
