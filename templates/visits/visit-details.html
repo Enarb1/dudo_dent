@@ -25,7 +25,22 @@
         <li><strong>Date:</strong> {{ visit.date }}</li>
         <li><strong>Patient Name:</strong> {{ visit.patient.full_name }}</li>
         <li><strong>Procedure/s:</strong> {{ visit.get_procedures }}</li>  
-        <li><strong>Additional Info:</strong> {{ visit.additional_info }}</li>
+        <li>
+            <strong>Additional Info:</strong> 
+            {% if visit.additional_info %}
+                {{ visit.additional_info }}
+            {% else %}
+                No additional info
+            {% endif %}
+        </li>
+        <li>
+            <strong>Image:</strong> 
+            {% if visit.image %}
+                <img src="{{ visit.image.url }}" alt="Visit Image" style="max-width: 500px; max-height: 400px; width: auto; height: auto; display: block;">
+            {% else %}    
+                No uploaded images
+            {% endif %}
+        </li>  
       </ul>
     </section>
   </main>

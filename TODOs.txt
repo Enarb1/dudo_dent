@@ -1,7 +1,7 @@
 #TODO Home Screen:
 
 #TODO Visits:
-- show the image in the details of the visit
+- make it possible to upload multiple images
 - try to add a filter in which you can filter by year and also by patient
 
 
