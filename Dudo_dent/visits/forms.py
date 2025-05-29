@@ -20,6 +20,10 @@ class VisitBaseForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date'}),
             'additional_info': forms.Textarea(attrs={'rows': 4}),
         }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].label = ''
 
 
 class VisitCreateForm(VisitBaseForm):

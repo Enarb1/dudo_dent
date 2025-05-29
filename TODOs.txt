@@ -1,9 +1,9 @@
 #TODO Home Screen:
 
 #TODO Visits:
-- make the form to redirect to the Visit form , when you have added a new patient through it
+- show the image in the details of the visit
 - try to add a filter in which you can filter by year and also by patient
-- image uploads in the add visit form should be possible
+
 
 #TODO Patients:
 
