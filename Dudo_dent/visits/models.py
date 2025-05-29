@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.patients.models import Patient
@@ -19,6 +20,12 @@ class Visit(models.Model):
     )
 
     additional_info = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    image = CloudinaryField(
+        'image',
         blank=True,
         null=True
     )

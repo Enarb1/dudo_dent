@@ -39,8 +39,10 @@ def add_visit(request):
 
     if 'visit_form_data' in request.session:
         form = VisitCreateForm(request.session.pop('visit_form_data'))
+    elif request.method == 'POST':
+        form = VisitCreateForm(request.POST, request.FILES)
     else:
-        form= VisitCreateForm(request.POST or None)
+        form = VisitCreateForm()
 
     if request.method == 'POST':
 

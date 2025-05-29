@@ -49,3 +49,12 @@ form h2 {
   text-align: center;
   color: #333;
 }
+
+input[type="file"] {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    margin: 0 0 0;
+    padding: 0;
+    display: block;
+}
