@@ -73,3 +73,7 @@
   top: 1rem;
   right: 1rem;
 }
+
+strong {
+    font-weight: bold !important;
+}
