@@ -1,13 +1,15 @@
 #TODO Home Screen:
 
 #TODO Visits:
-- make it possible to upload multiple images
-- try to add a filter in which you can filter by year and also by patient
+    - make it possible to upload multiple images
+    - try to add a filter in which you can filter by year and also by patient
 
 
 #TODO Patients:
+   - fix the Edit Patient CSS Form
+   - optimize the patients ordering to make it directly in the class Meta
 
 #TODO Procedures:
 
 #TODO Final improvements:
--  DRY up HTMLs
+    -  DRY up HTMLs
