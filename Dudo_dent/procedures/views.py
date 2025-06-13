@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from Dudo_dent.common.mixins import ReturnToRedirectMixin
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
@@ -7,75 +10,64 @@ from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, Sear
 # Create your views here.
 
 
-def all_procedures(request):
-    procedures = Procedure.objects.all().order_by('name')
-    form = SearchProcedureForm(request.GET)
+class AllProcedures(ListView):
+    model = Procedure
+    template_name = 'procedures/procedures-main.html'
+    form_class = SearchProcedureForm
+    query_param = 'query'
+    
+    def get_context_data(self, *, object_list = None, **kwargs):
+        kwargs.update({
+            'form': self.form_class(),
+            'query': self.request.GET.get(self.query_param,''),
+        })
+        
+        return super().get_context_data(object_list=object_list, **kwargs)
 
-    if request.method == 'GET':
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            procedures = procedures.filter(name__icontains=query).order_by('name')
+    def get_queryset(self):
+        queryset = self.model.objects.all()
+        search_value = self.request.GET.get(self.query_param)
 
-    context = {
-        'procedures': procedures,
-        'form': form
+        if search_value:
+            queryset = queryset.filter(
+                name__icontains=search_value,
+            )
+
+        return queryset.order_by('name')
+
+class ProcedureDetails(DetailView):
+    model = Procedure
+    template_name = 'procedures/procedure-details.html'
+
+
+class AddProcedure(ReturnToRedirectMixin, CreateView):
+    model = Procedure
+    form_class = ProcedureAddForm
+    template_name = 'procedures/add-procedure.html'
+    return_to_param = 'return_to'
+    redirect_targets = {
+        'add-visit': reverse_lazy('add-visit'),
     }
 
-    return render(request, 'procedures/procedures-main.html', context)
+    def get_default_success_url(self):
+        return reverse_lazy('all-procedures')
 
 
-def procedure_details(request, pk):
-    procedure = Procedure.objects.filter(pk=pk).first()
-    context = {
-        'procedure': procedure
-    }
+class EditProcedure(UpdateView):
+    model = Procedure
+    form_class = ProcedureEditForm
+    template_name = 'procedures/edit-procedure.html'
 
-    return render(request, 'procedures/procedure-details.html', context)
+    def get_success_url(self):
+        return reverse_lazy('procedure-details', kwargs={'pk': self.object.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['procedure'] = self.object
 
-def add_procedure(request):
-    form = ProcedureAddForm(request.POST or None)
-    return_to = request.GET.get('return_to') or request.POST.get('return_to')
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-
-        if return_to == 'add-visit':
-            return redirect('add-visit')
-        return redirect('all-procedures')
-
-    context = {
-        'form': form,
-        'return_to': return_to
-    }
-
-    return render(request, 'procedures/add-procedure.html', context)
-
-def edit_procedure(request, pk):
-    procedure = get_object_or_404(Procedure, pk=pk)
-
-    if request.method == 'POST':
-        form = ProcedureEditForm(request.POST, instance=procedure)
-        if form.is_valid():
-            form.save()
-            return redirect('procedure-details', pk=pk)
-
-    else:
-        form = ProcedureEditForm(instance=procedure)
-
-    context = {
-        'procedure': procedure,
-        'form': form
-    }
-
-    return render(request, 'procedures/edit-procedure.html', context)
+        return context
 
 
-def delete_procedure(request, pk):
-    procedure = get_object_or_404(Procedure, pk=pk)
-
-    if request.method == 'POST':
-        procedure.delete()
-        return redirect('all-procedures')
-
-    return redirect('procedure-details', pk=pk)
+class DeleteProcedure(DeleteView):
+    model = Procedure
+    success_url = reverse_lazy('all-procedures')

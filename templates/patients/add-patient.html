@@ -15,10 +15,21 @@
             <input type="hidden" name="return_to" value="{{ return_to }}">
         {% endif %}
         
-        {{ form }}
         {% csrf_token %}
-        
-        <button>Save</button>
+        {% if form.errors %}
+          <div class="form-errors">
+            <ul>
+              {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        {{ form.as_p }}
+    
+        <button type="submit">Save</button>
     </form>
   </main>
 {% endblock %}
