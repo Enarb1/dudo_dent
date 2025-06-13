@@ -10,9 +10,13 @@ from Dudo_dent.patients.models import Patient
 
 class HomeView(TemplateView):
     template_name = 'common/home-page.html'
-    extra_context = {
-        'form': SearchPatientForm(),
-    }
+    form_class = SearchPatientForm
+
+    def get_context_data(self, **kwargs):
+        kwargs.update({
+            'form': self.form_class()
+        })
+        return kwargs
 
 
 # def home_page(request):
