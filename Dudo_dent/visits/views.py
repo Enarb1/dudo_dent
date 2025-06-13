@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, ListView, CreateView
 
+from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin
 from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitBaseForm, VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
@@ -9,61 +11,51 @@ from Dudo_dent.visits.models import Visit
 # Create your views here.
 
 
-def all_visits(request):
-    visits = Visit.objects.all().order_by('-date')
-    form = SearchPatientForm(request.GET)
+class AllVisits(MainViewsMixin, ListView):
+    model = Visit
+    template_name = 'visits/visits-main.html'
+    form_class = SearchPatientForm
+    search_param = 'patient__full_name__icontains'
 
-    if request.method == 'GET':
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            visits = visits.filter(patient__full_name__icontains=query).order_by('-date')
+    def get_queryset(self):
+        return super().get_queryset().order_by('-date')
 
-    context = {
-        'visits': visits,
-        'form': form
+
+class VisitDetails(DetailView):
+    model = Visit
+    template_name = 'visits/visit-details.html'
+
+
+class VisitCreate(ReturnToRedirectMixin, CreateView):
+    model = Visit
+    template_name = 'visits/add-visit.html'
+    form_class = VisitCreateForm
+    return_to_param = 'return_to'
+    redirect_targets = {
+        'add-patient': reverse_lazy('add-patient'),
+        'add-procedure': reverse_lazy('add-procedure'),
     }
 
-    return render(request, 'visits/visits-main.html', context)
+    def get_default_success_url(self):
+        return reverse_lazy('all-visits')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
 
-def visit_by_id(request, pk):
-    visit = Visit.objects.filter(pk=pk).first()
+        if self.request.method == 'GET' and 'visit_form_data' in self.request.session:
+            kwargs['data'] = self.request.session.pop('visit_form_data')
+        return kwargs
 
-    context = {
-        'visit': visit
-    }
-    return render(request, 'visits/visit-details.html', context)
-
-
-def add_visit(request):
-
-    if 'visit_form_data' in request.session:
-        form = VisitCreateForm(request.session.pop('visit_form_data'))
-    elif request.method == 'POST':
-        form = VisitCreateForm(request.POST, request.FILES)
-    else:
-        form = VisitCreateForm()
-
-    if request.method == 'POST':
-
-        if 'add-patient' in request.POST:
+    def post(self, request, *args, **kwargs):
+        if 'add-patient' in self.request.POST:
             request.session['visit_form_data'] = request.POST
-            return redirect(reverse('add-patient') + '?return_to=add-visit')
+            return redirect(reverse('add-patient') + f'?{self.return_to_param}=add-visit')
 
         if 'add-procedure' in request.POST:
             request.session['visit_form_data'] = request.POST
-            return redirect(reverse('add-procedure') + '?return_to=add-visit')
+            return redirect(reverse('add-procedure') + f'?{self.return_to_param}=add-visit')
 
-        if form.is_valid():
-            form.save()
-            return redirect('all-visits')
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'visits/add-visit.html', context)
-
+        return super().post(request, *args, **kwargs)
 
 def edit_visit(request, pk):
     visit = get_object_or_404(Visit, pk=pk)

@@ -25,7 +25,7 @@
     </div>
   
     <section class="visit-history">
-        {% for visit in visits %}
+        {% for visit in visit_list %}
             <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
                 {{ visit }}
             </button>

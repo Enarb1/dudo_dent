@@ -1,8 +1,10 @@
+from keyword import kwlist
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from Dudo_dent.common.mixins import ReturnToRedirectMixin
+from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
@@ -10,30 +12,14 @@ from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, Sear
 # Create your views here.
 
 
-class AllProcedures(ListView):
+class AllProcedures(MainViewsMixin, ListView):
     model = Procedure
     template_name = 'procedures/procedures-main.html'
     form_class = SearchProcedureForm
-    query_param = 'query'
+    search_param = 'name__icontains'
     
-    def get_context_data(self, *, object_list = None, **kwargs):
-        kwargs.update({
-            'form': self.form_class(),
-            'query': self.request.GET.get(self.query_param,''),
-        })
-        
-        return super().get_context_data(object_list=object_list, **kwargs)
-
     def get_queryset(self):
-        queryset = self.model.objects.all()
-        search_value = self.request.GET.get(self.query_param)
-
-        if search_value:
-            queryset = queryset.filter(
-                name__icontains=search_value,
-            )
-
-        return queryset.order_by('name')
+        return super().get_queryset().order_by('name')
 
 class ProcedureDetails(DetailView):
     model = Procedure
