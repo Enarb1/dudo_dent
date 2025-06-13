@@ -11,6 +11,23 @@
     <h2 class="form-title">Add Visit</h2>  
     <form action="{% url 'add-visit' %}" method="POST" enctype="multipart/form-data" >
         {% csrf_token %}
+        
+        {% if return_to %}
+            <input type="hidden" name="return_to" value="{{ return_to }}">
+        {% endif %}
+    
+        {% if form.errors %}
+          <div class="form-errors">
+            <ul>
+              {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        
         <div class="form-group">
             {{ form.date.label_tag }}
             {{ form.date }}

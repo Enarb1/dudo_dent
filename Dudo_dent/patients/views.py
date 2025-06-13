@@ -2,37 +2,43 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 
-from Dudo_dent.common.mixins import ReturnToRedirectMixin
+from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin
 from Dudo_dent.patients.forms import PatientCreateForm, PatientEditForm, SearchPatientForm
 from Dudo_dent.patients.models import Patient
 
 
 # Create your views here.
 
-class AllPatientsView(ListView):
+class AllPatientsView(MainViewsMixin, ListView):
     model = Patient
     template_name = 'patients/patients-main.html'
     form_class = SearchPatientForm
-    query_param = 'query'
-
-    def get_context_data(self, *, object_list =None, **kwargs):
-        kwargs.update({
-            'form': self.form_class(),
-            'query': self.request.GET.get(self.query_param,'')
-        })
-        
-        return super().get_context_data(object_list=object_list,**kwargs)
+    search_param = 'full_name__icontains'
 
     def get_queryset(self):
-        queryset = self.model.objects.all()
-        search_value = self.request.GET.get(self.query_param)
+        return super().get_queryset().order_by('full_name')
 
-        if search_value:
-            queryset = queryset.filter(
-                full_name__icontains=search_value,
-            )
 
-        return queryset.order_by('full_name')
+    # query_param = 'query'
+    #
+    # def get_context_data(self, *, object_list =None, **kwargs):
+    #     kwargs.update({
+    #         'form': self.form_class(),
+    #         'query': self.request.GET.get(self.query_param,'')
+    #     })
+    #
+    #     return super().get_context_data(object_list=object_list,**kwargs)
+    #
+    # def get_queryset(self):
+    #     queryset = self.model.objects.all()
+    #     search_value = self.request.GET.get(self.query_param)
+    #
+    #     if search_value:
+    #         queryset = queryset.filter(
+    #             full_name__icontains=search_value,
+    #         )
+    #
+    #     return queryset.order_by('full_name')
 
 class PatientDetailsView(DetailView):
     model = Patient
