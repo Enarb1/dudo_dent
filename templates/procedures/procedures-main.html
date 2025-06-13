@@ -23,7 +23,7 @@
     </div>
 
   <section class="patients-list">
-    {% for procedure in procedures %}
+    {% for procedure in object_list %}
       <button
         class="patient-card-button"
         onclick="window.location.href='{% url 'procedure-details' procedure.pk%}'">

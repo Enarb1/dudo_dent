@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 
+from Dudo_dent.common.mixins import ReturnToRedirectMixin
 from Dudo_dent.patients.forms import PatientCreateForm, PatientEditForm, SearchPatientForm
 from Dudo_dent.patients.models import Patient
 
@@ -48,22 +49,17 @@ class PatientDetailsView(DetailView):
         return super().get_context_data(**kwargs)
 
 
-class PatientCreateView(CreateView):
+class PatientCreateView(ReturnToRedirectMixin, CreateView):
     model = Patient
     form_class = PatientCreateForm
     template_name = 'patients/add-patient.html'
+    return_to_param = 'return_to'
+    redirect_targets = {
+        'add-visit': reverse_lazy('add-visit'),
+    }
 
-    def get_success_url(self):
-        return_to = self.request.GET.get('return_to') or self.request.POST.get('return_to')
-        if return_to == 'add-visit':
-            return reverse_lazy('add-visit')
-
+    def get_default_success_url(self):
         return reverse_lazy('all-patients')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['return_to'] = self.request.GET.get('return_to') or self.request.POST.get('return_to')
-        return context
 
 class EditPatientView(UpdateView):
     model = Patient
