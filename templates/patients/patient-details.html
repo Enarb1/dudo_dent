@@ -30,7 +30,7 @@
       </section>
       <section class="visit-history">
           <h3>Visit History</h3>
-          {% for visit in patient_visits %}
+          {% for visit in visits %}
               <button class="visit-card-button" 
                       onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
                   {{ visit }}

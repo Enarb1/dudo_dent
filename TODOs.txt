@@ -1,3 +1,8 @@
+#TODO All
+    - make all views CBVs
+    - add pagination to all main views
+
+
 #TODO Home Screen:
 
 #TODO Visits:
