@@ -1,3 +1,7 @@
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+
+
 class ReturnToRedirectMixin:
     return_to_param = 'return_to'
     redirect_targets = {}
@@ -44,3 +48,40 @@ class MainViewsMixin:
                 **{self.search_param: search_value},
             )
         return queryset
+
+
+class MultiStepRedirectMixin:
+    redirect_actions = {} #
+    session_key = None
+    return_to_value = None
+
+    def get_form_kwargs(self):
+        """We check if there is data from the form and inject it. Also we remove the data from the session"""
+        kwargs = super().get_form_kwargs()
+        if self.request.method == 'GET' and self.session_key in self.request.session:
+            kwargs['data'] = self.request.session.pop(self.session_key)
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        for action_name, redirect_view in self.redirect_actions.items():
+            if action_name in request.POST:
+                request.session[self.session_key] = request.POST
+                return redirect(
+                    reverse_lazy(redirect_view) + f'?{self.return_to_param}={self.return_to_value}'
+                )
+        
+        return super().post(request, *args, **kwargs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

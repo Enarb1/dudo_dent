@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView
 
-from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin
+from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin, MultiStepRedirectMixin
 from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitBaseForm, VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
@@ -26,36 +26,27 @@ class VisitDetails(DetailView):
     template_name = 'visits/visit-details.html'
 
 
-class VisitCreate(ReturnToRedirectMixin, CreateView):
+class VisitCreate(MultiStepRedirectMixin, ReturnToRedirectMixin, CreateView):
     model = Visit
     template_name = 'visits/add-visit.html'
     form_class = VisitCreateForm
-    return_to_param = 'return_to'
+
+    session_key = 'visit_form_data'
+    return_to_param = 'redirect_to'
+    return_to_value = 'add-visit'
+    redirect_actions = {
+        'add-patient': 'add-patient',
+        'add-procedure': 'add-procedure',
+    }
     redirect_targets = {
-        'add-patient': reverse_lazy('add-patient'),
-        'add-procedure': reverse_lazy('add-procedure'),
+        'add-patient': reverse('add-patient'),
+        'add-procedure': reverse('add-procedure'),
     }
 
     def get_default_success_url(self):
         return reverse_lazy('all-visits')
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
 
-        if self.request.method == 'GET' and 'visit_form_data' in self.request.session:
-            kwargs['data'] = self.request.session.pop('visit_form_data')
-        return kwargs
-
-    def post(self, request, *args, **kwargs):
-        if 'add-patient' in self.request.POST:
-            request.session['visit_form_data'] = request.POST
-            return redirect(reverse('add-patient') + f'?{self.return_to_param}=add-visit')
-
-        if 'add-procedure' in request.POST:
-            request.session['visit_form_data'] = request.POST
-            return redirect(reverse('add-procedure') + f'?{self.return_to_param}=add-visit')
-
-        return super().post(request, *args, **kwargs)
 
 def edit_visit(request, pk):
     visit = get_object_or_404(Visit, pk=pk)
