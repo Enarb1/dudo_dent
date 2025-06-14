@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 
-from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin
+from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin, EditDataMixin
 from Dudo_dent.patients.forms import PatientCreateForm, PatientEditForm, SearchPatientForm
 from Dudo_dent.patients.models import Patient
 
@@ -67,22 +66,20 @@ class PatientCreateView(ReturnToRedirectMixin, CreateView):
     def get_default_success_url(self):
         return reverse_lazy('all-patients')
 
-class EditPatientView(UpdateView):
+class EditPatientView(EditDataMixin, UpdateView):
     model = Patient
     form_class = PatientEditForm
     template_name = 'patients/edit-patient.html'
+    redirect_url = 'patient-details'
+    context_param = 'patient'
+    get_object_by = 'slug'
+    slug_param = 'patient_slug'
 
 
     def get_object(self, queryset=None):
-        return Patient.objects.filter(slug=self.kwargs['patient_slug']).first()
-
-    def get_success_url(self):
-        return reverse_lazy('patient-details', kwargs={'patient_slug': self.kwargs['patient_slug']})
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['patient'] = self.object
-        return context
+        return self.model.objects.filter(
+            slug=self.kwargs[self.slug_param]
+            ).first()
 
 class DeletePatientView(DeleteView):
     # with conformation form
