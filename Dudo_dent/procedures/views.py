@@ -1,10 +1,7 @@
-from keyword import kwlist
-
-from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin
+from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin, EditDataMixin
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
@@ -39,19 +36,12 @@ class AddProcedure(ReturnToRedirectMixin, CreateView):
         return reverse_lazy('all-procedures')
 
 
-class EditProcedure(UpdateView):
+class EditProcedure(EditDataMixin, UpdateView):
     model = Procedure
     form_class = ProcedureEditForm
     template_name = 'procedures/edit-procedure.html'
-
-    def get_success_url(self):
-        return reverse_lazy('procedure-details', kwargs={'pk': self.object.pk})
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['procedure'] = self.object
-
-        return context
+    redirect_url = 'procedure-details'
+    context_param = 'procedure'
 
 
 class DeleteProcedure(DeleteView):

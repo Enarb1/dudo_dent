@@ -1,6 +1,6 @@
 from django.urls import path,include
-
 from Dudo_dent.procedures import views
+
 urlpatterns = [
     path('', views.AllProcedures.as_view(), name='all-procedures'),
     path('add-procedure/', views.AddProcedure.as_view(), name='add-procedure'),

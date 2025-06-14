@@ -1,6 +1,5 @@
 from django.urls import path, include
 from Dudo_dent.patients import views
-
 urlpatterns = [
     path('', views.AllPatientsView.as_view(), name='all-patients'),
     path('add-patient/', views.PatientCreateView.as_view(), name='add-patient'),

@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin, MultiStepRedirectMixin
+from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin, MultiStepRedirectMixin, EditDataMixin
 from Dudo_dent.patients.forms import SearchPatientForm
-from Dudo_dent.visits.forms import VisitBaseForm, VisitCreateForm, VisitEditForm
+from Dudo_dent.visits.forms import VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
 
 
@@ -39,41 +39,22 @@ class VisitCreate(MultiStepRedirectMixin, ReturnToRedirectMixin, CreateView):
         'add-procedure': 'add-procedure',
     }
     redirect_targets = {
-        'add-patient': reverse('add-patient'),
-        'add-procedure': reverse('add-procedure'),
+        'add-patient': reverse_lazy('add-patient'),
+        'add-procedure': reverse_lazy('add-procedure'),
     }
 
     def get_default_success_url(self):
         return reverse_lazy('all-visits')
 
 
-
-def edit_visit(request, pk):
-    visit = get_object_or_404(Visit, pk=pk)
-
-    if request.method == 'POST':
-        form = VisitEditForm(request.POST, instance=visit)
-
-        if form.is_valid():
-            form.save()
-            return redirect('visit-details', pk=visit.pk)
-
-    else:
-        form = VisitEditForm(instance=visit)
-
-    context = {
-        'form': form,
-        'visit': visit
-    }
-
-    return render(request,'visits/edit-visit.html', context)
+class VisitUpdate(EditDataMixin, UpdateView):
+    model = Visit
+    template_name = 'visits/edit-visit.html'
+    form_class = VisitEditForm
+    redirect_url = 'visit-details'
+    context_param = 'visit'
 
 
-
-def delete_visit(request, pk):
-    visit = get_object_or_404(Visit, pk=pk)
-    if request.method == 'POST':
-        visit.delete()
-        return redirect('all-visits',)
-
-    return redirect('visit-details', pk=visit.pk)
+class DeleteVisit(DeleteView):
+    model = Visit
+    success_url = reverse_lazy('all-visits')
