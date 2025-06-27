@@ -1,4 +1,10 @@
-#TODO All
+#TODO ALL
+    - create User Profile for dentist and patient
+    - fix all views connected to user the PK and not the slug
+    - register admin
+    - manage permissions.
+    - set what function who can use
+    - adapt the HTML templates for the different permissions
     - make all views CBVs
     - add pagination to all main views
 

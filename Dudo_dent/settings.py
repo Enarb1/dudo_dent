@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'cloudinary',
     'cloudinary_storage',
+    'Dudo_dent.accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [
@@ -156,3 +157,6 @@ cloudinary.config(
   api_key = config('API_KEY'),
   api_secret = config('API_SECRET')
 )
+
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
