@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dudo Dent - Home{% endblock %}
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+{% endblock %}
+{% block content %}
+  <main class="main-content home-centered">
+  {% if request.user.is_authenticated %}
+    <h2>Welcome to Dudo Dent</h2>
+      {% if request.user.is_dentist %}
+        {% include 'common/search-patient.html' %}
+        <section class="section-buttons">
+            <a href="{% url 'add-visit' %}"><button>Add Visit</button></a>
+        </section>
+      {% else %}
+        <p>You are a patient</p>
+      {% endif %} 
+    {% else %}
+      <img src="{% static 'images/logo.png' %}" width="600" height="auto">
+    {% endif %}
+    
+  </main>
+{% endblock %}

@@ -6,7 +6,7 @@ from django.db import models
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.managers import CustomUserManager
 from Dudo_dent.patients.choices import PatientGenderChoices
-# from Dudo_dent.patients.models import Patient
+
 
 
 # Create your models here.
@@ -37,10 +37,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    EMAIL_FIELD = "username"
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    EMAIL_FIELD = "email"
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
+    @property
+    def is_dentist(self):
+        return self.groups.filter(name="dentist").exists()
+
+    @property
+    def is_patient(self):
+        return hasattr(self, 'profile') and self.profile.profile_type == UserTypeChoices.PATIENT
 
     def __str__(self):
         return self.username
@@ -49,7 +56,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(
         CustomUser,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="profile",
     )
 
     full_name = models.CharField(
@@ -60,6 +68,8 @@ class Profile(models.Model):
         max_length=50,
         unique=True,
     )
+
+    age = models.IntegerField()
 
     profile_type = models.CharField(
         max_length=20,
@@ -85,44 +95,6 @@ class Profile(models.Model):
         null=True,
     )
 
-    dentist = models.ForeignKey(
-        to=CustomUser,
-        on_delete=models.CASCADE,
-        related_name='profiles',
-    )
-
-    # def save(self, *args, **kwargs):
-    #     if not self.patient:
-    #         try:
-    #            self.patient = Patient.objects.get(personal_id=self.personal_id)
-    #         except Patient.DoesNotExist:
-    #
-    #             patient = Patient.objects.create(
-    #                 full_name=self.full_name,
-    #                 personal_id=self.personal_id,
-    #                 gender=self.gender,
-    #                 phone_number=self.phone_number,
-    #             )
-    #
-    #             self.patient = patient
-    #
-    #     super().save(*args, **kwargs)
-
 
     def __str__(self):
         return self.full_name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

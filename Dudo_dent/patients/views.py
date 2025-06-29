@@ -66,6 +66,10 @@ class PatientCreateView(ReturnToRedirectMixin, CreateView):
     def get_default_success_url(self):
         return reverse_lazy('all-patients')
 
+    def form_valid(self, form):
+        super().form_valid(form)
+        #TODO get the dentist id from the request data
+
 class EditPatientView(EditDataMixin, UpdateView):
     model = Patient
     form_class = PatientEditForm
