@@ -16,6 +16,7 @@ from decouple import config
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,6 +100,11 @@ DATABASES = {
 }
 
 
+AUTHENTICATION_BACKENDS = [
+    'Dudo_dent.accounts.authentication.EmailOrUsernameBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -160,3 +166,5 @@ cloudinary.config(
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_REDIRECT_URL = reverse_lazy('home')

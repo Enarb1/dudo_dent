@@ -1,8 +1,22 @@
 <nav class="nav-buttons">
-  <a href="{% url 'home' %}"><button>Home</button></a>
-  <a href="{% url 'all-visits' %}"><button>Visits</button></a>  
-  <a href="{% url 'all-patients' %}"><button>Patients</button></a>
-  <a href="{% url 'all-procedures' %}"><button>Procedures</button></a>
-  <a href="#"><button class="login">Login</button></a>  
-  <a href="#"><button class="logout">Logout</button></a> 
+  {% if request.user.is_authenticated %}
+      <a href="{% url 'home' %}"><button>Home</button></a>
+      {% if request.user.is_dentist %}
+          <a href="{% url 'all-visits' %}"><button>Visits</button></a>  
+          <a href="{% url 'all-patients' %}"><button>Patients</button></a>
+          <a href="{% url 'all-procedures' %}"><button>Procedures</button></a>
+      {% else %}    
+          <a href="#"><button>Profile</button></a>
+          <a href="#"><button>Add Appointment</button></a>
+      {% endif %}    
+      <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><button class="logout">Logout</button></a> 
+  {% else %}  
+      <a href="{% url 'login' %}"><button class="login">Login</button></a>  
+  {% endif %}  
+      
 </nav>
+
+
+<form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none">
+    {% csrf_token %}
+</form>
