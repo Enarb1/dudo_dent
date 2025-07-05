@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+     <main class="main-content">
+      <section class="patient-info">
+          <div class="edit-button-wrapper">
+            <a href="#">
+                <button class="edit-button">Edit</button>
+            </a>
+          </div>
+          <ul>
+              {% for label, value in profile_fields %}
+                  <li><strong>{{ label }}:</strong> {{ value }}</li>
+              {% endfor %}
+          </ul>
+          <div class="delete-button-wrapper">
+              <a href="#">
+                <button class="delete-button">Delete</button>
+              </a>   
+          </div>
+      </section>
+      
+  </main>
+{% endblock %}

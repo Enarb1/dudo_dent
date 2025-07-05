@@ -36,7 +36,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.full_name
 
-
     def is_dentist(self):
         return self.role == UserTypeChoices.DENTIST
 
@@ -48,6 +47,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def is_admin(self):
         return self.role == UserTypeChoices.ADMIN
+
+    def get_profile(self):
+        if self.is_nurse() or self.is_dentist():
+            return getattr(self, "workprofile", None)
+        if self.is_patient():
+            return getattr(self, "patient", None)
+
+        return None
 
 
 
