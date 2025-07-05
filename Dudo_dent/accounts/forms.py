@@ -1,65 +1,109 @@
+from email.policy import default
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from collections import OrderedDict
 
-from Dudo_dent.accounts.models import CustomUser
+from Dudo_dent.accounts.choices import UserTypeChoices
+from Dudo_dent.accounts.constants import ALLOWED_ROLES_CREATION, USER_IS_STAFF
 from Dudo_dent.patients.choices import PatientGenderChoices
 
+UserModel = get_user_model()
 
-class CustomUserCreationForm(UserCreationForm):
-    full_name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter Full Name....'}),
-    )
-
-
-    personal_id = forms.CharField(
-        max_length=30,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter Personal ID (EGN)....'}),
-    )
-
-    phone_number = forms.CharField(
-        max_length=30,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter Phone Number....'}),
-    )
-
-    gender = forms.ChoiceField(
-        choices=PatientGenderChoices
-    )
-
-    age = forms.IntegerField()
-
-    dentist = forms.ChoiceField(choices=[])
-
-    class Meta:
-        model = get_user_model()
-        fields = ('username', 'email')
-
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        dentists = [d for d in CustomUser.objects.all() if d.is_dentist]
-        self.fields['dentist'].choices = [(d.id, d.username) for d in dentists]
-
-        field_order = [
-            'full_name',
-            'username',
-            'personal_id',
-            'email',
-            'password1',
-            'password2',
-            'phone_number',
-            'gender',
-            'age',
-            'dentist',
-        ]
-
-        self.fields = OrderedDict((key, self.fields[key]) for key in field_order if key in self.fields)
+class CustomUserCreationBaseForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = UserModel
+        fields = ('full_name', 'email', 'role')
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
-        model = get_user_model()
-        fields = '__all__'
+        model = UserModel
+        fields = ('full_name', 'email')
+
+
+class PatientRegisterForm(CustomUserCreationBaseForm):
+    class Meta(CustomUserCreationBaseForm.Meta):
+        exclude = ('role',)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['age'] = forms.IntegerField(
+            required=False,
+        )
+
+        self.fields['personal_id'] = forms.CharField(
+            max_length=30
+        )
+
+        self.fields['phone_number'] = forms.CharField(
+            required=False
+        )
+
+        self.fields['gender'] = forms.ChoiceField(
+            choices=PatientGenderChoices,
+            required=False,
+        )
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = UserTypeChoices.PATIENT
+
+        user.age = self.cleaned_data['age']
+        user.personal_id = self.cleaned_data['personal_id']
+        user.phone_number = self.cleaned_data['phone_number']
+        user.gender = self.cleaned_data['gender']
+
+        if commit:
+            user.save()
+
+        return user
+
+
+class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
+    phone_number = forms.CharField(
+        max_length=30,
+        required=False
+    )
+    address =  forms.CharField(
+        max_length=200,
+        required=False
+    )
+    date_of_birth = forms.DateField(
+        required=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        """Extracting the logged-in user, so that we get the profile creation permission for him later"""
+        self.request_user = kwargs.pop('request_user', None)
+
+        super().__init__(*args, **kwargs)
+
+        """Getting the allowed profile creation choices for the logged-in user, 
+        with values for safety, so that the program does not crash"""
+        self.allowed_roles = ALLOWED_ROLES_CREATION.get(
+            getattr(self.request_user, 'role', ''),[]
+        )
+        self.fields['role'].choices = [(r.value, r.label) for r in self.allowed_roles]
+
+    def clean_role(self):
+        role = self.cleaned_data['role']
+
+        """We make this validation to make sure there were no manipulations done from the frontend"""
+        if role not in [r.value for r in self.allowed_roles]:
+            raise forms.ValidationError("You are not allowed create a user with that role.")
+        return role
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = self.cleaned_data['role']
+        user.is_staff = USER_IS_STAFF.get(user.role, False)
+
+        if commit:
+            user.save()
+
+        return user
+
+
+
+

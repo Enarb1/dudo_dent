@@ -50,7 +50,8 @@ INSTALLED_APPS = [
 
     'cloudinary',
     'cloudinary_storage',
-    'Dudo_dent.accounts.apps.AccountsConfig'
+    'Dudo_dent.accounts.apps.AccountsConfig',
+    'Dudo_dent.appointments.apps.AppointmentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -101,7 +102,6 @@ DATABASES = {
 
 
 AUTHENTICATION_BACKENDS = [
-    'Dudo_dent.accounts.authentication.EmailOrUsernameBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 

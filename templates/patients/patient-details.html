@@ -10,7 +10,7 @@
   <main class="main-content">
       <section class="patient-info">
           <div class="edit-button-wrapper">
-            <a href="{% url 'edit-patient' patient.slug %}">
+            <a href="{% url 'edit-patient' patient.pk %}">
                 <button class="edit-button">Edit</button>
             </a>
           </div>
@@ -23,7 +23,7 @@
               <li><strong>Email:</strong> {{ patient.email|default:"No Email Address" }}</li>
           </ul>
           <div class="delete-button-wrapper">
-              <a href="{% url 'delete-patient' patient.slug %}">
+              <a href="{% url 'delete-patient' patient.pk %}">
                 <button class="delete-button">Delete</button>
               </a>   
           </div>

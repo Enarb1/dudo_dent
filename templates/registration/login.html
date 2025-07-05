@@ -8,7 +8,7 @@
 
 {% block content %}
   <main class="main-content">
-    <form action="#" method="POST" >
+    <form method="POST" >
         <h2>Login</h2>
         
         {% if return_to %}
@@ -17,6 +17,15 @@
         
         {% csrf_token %}
         
+        {% if form.is_bound and form.non_field_errors %}
+            <ul class="row-form-errors">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    
+    
         {{ form.as_p }}
     
         <button type="submit">Login</button>

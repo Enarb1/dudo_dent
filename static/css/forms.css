@@ -58,3 +58,9 @@ input[type="file"] {
     padding: 0;
     display: block;
 }
+
+.row-form-errors {
+  color: red;
+  list-style-type: none;
+  padding: 0;
+}
