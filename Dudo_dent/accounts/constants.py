@@ -23,3 +23,21 @@ ROLE_PROFILE_HANDLERS = {
     UserTypeChoices.NURSE: handle_work_profile,
     UserTypeChoices.DENTIST: handle_work_profile,
 }
+
+
+PATIENT_PROFILE_FIELDS = {
+    'full_name': 'Name',
+    'personal_id': 'Personal ID',
+    'gender': 'Gender',
+    'age': 'Age',
+    'email': 'Email',
+    'phone_number': 'Phone',
+}
+
+WORK_PROFILE_FIELDS = {
+    'full_name': 'Name',
+    'email': 'Email',
+    'phone_number': 'Phone',
+    'address': 'Address',
+    'date_of_birth': 'Date of Birth',
+}
