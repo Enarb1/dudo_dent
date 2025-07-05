@@ -1,16 +1,26 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
+from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.models import CustomUser
 from Dudo_dent.patients.choices import PatientGenderChoices
 
 # Create your models here.
 
-class Patient(models.Model):
+UserModel = get_user_model()
+
+class PatientBase(models.Model):
+    class Meta:
+        abstract = True
+
     full_name = models.CharField(
         max_length=150
     )
 
-    age = models.IntegerField()
+    age = models.IntegerField(
+        blank=True,
+        null=True
+    )
 
     email = models.EmailField(
         blank=True,
@@ -20,6 +30,8 @@ class Patient(models.Model):
 
     phone_number = models.CharField(
         max_length=30,
+        blank=True,
+        null=True,
     )
 
     personal_id = models.CharField(
@@ -33,18 +45,30 @@ class Patient(models.Model):
         default=PatientGenderChoices.OTHER,
     )
 
+
+    def __str__(self):
+        return self.full_name
+
+
+class Patient(PatientBase):
+    user = models.OneToOneField(
+        to=UserModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        limit_choices_to={'role': UserTypeChoices.PATIENT},
+        related_name='patient',
+    )
+
+
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
 
 
-    dentist = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name='patients',
-    )
+
+
     
-    def __str__(self):
-        return self.full_name
+
     
 

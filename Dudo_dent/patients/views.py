@@ -18,40 +18,18 @@ class AllPatientsView(MainViewsMixin, ListView):
         return super().get_queryset().order_by('full_name')
 
 
-    # query_param = 'query'
-    #
-    # def get_context_data(self, *, object_list =None, **kwargs):
-    #     kwargs.update({
-    #         'form': self.form_class(),
-    #         'query': self.request.GET.get(self.query_param,'')
-    #     })
-    #
-    #     return super().get_context_data(object_list=object_list,**kwargs)
-    #
-    # def get_queryset(self):
-    #     queryset = self.model.objects.all()
-    #     search_value = self.request.GET.get(self.query_param)
-    #
-    #     if search_value:
-    #         queryset = queryset.filter(
-    #             full_name__icontains=search_value,
-    #         )
-    #
-    #     return queryset.order_by('full_name')
-
 class PatientDetailsView(DetailView):
     model = Patient
     template_name = 'patients/patient-details.html'
-    slug_field = 'slug'
-    slug_url_kwarg = 'patient_slug'
+    # slug_field = 'slug'
+    # slug_url_kwarg = 'patient_slug'
 
     def get_context_data(self,**kwargs):
+        context = super().get_context_data()
         visits = self.object.visits.all().order_by('-date')
-        kwargs.update({
-            'visits':visits
-        })
+        context['visits'] = visits
 
-        return super().get_context_data(**kwargs)
+        return context
 
 
 class PatientCreateView(ReturnToRedirectMixin, CreateView):
@@ -66,9 +44,6 @@ class PatientCreateView(ReturnToRedirectMixin, CreateView):
     def get_default_success_url(self):
         return reverse_lazy('all-patients')
 
-    def form_valid(self, form):
-        super().form_valid(form)
-        #TODO get the dentist id from the request data
 
 class EditPatientView(EditDataMixin, UpdateView):
     model = Patient
@@ -76,13 +51,11 @@ class EditPatientView(EditDataMixin, UpdateView):
     template_name = 'patients/edit-patient.html'
     redirect_url = 'patient-details'
     context_param = 'patient'
-    get_object_by = 'slug'
-    slug_param = 'patient_slug'
-
+    get_object_by = 'pk'
 
     def get_object(self, queryset=None):
         return self.model.objects.filter(
-            slug=self.kwargs[self.slug_param]
+            pk=self.kwargs.get(self.pk_url_kwarg)
             ).first()
 
 class DeletePatientView(DeleteView):
@@ -92,13 +65,3 @@ class DeletePatientView(DeleteView):
     slug_field = 'slug'
     slug_url_kwarg = 'patient_slug'
     success_url = reverse_lazy('all-patients')
-
-
-
-
-
-
-
-
-
-

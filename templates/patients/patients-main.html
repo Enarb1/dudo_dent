@@ -23,7 +23,7 @@
     {% for patient in patient_list %}
       <button
         class="patient-card-button"
-        onclick="window.location.href='{% url 'patient-details' patient.slug %}'">
+        onclick="window.location.href='{% url 'patient-details' patient.pk %}'">
         {{ patient.full_name }}
       </button>
     {% endfor %}

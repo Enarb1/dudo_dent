@@ -11,9 +11,9 @@
     <form method="POST" >
         <h2>Register</h2>
         
-{#        {% if return_to %}#}
-{#            <input type="hidden" name="return_to" value="{{ return_to }}">#}
-{#        {% endif %}#}
+        {% if return_to %}
+            <input type="hidden" name="return_to" value="{{ return_to }}">
+        {% endif %}
         
         {% csrf_token %}
         {{ form.as_p }}

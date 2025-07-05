@@ -64,3 +64,19 @@ button:hover,
 .add-plus-button:hover {
   color: #357ABD;
 }
+
+
+button.logout {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.logout:hover {
+  background-color: #b02a37;
+}

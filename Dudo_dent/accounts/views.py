@@ -1,46 +1,59 @@
+from django.contrib.auth import get_user_model, login
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
-from Dudo_dent.accounts.forms import CustomUserCreationForm
-from Dudo_dent.accounts.models import CustomUser, Profile
-from Dudo_dent.patients.models import Patient
-
+from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBaseForm, RoleBasedUserCreationForm
 
 # Create your views here.
+UserModel = get_user_model()
 
-
-class PatientRegisterView(CreateView):
-    model = CustomUser
-    form_class = CustomUserCreationForm
+class UserRegisterView(CreateView):
+    model = UserModel
     template_name = 'registration/register.html'
     success_url = reverse_lazy('home')
 
+    def get_form_class(self):
+
+        if not self.request.user.is_authenticated:
+            return PatientRegisterForm
+
+        if self.request.user.is_staff:
+            return CustomUserCreationBaseForm
+
+        return RoleBasedUserCreationForm
+    
+    def get_form_kwargs(self):
+        """We pass 'request_user' to the kwargs, to get the appropriate permissions for the user"""
+        kwargs = super().get_form_kwargs()
+        kwargs['request_user'] = self.request.user
+
+        return kwargs
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        user = self.object
-        cleaned_data = form.cleaned_data
 
-        try:
-            patient = Patient.objects.get(personal_id=cleaned_data['personal_id'])
-        except Patient.DoesNotExist:
-            patient = Patient.objects.create(
-                full_name=cleaned_data['full_name'],
-                age=cleaned_data['age'],
-                gender=cleaned_data['gender'],
-                email=user.email,
-                personal_id=cleaned_data['personal_id'],
-                phone_number=cleaned_data['phone_number'],
-                dentist=CustomUser.objects.get(id=cleaned_data['dentist']),
-            )
-
-        Profile.objects.create(
-            user=user,
-            full_name=cleaned_data['full_name'],
-            age=cleaned_data['age'],
-            gender=cleaned_data['gender'],
-            phone_number=cleaned_data['phone_number'],
-            patient=patient,
-        )
+        if not self.request.user.is_authenticated:
+            login(self.request, self.object)
 
         return response
+
+
+class UserProfileView(DetailView):
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
