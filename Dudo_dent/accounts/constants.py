@@ -27,11 +27,11 @@ ROLE_PROFILE_HANDLERS = {
 
 PATIENT_PROFILE_FIELDS = {
     'full_name': 'Name',
-    'personal_id': 'Personal ID',
-    'gender': 'Gender',
-    'age': 'Age',
     'email': 'Email',
     'phone_number': 'Phone',
+    'personal_id': 'Personal ID',
+    'gender': 'Gender',
+    'date_of_birth': 'Birth date',
 }
 
 WORK_PROFILE_FIELDS = {
@@ -39,5 +39,5 @@ WORK_PROFILE_FIELDS = {
     'email': 'Email',
     'phone_number': 'Phone',
     'address': 'Address',
-    'date_of_birth': 'Date of Birth',
+    'date_of_birth': 'Birth date',
 }

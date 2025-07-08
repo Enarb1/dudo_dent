@@ -7,7 +7,7 @@ from Dudo_dent.patients.models import Patient
 class PatientBaseForm(GetDentistsMixin, forms.ModelForm):
     class Meta:
         model = Patient
-        fields = ('full_name', 'age', 'email', 'phone_number', 'personal_id', 'gender',)
+        fields = ('full_name', 'date_of_birth', 'email', 'phone_number', 'personal_id', 'gender',)
         widgets = {
             'age': forms.NumberInput,
             'email': forms.EmailInput,

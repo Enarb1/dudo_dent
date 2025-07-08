@@ -8,6 +8,6 @@ from Dudo_dent.patients.models import Patient
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
-    list_filter = ('gender', 'age')
+    list_filter = ('gender', 'date_of_birth',)
 
 

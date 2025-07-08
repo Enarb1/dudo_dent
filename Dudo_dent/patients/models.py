@@ -17,7 +17,7 @@ class PatientBase(models.Model):
         max_length=150
     )
 
-    age = models.IntegerField(
+    date_of_birth = models.DateField(
         blank=True,
         null=True
     )

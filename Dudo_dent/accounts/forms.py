@@ -1,5 +1,3 @@
-from email.policy import default
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -25,10 +23,11 @@ class CustomUserChangeForm(UserChangeForm):
 class PatientRegisterForm(CustomUserCreationBaseForm):
     class Meta(CustomUserCreationBaseForm.Meta):
         exclude = ('role',)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['age'] = forms.IntegerField(
+        self.fields['date_of_birth'] = forms.DateField(
             required=False,
         )
 
@@ -42,14 +41,13 @@ class PatientRegisterForm(CustomUserCreationBaseForm):
 
         self.fields['gender'] = forms.ChoiceField(
             choices=PatientGenderChoices,
-            required=False,
         )
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = UserTypeChoices.PATIENT
 
-        user.age = self.cleaned_data['age']
+        user.age = self.cleaned_data['date_of_birth']
         user.personal_id = self.cleaned_data['personal_id']
         user.phone_number = self.cleaned_data['phone_number']
         user.gender = self.cleaned_data['gender']
@@ -105,5 +103,88 @@ class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
         return user
 
 
+class BaseProfileForm(forms.ModelForm):
+    """Base form class for the Edit Profile Forms"""
+    phone_number = forms.CharField()
+    date_of_birth = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
+    class Meta:
+        model = UserModel
+        fields = ('full_name', 'email',)
 
 
+class EditPatientProfileForm(BaseProfileForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+        self.fields['personal_id'] = forms.CharField(
+            max_length=30
+        )
+
+        self.fields['gender'] = forms.ChoiceField(
+            choices=PatientGenderChoices,
+        )
+    
+    def save(self, commit=True):
+        """Save method for editing a patient's profile.
+
+        We use commit=True here because the base form already handles saving fields
+        on the CustomUser model ('full_name' and 'email').
+
+        This method updates additional patient-specific fields stored in the related
+        Patient profile, which is linked via a OneToOneField.
+
+        If 'commit' is True, both the user and the patient profile are saved."""
+        user = super().save(commit=commit)
+
+        patient = user.get_profile()
+
+        if patient:
+            patient.gender = self.cleaned_data['gender']
+            patient.date_of_birth = self.cleaned_data['date_of_birth']
+            patient.phone_number = self.cleaned_data['phone_number']
+            patient.personal_id = self.cleaned_data['personal_id']
+
+            if commit:
+                patient.save()
+
+        return user
+
+
+class EditWorkProfileForm(BaseProfileForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['address'] = forms.CharField(
+            max_length=200,
+            required=False
+        )
+
+    def save(self, commit=True):
+        """Save method for editing a patient's profile.
+
+        We use commit=True here because the base form already handles saving fields
+        on the CustomUser model ('full_name' and 'email').
+
+        This method updates additional workprofile-specific fields stored in the related
+        WorkProfile profile, which is linked via a OneToOneField.
+
+        If 'commit' is True, both the user and the patient profile are saved."""
+
+        user = super().save(commit=commit)
+
+        profile = user.get_profile()
+
+        if profile:
+            profile.phone_number = self.cleaned_data['phone_number']
+            profile.date_of_birth = self.cleaned_data['date_of_birth']
+            profile.address = self.cleaned_data['address']
+
+            if commit:
+                profile.save()
+
+        return user
