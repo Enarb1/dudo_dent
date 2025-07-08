@@ -4,8 +4,10 @@
      <main class="main-content">
       <section class="patient-info">
           <div class="edit-button-wrapper">
-            <a href="#">
+            <a href="{% url 'edit-profile' request.user.pk %}">
                 <button class="edit-button">Edit</button>
+            </a><a href="{% url 'change-password' request.user.pk %}">
+                <button class="change-password-button">Change Password</button>
             </a>
           </div>
           <ul>
@@ -14,7 +16,7 @@
               {% endfor %}
           </ul>
           <div class="delete-button-wrapper">
-              <a href="#">
+              <a href="{% url 'delete-profile' request.user.pk %}">
                 <button class="delete-button">Delete</button>
               </a>   
           </div>

@@ -6,6 +6,7 @@ def handle_patient_profile(user):
     try:
         personal_id = getattr(user, 'personal_id', None)
         patient = Patient.objects.get(personal_id=personal_id)
+        patient.user = user
         patient.email = user.email
         patient.save()
     except Patient.DoesNotExist:

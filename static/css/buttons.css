@@ -6,7 +6,8 @@ button,
 .edit-button,
 .delete-button,
 .search-button,
-.add-plus-button {
+.add-plus-button,
+.change-password-button{
   background-color: #4A90E2;
   color: white;
   border: none;
@@ -22,6 +23,7 @@ button:hover,
 .section-buttons button:hover,
 .add-button:hover,
 .edit-button:hover,
+.change-password-button:hover,
 .search-button:hover,
 .add-plus-button:hover {
   background-color: #357ABD;

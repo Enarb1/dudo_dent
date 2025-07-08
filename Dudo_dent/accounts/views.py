@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model, login
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from Dudo_dent.accounts.constants import PATIENT_PROFILE_FIELDS, WORK_PROFILE_FIELDS
-from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBaseForm, RoleBasedUserCreationForm
+from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBaseForm, RoleBasedUserCreationForm, \
+    CustomUserChangeForm, EditPatientProfileForm, EditWorkProfileForm
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
+from Dudo_dent.common.mixins import EditDataMixin
 
 # Create your views here.
 UserModel = get_user_model()
@@ -26,8 +28,11 @@ class UserRegisterView(CreateView):
     
     def get_form_kwargs(self):
         """We pass 'request_user' to the kwargs, to get the appropriate permissions for the user"""
+
         kwargs = super().get_form_kwargs()
-        kwargs['request_user'] = self.request.user
+
+        if self.get_form_class() == RoleBasedUserCreationForm:
+            kwargs['request_user'] = self.request.user
 
         return kwargs
 
@@ -57,11 +62,46 @@ class UserProfileView(DetailView):
 
         return context
 
+class EditProfileView(EditDataMixin, UpdateView):
+    model = UserModel
+    template_name = 'accounts/edit-profile.html'
+    redirect_url = 'profile'
+    context_param = 'profile'
 
 
+    def get_form_class(self):
+        if self.request.user.is_authenticated:
+
+            if self.request.user.is_patient():
+                return EditPatientProfileForm
+            return EditWorkProfileForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        profile = self.request.user.get_profile()
+
+        if profile.user.is_patient():
+            initial.update({
+                'personal_id':profile.personal_id,
+                'gender':profile.gender,
+            })
+        else:
+            initial.update({
+                'address': profile.address,
+            })
+
+        initial.update({
+            'phone_number': profile.phone_number,
+            'date_of_birth': profile.date_of_birth,
+        })
+
+        return initial
 
 
-
+class DeleteProfileView(DeleteView):
+    model = UserModel
+    template_name = 'accounts/delete-profile.html'
+    success_url = reverse_lazy('home')
 
 
 
