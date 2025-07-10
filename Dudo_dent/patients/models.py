@@ -3,13 +3,14 @@ from django.db import models
 
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.models import CustomUser
+from Dudo_dent.common.mixins.models_mixins import AgeCalculatorMixin
 from Dudo_dent.patients.choices import PatientGenderChoices
 
 # Create your models here.
 
 UserModel = get_user_model()
 
-class PatientBase(models.Model):
+class PatientBase(AgeCalculatorMixin, models.Model):
     class Meta:
         abstract = True
 

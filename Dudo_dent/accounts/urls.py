@@ -15,5 +15,4 @@ urlpatterns = [
     ]) ),
     path('password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done')
 
-
 ]

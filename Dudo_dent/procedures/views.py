@@ -1,7 +1,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from Dudo_dent.common.mixins import ReturnToRedirectMixin, MainViewsMixin, EditDataMixin
+from Dudo_dent.common.mixins.forms_mixins import SearchMixin
+from Dudo_dent.common.mixins.redirect_mixins import ReturnToRedirectMixin
+from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
@@ -9,7 +11,7 @@ from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, Sear
 # Create your views here.
 
 
-class AllProcedures(MainViewsMixin, ListView):
+class AllProcedures(SearchMixin, ListView):
     model = Procedure
     template_name = 'procedures/procedures-main.html'
     form_class = SearchProcedureForm

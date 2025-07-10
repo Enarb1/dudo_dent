@@ -69,6 +69,7 @@ class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
     )
     date_of_birth = forms.DateField(
         required=False,
+        widget=forms.DateInput(attrs={'type': 'date'})
     )
 
     def __init__(self, *args, **kwargs):
@@ -96,6 +97,10 @@ class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
         user = super().save(commit=False)
         user.role = self.cleaned_data['role']
         user.is_staff = USER_IS_STAFF.get(user.role, False)
+
+        user.phone_number = self.cleaned_data['phone_number']
+        user.address = self.cleaned_data['address']
+        user.date_of_birth = self.cleaned_data['date_of_birth']
 
         if commit:
             user.save()

@@ -9,7 +9,6 @@ ALLOWED_ROLES_CREATION = {
     UserTypeChoices.DENTIST: [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
 }
 
-
 USER_IS_STAFF = {
     UserTypeChoices.ADMIN: True,
     UserTypeChoices.NURSE: False,
@@ -17,13 +16,11 @@ USER_IS_STAFF = {
     UserTypeChoices.PATIENT: False,
 }
 
-
 ROLE_PROFILE_HANDLERS = {
     UserTypeChoices.PATIENT: handle_patient_profile,
     UserTypeChoices.NURSE: handle_work_profile,
     UserTypeChoices.DENTIST: handle_work_profile,
 }
-
 
 PATIENT_PROFILE_FIELDS = {
     'full_name': 'Name',
@@ -31,7 +28,7 @@ PATIENT_PROFILE_FIELDS = {
     'phone_number': 'Phone',
     'personal_id': 'Personal ID',
     'gender': 'Gender',
-    'date_of_birth': 'Birth date',
+    'age': 'Age',
 }
 
 WORK_PROFILE_FIELDS = {
@@ -39,5 +36,6 @@ WORK_PROFILE_FIELDS = {
     'email': 'Email',
     'phone_number': 'Phone',
     'address': 'Address',
-    'date_of_birth': 'Birth date',
+    'age': 'Age',
 }
+

@@ -1,15 +1,14 @@
 from django import forms
 
-from Dudo_dent.mixins import GetDentistsMixin
 from Dudo_dent.patients.models import Patient
 
 
-class PatientBaseForm(GetDentistsMixin, forms.ModelForm):
+class PatientBaseForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = ('full_name', 'date_of_birth', 'email', 'phone_number', 'personal_id', 'gender',)
         widgets = {
-            'age': forms.NumberInput,
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
             'email': forms.EmailInput,
         }
 

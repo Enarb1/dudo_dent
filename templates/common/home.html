@@ -8,7 +8,7 @@
 {% block content %}
   <main class="main-content home-centered">
   {% if request.user.is_authenticated %}
-    <h2>Welcome to Dudo Dent</h2>
+    <h2>Hello, {{ request.user.full_name }}! Welcome to Dudo Dent</h2>
       {% if request.user.is_dentist or request.user.is_staff %}
         {% include 'common/search-patient.html' %}
         <section class="section-buttons">

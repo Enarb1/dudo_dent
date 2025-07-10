@@ -1,6 +1,13 @@
+from django.contrib.auth.models import Group
+
 from Dudo_dent.accounts.models import WorkProfile
 from Dudo_dent.patients.models import Patient
 
+
+ROLE_GROUP_MAP = {
+    'nurse': 'Nurse',
+    'dentist': 'Dentist',
+}
 
 def handle_patient_profile(user):
     try:
@@ -28,4 +35,15 @@ def handle_work_profile(user):
         address=getattr(user, 'address', None),
         date_of_birth=getattr(user, 'date_of_birth', None),
     )
+
+    permission_group = ROLE_GROUP_MAP.get(user.role.lower(), None)
+
+    if permission_group:
+        try:
+            group = Group.objects.get(name=permission_group)
+            user.groups.add(group)
+        except Group.DoesNotExist:
+            print(f"Group '{permission_group}' does not exist.")
+
+
 
