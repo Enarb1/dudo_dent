@@ -3,11 +3,14 @@ def get_profile_fields(field_map, profile, user):
 
     for field_name, field_label in field_map.items():
 
-        """In value we check the value of the field. We check both user and profile, 
-        as the field name can come either form CustomUser, WorkProfile or PatientRegister"""
-        value = getattr(profile, field_name, None) or getattr(user, field_name, None)
+        """In value we check the value of the field. 
+        First we check in the profile and if it is None, we check in user"""
+        value = getattr(profile, field_name, None)
 
-        if value:
-            profile_fields.append((field_label, value))
+        if value is None and user is not None:
+            value = getattr(user, field_name, None)
+
+        display_value = value if value not in (None, "") else "N/A"
+        profile_fields.append((field_label, display_value))
 
     return profile_fields

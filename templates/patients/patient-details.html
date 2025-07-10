@@ -15,12 +15,7 @@
             </a>
           </div>
           <ul>
-              <li><strong>Name:</strong> {{ patient.full_name }}</li>
-              <li><strong>Age:</strong> {{ patient.age }}</li>
-              <li><strong>Gender:</strong> {{ patient.gender }}</li>  
-              <li><strong>Phone:</strong> {{ patient.phone_number }}</li>
-              <li><strong>Personal ID:</strong> {{ patient.personal_id }}</li>
-              <li><strong>Email:</strong> {{ patient.email|default:"No Email Address" }}</li>
+              {% include 'common/profile-details-fields.html' %}
           </ul>
           <div class="delete-button-wrapper">
               <a href="{% url 'delete-patient' patient.pk %}">

@@ -4,6 +4,7 @@ from django.db import models
 
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.managers import CustomUserManager
+from Dudo_dent.common.mixins.models_mixins import AgeCalculatorMixin
 
 
 # Create your models here.
@@ -35,30 +36,33 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.full_name
-
+    @property
     def is_dentist(self):
         return self.role == UserTypeChoices.DENTIST
 
+    @property
     def is_patient(self):
         return self.role == UserTypeChoices.PATIENT
 
+    @property
     def is_nurse(self):
         return self.role == UserTypeChoices.NURSE
 
+    @property
     def is_admin(self):
         return self.role == UserTypeChoices.ADMIN
 
     def get_profile(self):
-        if self.is_nurse() or self.is_dentist():
+        if self.is_nurse or self.is_dentist:
             return getattr(self, "workprofile", None)
-        if self.is_patient():
+        if self.is_patient:
             return getattr(self, "patient", None)
 
         return None
 
 
 
-class WorkProfile(models.Model):
+class WorkProfile(AgeCalculatorMixin, models.Model):
     user = models.OneToOneField(
         to=CustomUser,
         on_delete=models.CASCADE,

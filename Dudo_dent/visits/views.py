@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from Dudo_dent.common.mixins import MainViewsMixin, ReturnToRedirectMixin, MultiStepRedirectMixin, EditDataMixin
+from Dudo_dent.common.mixins.forms_mixins import SearchMixin
+from Dudo_dent.common.mixins.redirect_mixins import MultiStepRedirectMixin, ReturnToRedirectMixin
+from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
@@ -11,7 +12,7 @@ from Dudo_dent.visits.models import Visit
 # Create your views here.
 
 
-class AllVisits(MainViewsMixin, ListView):
+class AllVisits(SearchMixin, ListView):
     model = Visit
     template_name = 'visits/visits-main.html'
     form_class = SearchPatientForm
@@ -32,7 +33,7 @@ class VisitCreate(MultiStepRedirectMixin, ReturnToRedirectMixin, CreateView):
     form_class = VisitCreateForm
 
     session_key = 'visit_form_data'
-    return_to_param = 'redirect_to'
+    return_to_param = 'return_to'
     return_to_value = 'add-visit'
     redirect_actions = {
         'add-patient': 'add-patient',

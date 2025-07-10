@@ -1,10 +1,7 @@
 #TODO ALL
-    - fix all views connected to user the PK and not the slug
-    - manage permissions.
-    - set what function who can use
     - adapt the HTML templates for the different permissions
-    - make all views CBVs
     - add pagination to all main views
+    - fix all views connected to user the PK and not the slug
 
 
 #TODO Home Screen:
@@ -16,6 +13,7 @@
 
 
 #TODO Visits:
+    - add permissions
     - make it possible to upload multiple images
     - try to add a filter in which you can filter by year and also by patient
 
@@ -25,6 +23,6 @@
    - optimize the patients ordering to make it directly in the class Meta
 
 #TODO Procedures:
-
+    - add permissions
 #TODO Final improvements:
     -  DRY up HTMLs
