@@ -62,16 +62,12 @@ class EditPatientView(LoginRequiredMixin, RoleRequiredMixin, EditDataMixin, Upda
     model = Patient
     form_class = PatientEditForm
     template_name = 'patients/edit-patient.html'
+
     redirect_url = 'patient-details'
     context_param = 'patient'
     get_object_by = 'pk'
 
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
-
-    def get_object(self, queryset=None):
-        return self.model.objects.filter(
-            pk=self.kwargs.get(self.pk_url_kwarg)
-            ).first()
 
 
 class DeletePatientView(LoginRequiredMixin, RoleRequiredMixin, DeleteView):
