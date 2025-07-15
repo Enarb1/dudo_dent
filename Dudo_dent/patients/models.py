@@ -13,6 +13,7 @@ UserModel = get_user_model()
 class PatientBase(AgeCalculatorMixin, models.Model):
     class Meta:
         abstract = True
+        ordering = ['full_name']
 
     full_name = models.CharField(
         max_length=150

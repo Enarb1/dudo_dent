@@ -23,9 +23,6 @@ class AllPatientsView(LoginRequiredMixin, RoleRequiredMixin, SearchMixin, ListVi
 
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 
-    def get_queryset(self):
-        return super().get_queryset().order_by('full_name')
-
 
 class PatientDetailsView(LoginRequiredMixin, RoleRequiredMixin, DetailView):
     model = Patient
