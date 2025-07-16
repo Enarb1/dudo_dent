@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+
 from decouple import config
 
 import cloudinary
@@ -20,6 +21,26 @@ from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+#Google Calender settings
+GOOGLE_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR,'credentials', config('GOOGLE_SERVICE_ACCOUNT_FILE'))
+GOOGLE_CALENDAR_ID = config('GOOGLE_CALENDAR_ID')
+
+#Cloudinary settings
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+cloudinary.config(
+  cloud_name = config('CLOUD_NAME'),
+  api_key = config('API_KEY'),
+  api_secret = config('API_SECRET')
+)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -145,24 +166,15 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET'),
-}
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-cloudinary.config(
-  cloud_name = config('CLOUD_NAME'),
-  api_key = config('API_KEY'),
-  api_secret = config('API_SECRET')
-)
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
