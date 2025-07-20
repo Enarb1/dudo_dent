@@ -1,19 +1,16 @@
 #TODO ALL
+    - work on the adding the appointments in the google calendar
+    - get free and busy times in the google calendar
     - add pagination to all main views
 
 
 #TODO Home Screen:
-    - Dentist/Nurse: list the appointments for the day
 
 #TODO Appointments:
-    - Creat a view with a form where you can add an appointment
-    - Creat a view with all appointments for the day
-    - Manage the permissions
 
 #TODO Visits:
     - make it possible to upload multiple images
     - try to add a filter in which you can filter by year and also by patient
-
 
 #TODO Patients:
 
