@@ -6,11 +6,8 @@
     - Dentist/Nurse: list the appointments for the day
 
 #TODO Appointments:
-    - Add the model to admin
-    - Add url to the urls
     - Creat a view with a form where you can add an appointment
     - Creat a view with all appointments for the day
-    - Connect the Google Calendar
     - Manage the permissions
 
 #TODO Visits:
@@ -25,3 +22,6 @@
 
 #TODO Final improvements:
     -  DRY up HTMLs
+
+#TODO Ideas
+    - to make a email form which the user can send to adjust or cancel an appointment
