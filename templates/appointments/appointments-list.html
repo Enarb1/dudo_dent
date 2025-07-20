@@ -1,0 +1,24 @@
+<section class="appointments-list">
+{% if request.user.is_patient %}
+    <h3>Your upcoming appointments are:</h3>
+{% else %}
+    <h3>Today's Appointments:</h3>
+{% endif %}
+    <ul class="appointments-ul">
+        {% for a in appointments %}
+                <li>
+                    <a href="{% url 'appointment-details' a.pk %}">
+                        {% if request.user.is_dentist %}
+                            {{ a.patient }} - {{ a.date }} at {{ a.start_time }}
+                        {% elif request.user.is_patient %}
+                            {{ a.date }} at {{ a.start_time }} with {{ a.dentist }}
+                        {% else %}
+                            {{ a.patient }} - {{ a.date }} at {{ a.start_time }} with {{ a.dentist }}
+                        {% endif %}
+                    </a>
+                </li>
+        {% empty %}
+            <li>No Appointments</li>
+        {% endfor %}
+    </ul>
+</section>

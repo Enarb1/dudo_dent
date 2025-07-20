@@ -39,3 +39,10 @@ WORK_PROFILE_FIELDS = {
     'age': 'Age',
 }
 
+APPOINTMENT_FIELDS = {
+    'patient': 'Name',
+    'dentist': 'Dentist',
+    'datetime_display': 'Appointment Date',
+    'additional_info': 'Additional Info',
+}
+

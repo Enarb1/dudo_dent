@@ -1,5 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}Appointments Main{% endblock %}
+{% block title %}Appointments Calendar{% endblock %}
+
+{% block extra_css %}
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-    <h1>Appointments Main</h1>
+  <h2 style="margin-bottom: 30px;">All Appointments</h2>
+  <div id="calendar"></div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const calendarEl = document.getElementById('calendar');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        events: '/appointments/json/', 
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
 {% endblock %}

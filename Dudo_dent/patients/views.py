@@ -8,7 +8,7 @@ from Dudo_dent.accounts.services.profile_display import get_profile_fields
 from Dudo_dent.common.mixins.forms_mixins import SearchMixin
 from Dudo_dent.common.mixins.permissions_mixins import RoleRequiredMixin
 from Dudo_dent.common.mixins.redirect_mixins import ReturnToRedirectMixin
-from Dudo_dent.common.mixins.views_mixins import EditDataMixin
+from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
 from Dudo_dent.patients.forms import PatientCreateForm, PatientEditForm, SearchPatientForm
 from Dudo_dent.patients.models import Patient
 
@@ -67,12 +67,11 @@ class EditPatientView(LoginRequiredMixin, RoleRequiredMixin, EditDataMixin, Upda
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 
 
-class DeletePatientView(LoginRequiredMixin, RoleRequiredMixin, DeleteView):
+class DeletePatientView(LoginRequiredMixin, RoleRequiredMixin,DeleteCancelMixIn, DeleteView):
     # with conformation form
     model = Patient
-    template_name = 'patients/delete-conformation.html'
-    slug_field = 'slug'
-    slug_url_kwarg = 'patient_slug'
+    template_name = 'delete-conformation.html'
     success_url = reverse_lazy('all-patients')
+    cancel_url = 'patient-details'
 
     allowed_roles = [UserTypeChoices.DENTIST]

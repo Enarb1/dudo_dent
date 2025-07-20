@@ -33,3 +33,16 @@ class OwnerAndRolePermissionMixin(BaseRolePermissionMixin):
                 (current_user == user_to_view or
                  self.has_required_role(current_user)
                  ))
+
+class AppointmentAccessMixin(BaseRolePermissionMixin):
+
+    def test_func(self):
+        appointment = self.get_object()
+        current_user = self.request.user
+
+        return (
+                current_user.is_authenticated and (
+                appointment.patient_id == current_user.id or
+                self.has_required_role(current_user)
+        )
+        )
