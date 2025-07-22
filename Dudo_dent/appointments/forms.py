@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.appointments.models import Appointment
 from Dudo_dent.patients.models import Patient
 
@@ -24,7 +25,6 @@ class BaseAppointmentForm(forms.ModelForm):
 
 class AddAppointmentForm(BaseAppointmentForm):
     def __init__(self, *args, **kwargs):
-        print(kwargs)
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
@@ -36,7 +36,7 @@ class AddAppointmentForm(BaseAppointmentForm):
             self.fields['patient'].queryset = UserModel.objects.filter(id=user.id)
             self.fields['patient'].disabled = True
         else:
-            self.fields['patient'].queryset = Patient.objects.all()
+            self.fields['patient'].queryset = UserModel.objects.filter(role=UserTypeChoices.PATIENT)
 
 
 class EditAppointmentForm(BaseAppointmentForm):

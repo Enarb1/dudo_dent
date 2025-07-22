@@ -85,4 +85,10 @@ class WorkProfile(AgeCalculatorMixin, models.Model):
         blank=True,
     )
 
+    google_calender_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
 
