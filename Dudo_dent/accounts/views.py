@@ -10,6 +10,7 @@ from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBase
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
 from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin
+from Dudo_dent.visits.models import Visit
 
 # Create your views here.
 UserModel = get_user_model()
@@ -49,6 +50,8 @@ class UserRegisterView(CreateView):
         return response
 
 
+
+
 class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView):
     model = UserModel
     template_name = 'accounts/profile-details.html'
@@ -58,12 +61,14 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         profile = user.get_profile()
+        visits = Visit.objects.filter(patient__user=self.request.user)
 
         if profile:
             """Here we set what type of fields should be displayed"""
             field_map = PATIENT_PROFILE_FIELDS if user.is_patient else WORK_PROFILE_FIELDS
 
             context['profile_fields'] = get_profile_fields(field_map, profile, user)
+        context['visits'] = visits
 
         return context
 

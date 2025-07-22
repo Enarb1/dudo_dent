@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #Google Calender settings
 GOOGLE_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR,'credentials', config('GOOGLE_SERVICE_ACCOUNT_FILE'))
 GOOGLE_CALENDAR_ID = config('GOOGLE_CALENDAR_ID')
+GOOGLE_ADMIN_EMAIL = config('GOOGLE_ADMIN_EMAIL')
 
 #Cloudinary settings
 CLOUDINARY_STORAGE = {

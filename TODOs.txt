@@ -1,13 +1,18 @@
 #TODO ALL
-    - work on the adding the appointments in the google calendar
+    - chore: correct register user date field
+    - work on the adding the appointments in the Google calendar
     - get free and busy times in the google calendar
     - add pagination to all main views
 
-
+#TODO Google Calendar integration
+    - get free and busy times
+    - add the booking to the calendar
+    - edit the booking in the calendar
+    - delete the booking also in the calendar
 #TODO Home Screen:
 
 #TODO Appointments:
-
+    -chore: In the patient profile home, view the appointments the soonest , first
 #TODO Visits:
     - make it possible to upload multiple images
     - try to add a filter in which you can filter by year and also by patient
