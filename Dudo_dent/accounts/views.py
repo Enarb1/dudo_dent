@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -8,6 +10,7 @@ from Dudo_dent.accounts.constants import PATIENT_PROFILE_FIELDS, WORK_PROFILE_FI
 from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBaseForm, RoleBasedUserCreationForm, \
     EditPatientProfileForm, EditWorkProfileForm
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
+from Dudo_dent.appointments.models import AvailabilityRule
 from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.visits.models import Visit
@@ -61,14 +64,25 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         profile = user.get_profile()
-        visits = Visit.objects.filter(patient__user=self.request.user)
+
+        if user.is_patient:
+         visits = Visit.objects.filter(patient__user=user)
+         context['visits'] = visits
+
+        if user.is_dentist:
+            today = datetime.date.today()
+            availability = AvailabilityRule.objects.filter(
+                dentist=user,
+                valid_to__gte=today,
+            )
+
+            context['availability'] = availability
 
         if profile:
             """Here we set what type of fields should be displayed"""
             field_map = PATIENT_PROFILE_FIELDS if user.is_patient else WORK_PROFILE_FIELDS
 
             context['profile_fields'] = get_profile_fields(field_map, profile, user)
-        context['visits'] = visits
 
         return context
 

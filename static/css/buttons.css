@@ -7,6 +7,7 @@ button,
 .delete-button,
 .search-button,
 .add-plus-button,
+.set-availability-button,
 .change-password-button{
   background-color: #4A90E2;
   color: white;
@@ -25,6 +26,7 @@ button:hover,
 .edit-button:hover,
 .change-password-button:hover,
 .search-button:hover,
+.set-availability-button:hover,
 .add-plus-button:hover {
   background-color: #357ABD;
 }
@@ -81,4 +83,14 @@ button.logout {
 
 button.logout:hover {
   background-color: #b02a37;
+}
+
+.availability-buttons {
+    display: flex;
+    gap: 0.5rem; /* space between buttons */
+}
+
+.availability-buttons a {
+    text-decoration: none;  /* removes underline or border */
+    outline: none;          /* removes focus outline */
 }

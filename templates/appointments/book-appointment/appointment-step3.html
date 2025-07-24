@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-{% block title %} Add Appointment {% endblock %}
+{% block title %}Choose Time{% endblock %}
+
 {% block content %}
     <main class="main-content">
         <form method="post">
-            <h2>Book Appointment</h2>
+            <h2>Choose Time</h2>
             {% csrf_token %}
             {{ form }}
             <button type="submit">Book</button>

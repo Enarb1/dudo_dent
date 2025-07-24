@@ -4,7 +4,7 @@ from django.dispatch import receiver
 
 
 from Dudo_dent.accounts.constants import ROLE_PROFILE_HANDLERS
-from Dudo_dent.appointments.google_calender import create_calendar
+from Dudo_dent.appointments.google_calendar import create_calendar
 
 UserModel = get_user_model()
 

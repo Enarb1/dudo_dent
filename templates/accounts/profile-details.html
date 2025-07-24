@@ -18,10 +18,11 @@
                 <button class="delete-button">Delete</button>
               </a>   
           </div>
-          
       </section>
-     <h3>Your Visits</h3>
-     <section class="visit-history">
+     
+     {% if request.user.is_patient %}
+      <h3>Your Visits</h3>
+      <section class="visit-history">
         {% for visit in visits %}
             <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
                 {{ visit }}
@@ -29,9 +30,29 @@
         {% empty %}
               <div class="info-header">
                   <h4>No Visits yet</h4>
-              </div>    
+              </div>
         {% endfor %}
-    </section>
+     </section>
+     {% endif %}
       
+     {% if request.user.is_dentist %}
+         <div class="availability-buttons">
+             <a href="{% url 'availability' %}">
+                <button class="set-availability-button mb-4" >Set Availability</button>
+             </a>
+             <a href="#">
+                <button class="set-availability-button mb-4" >Set Unavailability</button>
+             </a>
+         </div>
+         <h3>Current Availabilities</h3>
+         <ul class="appointments-ul">
+            {% for a in availability %}
+                <li>{{ a.get_weekday_labels|join:", " }} - {{ a.start_time }} to {{ a.end_time }} from {{ a.valid_from }} to {{ a.valid_to }} </li>
+            {% empty %}
+                <p>No availability set</p>
+            {% endfor %}
+         </ul>
+         
+     {% endif %}
   </main>
 {% endblock %}

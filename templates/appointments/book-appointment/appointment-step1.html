@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %} Choose Dentist and Patient {% endblock %}
+
+{% block content %}
+    <main class="main-content">
+        <form method="post">
+            <h2>Choose Dentist</h2>
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Next</button>
+        </form>
+    </main>
+{% endblock %}
