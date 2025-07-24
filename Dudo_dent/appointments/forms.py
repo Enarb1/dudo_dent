@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from Dudo_dent.accounts.choices import UserTypeChoices
-from Dudo_dent.appointments.models import Appointment
-from Dudo_dent.patients.models import Patient
+from Dudo_dent.appointments.choices import WeekdayChoices
+from Dudo_dent.appointments.models import Appointment, AvailabilityRule
 
 
 UserModel = get_user_model()
@@ -23,13 +23,16 @@ class BaseAppointmentForm(forms.ModelForm):
         }
 
 
-class AddAppointmentForm(BaseAppointmentForm):
+class AddAppointmentChooseDentistForm(BaseAppointmentForm):
+    """
+    In the __init__ method we define what to be shown, based on the User Type
+    """
+    class Meta(BaseAppointmentForm.Meta):
+        fields = ['patient', 'dentist']
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-
-
-        self.fields['start_time'].label = 'Time'
 
         if user.is_patient:
             self.fields['patient'].initial = user
@@ -38,6 +41,51 @@ class AddAppointmentForm(BaseAppointmentForm):
         else:
             self.fields['patient'].queryset = UserModel.objects.filter(role=UserTypeChoices.PATIENT)
 
+#TODO need to change the Date Field to select
+class AddAppointmentChooseDateForm(BaseAppointmentForm):
+    """
+    In the __init__ method we get the available dates from the view and
+    pass them into the Select field in '%B %d, %Y' format.
+    """
+    class Meta(BaseAppointmentForm.Meta):
+        fields = ['date']
+
+    def __init__(self, *args, **kwargs):
+        available_dates = kwargs.pop('available_dates', [])
+        super().__init__(*args, **kwargs)
+
+        self.fields['date'].widget = forms.Select(
+            choices=[(d, d.strftime('%B %d, %Y')) for d in available_dates]
+        )
+
+
+class AddAppointmentChooseTimeForm(BaseAppointmentForm):
+    """
+    In the __init__ method we get the available time slots  from the view and
+    pass them into the Select field in '%H:%M' format.
+    """
+
+
+    class Meta(BaseAppointmentForm.Meta):
+        fields = ['start_time', 'additional_info']
+        widgets = {
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'additional_info': forms.Textarea(attrs={
+                'rows': 5,
+                'placeholder': 'Add Additional Info for your Appointment...',
+                'style': 'resize: none',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        available_times = kwargs.pop('available_times', [])
+        super().__init__(*args, **kwargs)
+
+        self.fields['start_time'].label = 'Time'
+        self.fields['start_time'].widget = forms.Select(
+            choices=[(t.strftime('%H:%M'), t.strftime('%H:%M')) for t in available_times]
+        )
+
 
 class EditAppointmentForm(BaseAppointmentForm):
     pass
@@ -45,4 +93,34 @@ class EditAppointmentForm(BaseAppointmentForm):
 
 class DeleteAppointmentForm(BaseAppointmentForm):
     pass
+
+#TODO the weekdays choices should be better
+
+class SetAvailabilityForm(forms.ModelForm):
+    weekdays = forms.MultipleChoiceField(
+        choices=WeekdayChoices,
+        widget=forms.SelectMultiple(attrs={
+            'class': 'w-full border px-2 py-1 rounded',
+            'size': 4
+        }),
+    )
+
+    class Meta:
+        model = AvailabilityRule
+        exclude = ('dentist',)
+        widgets = {
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'end_time': forms.TimeInput(attrs={'type': 'time'}),
+            'valid_from': forms.DateInput(attrs={'type': 'date'}),
+            'valid_to': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+
+
+
+
+
+
+
 

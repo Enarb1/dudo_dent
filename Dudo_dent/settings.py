@@ -65,13 +65,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'cloudinary',
+    'cloudinary_storage',
+
     'Dudo_dent.common.apps.CommonConfig',
     'Dudo_dent.patients.apps.PatientsConfig',
     'Dudo_dent.visits.apps.VisitsConfig',
     'Dudo_dent.procedures.apps.ProceduresConfig',
-
-    'cloudinary',
-    'cloudinary_storage',
     'Dudo_dent.accounts.apps.AccountsConfig',
     'Dudo_dent.appointments.apps.AppointmentsConfig'
 ]
