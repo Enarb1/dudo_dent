@@ -9,4 +9,5 @@ urlpatterns = [
     path('visits/',include('Dudo_dent.visits.urls')),
     path('accounts/',include('Dudo_dent.accounts.urls')),
     path('appointments/',include('Dudo_dent.appointments.urls')),
+    path('api/',include('Dudo_dent.appointments.api_urls')),
 ]

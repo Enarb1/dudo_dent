@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.appointments.choices import WeekdayChoices
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule
-
+from Dudo_dent.patients.models import Patient
 
 UserModel = get_user_model()
 
@@ -35,11 +34,12 @@ class AddAppointmentChooseDentistForm(BaseAppointmentForm):
         super().__init__(*args, **kwargs)
 
         if user.is_patient:
-            self.fields['patient'].initial = user
-            self.fields['patient'].queryset = UserModel.objects.filter(id=user.id)
+            patient_instance = getattr(user, 'patient', None)
+            self.fields['patient'].initial = patient_instance
+            self.fields['patient'].queryset = Patient.objects.filter(user=user)
             self.fields['patient'].disabled = True
         else:
-            self.fields['patient'].queryset = UserModel.objects.filter(role=UserTypeChoices.PATIENT)
+            self.fields['patient'].queryset = Patient.objects.all()
 
 #TODO need to change the Date Field to select
 class AddAppointmentChooseDateForm(BaseAppointmentForm):

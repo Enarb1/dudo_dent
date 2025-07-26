@@ -7,6 +7,14 @@
 
 {% block content %}
   <h2 style="margin-bottom: 30px;">All Appointments</h2>
+
+  <select id="dentistFilter" class="form-select" style="max-width: 300px; margin-bottom: 20px;">
+    <option value="">Filter by Dentists</option>
+    {% for dentist in dentists %}
+      <option value="{{ dentist.id }}">{{ dentist.full_name }}</option>
+    {% endfor %}
+  </select>
+
   <div id="calendar"></div>
 {% endblock %}
 
@@ -15,11 +23,23 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const calendarEl = document.getElementById('calendar');
+      const dentistSelect = document.getElementById('dentistFilter');
 
-      const calendar = new FullCalendar.Calendar(calendarEl, {
+      let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
-        events: '/appointments/json/', 
+        events: function(fetchInfo, successCallback, failureCallback) {
+          const dentistId = dentistSelect.value;
+          let url = '/api/calendar/';
+          if (dentistId) {
+            url += `?dentist=${dentistId}`;
+          }
+
+          fetch(url)
+            .then(response => response.json())
+            .then(data => successCallback(data))
+            .catch(error => failureCallback(error));
+        },
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
@@ -28,6 +48,10 @@
       });
 
       calendar.render();
+
+      dentistSelect.addEventListener('change', function() {
+        calendar.refetchEvents();
+      });
     });
   </script>
 {% endblock %}

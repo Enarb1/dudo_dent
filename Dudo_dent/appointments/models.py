@@ -20,13 +20,13 @@ class Appointment(models.Model):
 
 
     patient = models.ForeignKey(
-        UserModel,
+        to=Patient,
         on_delete=models.CASCADE,
         related_name='patient_appointments',
     )
 
     dentist = models.ForeignKey(
-        UserModel,
+        to=UserModel,
         on_delete=models.CASCADE,
         related_name='dentist_appointments',
         limit_choices_to={'role': UserTypeChoices.DENTIST},
