@@ -1,8 +1,7 @@
 #TODO ALL
     - chore: correct register user date field
-    - work on the adding the appointments in the Google calendar
-    - get free and busy times in the Google calendar
     - add pagination to all main views
+    - work on the delete conformation form design
 
 #TODO pagination:
     - for visits (profiles and main views)
@@ -11,12 +10,11 @@
     - for procedures
 
 #TODO Google Calendar integration
-    - edit the booking in the calendar
-    - delete the booking also in the calendar
 
 #TODO Home Screen:
 
 #TODO Appointments:
+    - add a back button to the appointments booking forms
 
 
 #TODO Visits:

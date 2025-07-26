@@ -70,11 +70,10 @@ class Appointment(models.Model):
         return reverse('appointment-details', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
-        if self.start_time and not self.end_time:
-            if self.date:
-                full_start = datetime.combine(self.date, self.start_time)
-                full_end = full_start + timedelta(minutes=15)
-                self.end_time = full_end.time()
+        if self.date and self.start_time:
+            full_start = datetime.combine(self.date, self.start_time)
+            full_end = full_start + timedelta(minutes=15)
+            self.end_time = full_end.time()
         super().save(*args, **kwargs)
 
 

@@ -1,6 +1,22 @@
 from datetime import date, timedelta, datetime
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from django.conf import settings
 
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule
+
+
+def get_calendar_service():
+    """
+    Getting the Google Calendar service.
+    """
+    credentials = service_account.Credentials.from_service_account_file(
+        settings.GOOGLE_SERVICE_ACCOUNT_FILE,
+        scopes=['https://www.googleapis.com/auth/calendar'],
+    )
+    service = build('calendar', 'v3', credentials=credentials)
+
+    return service
 
 
 def get_appointments_for_today(user):

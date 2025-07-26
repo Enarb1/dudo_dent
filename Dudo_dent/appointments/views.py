@@ -7,13 +7,14 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, FormView
+from googleapiclient.errors import HttpError
 
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.constants import APPOINTMENT_FIELDS
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
 from Dudo_dent.appointments.forms import EditAppointmentForm,SetAvailabilityForm, \
     AddAppointmentChooseDentistForm, AddAppointmentChooseDateForm, AddAppointmentChooseTimeForm
-from Dudo_dent.appointments.google_calendar import add_appointment_to_google_calendar
+from Dudo_dent.appointments.google_calendar import GoogleCalendarService
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule
 from Dudo_dent.appointments.permissions import has_calender_access
 from Dudo_dent.appointments.utils import clear_booking_session, get_dentist_available_dates, get_available_time_slots
@@ -110,7 +111,7 @@ class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin, FormView):
             dentist=dentist,
         )
 
-        add_appointment_to_google_calendar(appointment, dentist, patient)
+        GoogleCalendarService(appointment).add()
 
         clear_booking_session(self.request.session)
         return super().form_valid(form)
@@ -133,7 +134,7 @@ class AppointmentDetailView(LoginRequiredMixin, AppointmentAccessMixin, DetailVi
 
         return context
 
-#TODO edit appointment in Google Calendar
+
 class EditAppointmentView(LoginRequiredMixin, RoleRequiredMixin,  EditDataMixin, UpdateView):
     model = Appointment
     form_class = EditAppointmentForm
@@ -145,13 +146,26 @@ class EditAppointmentView(LoginRequiredMixin, RoleRequiredMixin,  EditDataMixin,
 
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
 
-#TODO delete appointment in Google Calendar
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        appointment = form.instance
+        GoogleCalendarService(appointment).update()
+
+        return response
+
+
 class DeleteAppointmentView(LoginRequiredMixin, RoleRequiredMixin,DeleteCancelMixIn, DeleteView):
     model = Appointment
     template_name = 'delete-conformation.html'
     cancel_url = 'appointment-details'
 
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
+
+    def form_valid(self, form):
+        appointment = self.object
+        GoogleCalendarService(appointment).delete()
+
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('home')
