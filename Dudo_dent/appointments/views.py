@@ -1,13 +1,14 @@
 from datetime import date, timedelta
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, FormView
-from googleapiclient.errors import HttpError
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.constants import APPOINTMENT_FIELDS
@@ -16,13 +17,12 @@ from Dudo_dent.appointments.forms import EditAppointmentForm,SetAvailabilityForm
     AddAppointmentChooseDentistForm, AddAppointmentChooseDateForm, AddAppointmentChooseTimeForm
 from Dudo_dent.appointments.google_calendar import GoogleCalendarService
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule
-from Dudo_dent.appointments.permissions import has_calender_access
+from Dudo_dent.appointments.serializers import AppointmentSerializer
 from Dudo_dent.appointments.utils import clear_booking_session, get_dentist_available_dates, get_available_time_slots
 from Dudo_dent.common.mixins.permissions_mixins import RoleRequiredMixin, \
     AppointmentAccessMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
-
-
+from Dudo_dent.patients.models import Patient
 
 UserModel = get_user_model()
 # Create your views here.
@@ -31,6 +31,13 @@ class AppointmentsMainView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = Appointment
     template_name = 'appointments/appointments-main.html'
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dentists'] = UserModel.objects.filter(
+            role=UserTypeChoices.DENTIST,
+        )
+        return context
 
 
 class ChooseDentistView(LoginRequiredMixin, RoleRequiredMixin, FormView):
@@ -101,7 +108,7 @@ class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin, FormView):
         if not (patient_id and dentist_id and date):
             return redirect('appointment-step1')
 
-        patient = UserModel.objects.filter(pk=patient_id).first()
+        patient = Patient.objects.filter(pk=patient_id).first()
         dentist = UserModel.objects.filter(pk=dentist_id).first()
 
         appointment = Appointment.objects.create(
@@ -222,28 +229,31 @@ class SetAvailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
 
-
-@user_passes_test(has_calender_access)
-@login_required
-def appointment_event_json(request):
+class AppointmentListAPIView(APIView):
     """
-    Full Calendar settings
+    API endpoint to list appointments.
+    - Nurses and dentists can both view all appointments.
+    - They can optionally filter by dentist id
     """
+    permission_classes = [IsAuthenticated]
 
-    appointments = Appointment.objects.all()
+    def get(self, request):
+        queryset = Appointment.objects.all()
 
-    events = [{
-            'title': f'{a.patient}',
-            'start': f'{a.date.isoformat()}T{a.start_time.strftime("%H:%M:%S")}',
-            'end': f'{a.date.isoformat()}T{a.end_time.strftime("%H:%M:%S")}' if a.end_time else None,
-            'url': a.get_absolute_url(),
-    } for a in appointments]
+        dentist_param = request.GET.get('dentist')
+        if dentist_param:
+            try:
+                queryset = queryset.filter(dentist__id=int(dentist_param))
+            except ValueError:
+                return Response(
+                    {'detail': 'Invalid dentist ID.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-    return JsonResponse(events, safe=False)
+        serializer = AppointmentSerializer(queryset, many=True)
 
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
 
-#
-# def test_google_calender(request):
-#     service = get_calendar_service()
-#     calender = service.calendars().get(calendarId=settings.GOOGLE_CALENDAR_ID).execute()
-#     return JsonResponse({'summary': calender.get('summary')})

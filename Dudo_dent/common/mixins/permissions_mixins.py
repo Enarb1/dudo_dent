@@ -42,7 +42,7 @@ class AppointmentAccessMixin(BaseRolePermissionMixin):
 
         return (
                 current_user.is_authenticated and (
-                appointment.patient_id == current_user.id or
+                appointment.patient_id == current_user.patient.id or
                 self.has_required_role(current_user)
         )
         )

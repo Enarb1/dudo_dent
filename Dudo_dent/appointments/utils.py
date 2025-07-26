@@ -31,7 +31,7 @@ def get_appointments_for_today(user):
         return Appointment.objects.none()
 
     if user.is_patient:
-        return Appointment.objects.filter(patient_id=user.id, date__gte=today).order_by('date')
+        return Appointment.objects.filter(patient__user_id=user.id, date__gte=today).order_by('date')
     if user.is_dentist:
         return Appointment.objects.filter(dentist_id=user.id, date=today).order_by('date')
 
