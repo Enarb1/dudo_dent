@@ -3,6 +3,8 @@
 {% block content %}
      <main class="main-content">
       <section class="patient-info">
+      
+      {% if request.user.pk == object.pk %}
           <div class="edit-button-wrapper">
             <a href="{% url 'edit-profile' object.pk %}">
                 <button class="edit-button">Edit</button>
@@ -10,14 +12,21 @@
                 <button class="change-password-button">Change Password</button>
             </a>
           </div>
+      {% endif %}    
+      
           <ul>
               {% include 'common/profile-details-fields.html' %}
           </ul>
-          <div class="delete-button-wrapper">
-              <a href="{% url 'delete-profile' request.user.pk %}">
-                <button class="delete-button">Delete</button>
-              </a>   
-          </div>
+      
+      {% if request.user.is_dentist %}  
+          {% if object.is_patient or object.is_nurse or request.user.pk == object.pk%}
+              <div class="delete-button-wrapper">
+                  <a href="{% url 'delete-profile' object.pk %}">
+                    <button class="delete-button">Delete</button>
+                  </a>   
+              </div>
+          {% endif %}    
+      {% endif %}
       </section>
      
      {% if request.user.is_patient %}
@@ -35,7 +44,7 @@
      </section>
      {% endif %}
       
-     {% if request.user.is_dentist %}
+     {% if request.user.is_dentist and request.user.pk == object.pk %}
          <div class="availability-buttons">
              <a href="{% url 'availability' %}">
                 <button class="set-availability-button mb-4" >Set Availability</button>
@@ -44,6 +53,9 @@
                 <button class="set-availability-button mb-4" >Set Unavailability</button>
              </a>
          </div>
+     {% endif %}
+     
+     {% if request.user.is_dentist or request.user.is_nurse %}
          <h3>Current Availabilities</h3>
          <ul class="appointments-ul">
             {% for a in availability %}
@@ -52,7 +64,7 @@
                 <p>No availability set</p>
             {% endfor %}
          </ul>
-         
-     {% endif %}
+     {% endif %}    
+     
   </main>
 {% endblock %}

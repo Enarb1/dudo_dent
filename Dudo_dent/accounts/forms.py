@@ -12,6 +12,7 @@ class CustomUserCreationBaseForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = UserModel
         fields = ('full_name', 'email', 'role')
+        widgets = {}
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -29,6 +30,7 @@ class PatientRegisterForm(CustomUserCreationBaseForm):
 
         self.fields['date_of_birth'] = forms.DateField(
             required=False,
+            widget=forms.DateInput(attrs={'type': 'date'})
         )
 
         self.fields['personal_id'] = forms.CharField(

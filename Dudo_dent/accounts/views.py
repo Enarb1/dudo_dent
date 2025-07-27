@@ -2,8 +2,9 @@ import datetime
 
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.constants import PATIENT_PROFILE_FIELDS, WORK_PROFILE_FIELDS
@@ -11,7 +12,7 @@ from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBase
     EditPatientProfileForm, EditWorkProfileForm
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
 from Dudo_dent.appointments.models import AvailabilityRule
-from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin
+from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin, RoleRequiredMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.visits.models import Visit
 
@@ -51,7 +52,6 @@ class UserRegisterView(CreateView):
             login(self.request, self.object)
 
         return response
-
 
 
 
@@ -131,3 +131,14 @@ class DeleteProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DeleteVi
 
     allowed_roles = [UserTypeChoices.DENTIST]
 
+
+class AccountsListView(LoginRequiredMixin, RoleRequiredMixin, ListView):
+    model = UserModel
+    template_name = 'accounts/all-accounts.html'
+
+    allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
+
+    def get_queryset(self):
+        return UserModel.objects.filter(
+            Q(role=UserTypeChoices.NURSE) | Q(role=UserTypeChoices.DENTIST)
+        )

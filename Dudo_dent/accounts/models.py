@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.full_name
+
     @property
     def is_dentist(self):
         return self.role == UserTypeChoices.DENTIST
@@ -90,5 +91,3 @@ class WorkProfile(AgeCalculatorMixin, models.Model):
         blank=True,
         null=True,
     )
-
-
