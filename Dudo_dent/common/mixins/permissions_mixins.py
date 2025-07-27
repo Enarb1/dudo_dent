@@ -40,9 +40,15 @@ class AppointmentAccessMixin(BaseRolePermissionMixin):
         appointment = self.get_object()
         current_user = self.request.user
 
+        is_patient_user = (
+            current_user.is_patient and
+            hasattr(current_user, 'patient') and
+            appointment.patient.id == current_user.patient.id
+        )
+
         return (
                 current_user.is_authenticated and (
-                appointment.patient_id == current_user.patient.id or
+                is_patient_user or
                 self.has_required_role(current_user)
         )
         )
