@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Accounts Manager{% endblock %}
+{% block content %}
+    <main class="main-content">
+        <h2> Account Manager</h2>
+    <div class="availability-buttons">
+        <a href="{% url 'register' %}">
+            <button class="set-availability-button mb-4">Add New User</button>
+        </a>    
+    </div>
+            <section class="accounts-list">
+                <ul class="appointments-ul">
+                    {% for a in object_list %}
+                        <li><a href="{% url 'profile' a.pk %}">{{ a.full_name }} - {{ a.role }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+    </main>
+{% endblock %}

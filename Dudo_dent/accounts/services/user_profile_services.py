@@ -10,6 +10,12 @@ ROLE_GROUP_MAP = {
 }
 
 def handle_patient_profile(user):
+    """
+    This function checks if the patient user has already a patient profile.
+    It connects the profiles by personal ID.
+    If there is no patient profile in the Patient DB , it creates a one.
+    """
+
     try:
         personal_id = getattr(user, 'personal_id', None)
         patient = Patient.objects.get(personal_id=personal_id)
@@ -21,7 +27,7 @@ def handle_patient_profile(user):
             user=user,
             full_name=user.full_name,
             email=user.email,
-            age=getattr(user, 'age', None),
+            date_of_birth=getattr(user, 'date_of_birth', None),
             phone_number=getattr(user, 'phone_number', None),
             personal_id=getattr(user, 'personal_id', None),
             gender=getattr(user, 'gender', None),
@@ -29,6 +35,10 @@ def handle_patient_profile(user):
 
 
 def handle_work_profile(user):
+    """
+    Creating a WorkProfile object for the user - dentist or nurse.
+    Also assigning the appropriate permissions to the WorkProfile.
+    """
     WorkProfile.objects.create(
         user=user,
         phone_number=getattr(user, 'phone_number', None),

@@ -1,5 +1,6 @@
 #TODO ALL
-    - chore: correct register user date field
+    - Make a user managing page for the dentist
+    - chore: password reset logic
     - add pagination to all main views
     - work on the delete conformation form design
 
@@ -30,5 +31,6 @@
     -  DRY up HTMLs
 
 #TODO Ideas
+    - add a logger for the errors
     - to make a email form which the user can send to adjust or cancel an appointment
 

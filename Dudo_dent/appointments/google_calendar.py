@@ -40,7 +40,6 @@ class GoogleCalendarService:
 
         return event
 
-
     def add(self):
         event = self._build_event_body()
 
@@ -53,7 +52,6 @@ class GoogleCalendarService:
         self.appointment.save()
 
         return created_event
-
 
     def update(self):
         if not self.appointment.google_event_id:
@@ -69,7 +67,6 @@ class GoogleCalendarService:
 
         return updated_event
 
-
     def delete(self):
         if not self.appointment.google_event_id:
             raise ValueError(f"No event in Google Calendar for this appointment.")
@@ -80,37 +77,47 @@ class GoogleCalendarService:
         ).execute()
 
 
-def create_calendar(name, pk):
+class GoogleCalendarManager:
     """
-        This creates a calendar within the Google Calendar.
-        We set the calendar name and the timezone.
-        in the 'acl_rule' we set the access control list(ACL)
-        with which we make sure that the main account sees the
-        newly created calendar (which is created to the service account).
+    A class used to create or delete Dentist Calendars in the main Google Calendar.
+    In the create() method we set an ACL rule (Access Control List) to make sure
+    that we can see the calendar in our Google Calendar Account.
+    The Calendar name is a combination of the dentist name and his pk e.g. "dr.John Doe - id:1"
     """
-    service = get_calendar_service()
+    def __init__(self):
+        self.service = get_calendar_service()
 
-    calendar = {
-        'summary': f"{name}({pk})",
-        'timezone': 'Europe/Sofia'
-    }
+    def create(self, dentist_name, pk):
+        calendar = {
+            'summary': f'dr.{dentist_name} - id:{pk}',
+            'timeZone': 'Europe/Sofia',
+        }
 
-    created_calendar =service.calendars().insert(body=calendar).execute()
+        created_calendar = self.service.calendars().insert(
+            body=calendar,
+        ).execute()
 
+        acl_rule = {
+            'scope': {
+                'type': 'user',
+                'value': settings.GOOGLE_ADMIN_EMAIL
+            },
+            'role': 'owner'
+        }
 
-    acl_rule = {
-        'scope': {
-            'type': 'user',
-            'value': settings.GOOGLE_ADMIN_EMAIL
-        },
-        'role': 'owner'
-    }
+        try:
+            self.service.acl().insert(calendarId=created_calendar['id'], body=acl_rule).execute()
+            print(f'Calendar shared with {settings.GOOGLE_ADMIN_EMAIL} successfully.')
+        except HttpError as error:
+            print(f'Failed to share calendar with {settings.GOOGLE_ADMIN_EMAIL}: {error.status_code} - {error}.')
 
-    try:
-        service.acl().insert(calendarId=created_calendar['id'], body=acl_rule).execute()
-        print(f'Calendar shared with {settings.GOOGLE_ADMIN_EMAIL} successfully.')
-    except HttpError as error:
-        print(f'Failed to share calendar with {settings.GOOGLE_ADMIN_EMAIL}: {error.status_code} - {error}.')
+        return created_calendar['id']
 
-
-    return created_calendar['id']
+    def delete(self, calendar_id):
+        try:
+            self.service.calendars().delete(calendarId=calendar_id).execute()
+            print(f'Calendar deleted successfully.')
+            return True
+        except HttpError as he:
+            print(f"Error deleting calendar {calendar_id}: {he}")
+            return False
