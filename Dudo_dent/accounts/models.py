@@ -62,7 +62,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return None
 
 
-
 class WorkProfile(AgeCalculatorMixin, models.Model):
     user = models.OneToOneField(
         to=CustomUser,

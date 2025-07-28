@@ -1,6 +1,5 @@
 #TODO ALL
     - Make a user managing page for the dentist
-    - chore: password reset logic
     - add pagination to all main views
     - work on the delete conformation form design
 
