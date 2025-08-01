@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-
+<!-- Title -->
 {% block title %}Appointment Details{% endblock %}
 
 {% block content %}
     <main class="main-content">
       <section class="patient-info">
-          
+          <!-- Appointment Manage Buttons -->  
           {% include 'appointments/appointments-manage-buttons.html' %}
-          
+          <!-- Profile fields depending on the profile type -->  
           <ul>
               {% include 'common/profile-details-fields.html' %}
           </ul>
+          <!-- Message for the patient  -->    
           {% if request.user.is_patient %}
               <p style="font-style: italic">If you want to cancel or adjust an appointment, please call us at 0000000</p>
           {% endif %}

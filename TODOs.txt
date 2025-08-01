@@ -1,33 +1,37 @@
 #TODO ALL
-    - Make a user managing page for the dentist
-    - add pagination to all main views
     - work on the delete conformation form design
+    - setup smtp server for the emails
 
 #TODO pagination:
-    - for visits (profiles and main views)
-    - for appointments(profiles and main views)
-    - for patients
-    - for procedures
 
 #TODO Google Calendar integration
+
+#TODO Accounts:
+    TESTS:
+    models:
+    views:
+    - Test Register User
+    - Test User Profile view with the different user types
+
 
 #TODO Home Screen:
 
 #TODO Appointments:
+    - think about the logic for the unavailable times
     - add a back button to the appointments booking forms
 
 
 #TODO Visits:
     - make it possible to upload multiple images
-    - try to add a filter in which you can filter by year and also by patient
 
 #TODO Patients:
+    TESTS:
 
 
 #TODO Procedures:
 
 #TODO Final improvements:
-    -  DRY up HTMLs
+
 
 #TODO Ideas
     - add a logger for the errors

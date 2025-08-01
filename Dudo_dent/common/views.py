@@ -1,6 +1,8 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 
 from Dudo_dent.appointments.utils import get_appointments_for_today
+from Dudo_dent.common.utils import paginate_queryset
 from Dudo_dent.patients.forms import SearchPatientForm
 
 # Create your views here.
@@ -13,6 +15,17 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.form_class()
-        context['appointments'] = get_appointments_for_today(self.request.user)
+
+        appointments = get_appointments_for_today(self.request.user)
+
+        pagination_context = paginate_queryset(
+            self.request,
+            appointments,
+            per_page=10,
+            context_key='appointments',
+        )
+
+        context.update(pagination_context)
+
         return context
 

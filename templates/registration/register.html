@@ -1,21 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Regiter Partient{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
-
+<!-- Form -->
 {% block content %}
   <main class="main-content">
     <form method="POST" >
         <h2>Register</h2>
-        
-        {% if return_to %}
-            <input type="hidden" name="return_to" value="{{ return_to }}">
-        {% endif %}
-        
+     
         {% csrf_token %}
+        <!-- Errors -->
+        {% if form.errors %}
+                <div class="form-errors text-red-600 my-2">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
         {{ form.as_p }}
     
         <button type="submit">Register</button>

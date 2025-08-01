@@ -1,0 +1,11 @@
+<section class="visit-history">
+    {% for visit in visit_list %}
+        <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
+            {{ visit }}
+        </button>
+    {% empty %}
+          <div class="info-header">
+              <h4>No Visits yet</h4>
+          </div>    
+    {% endfor %}
+</section>

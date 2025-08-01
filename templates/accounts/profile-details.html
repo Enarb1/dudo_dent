@@ -3,7 +3,7 @@
 {% block content %}
      <main class="main-content">
       <section class="patient-info">
-      
+    <!-- Change Password and Edit Button -->
       {% if request.user.pk == object.pk %}
           <div class="edit-button-wrapper">
             <a href="{% url 'edit-profile' object.pk %}">
@@ -12,38 +12,28 @@
                 <button class="change-password-button">Change Password</button>
             </a>
           </div>
-      {% endif %}    
-      
+      {% endif %}
+      <!-- Profile Info -->
           <ul>
               {% include 'common/profile-details-fields.html' %}
           </ul>
-      
-      {% if request.user.is_dentist %}  
+      <!-- Delete Button  -->  
+      {% if request.user.is_dentist %}
           {% if object.is_patient or object.is_nurse or request.user.pk == object.pk%}
               <div class="delete-button-wrapper">
                   <a href="{% url 'delete-profile' object.pk %}">
                     <button class="delete-button">Delete</button>
-                  </a>   
+                  </a>
               </div>
-          {% endif %}    
+          {% endif %}
       {% endif %}
       </section>
-     
+    <!-- Visit Info -->
      {% if request.user.is_patient %}
       <h3>Your Visits</h3>
-      <section class="visit-history">
-        {% for visit in visits %}
-            <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
-                {{ visit }}
-            </button>
-        {% empty %}
-              <div class="info-header">
-                  <h4>No Visits yet</h4>
-              </div>
-        {% endfor %}
-     </section>
+         {% include 'visits/visits-list.html' %}
      {% endif %}
-      
+    <!-- Set Availability buttons -->
      {% if request.user.is_dentist and request.user.pk == object.pk %}
          <div class="availability-buttons">
              <a href="{% url 'availability' %}">
@@ -54,7 +44,7 @@
              </a>
          </div>
      {% endif %}
-     
+    <!-- Current availabilities  -->
      {% if request.user.is_dentist or request.user.is_nurse %}
          <h3>Current Availabilities</h3>
          <ul class="appointments-ul">
@@ -64,7 +54,7 @@
                 <p>No availability set</p>
             {% endfor %}
          </ul>
-     {% endif %}    
-     
+     {% endif %}
+    {% include 'pagination.html' %}
   </main>
 {% endblock %}

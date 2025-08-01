@@ -1,27 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Dudo Dent - Procedures{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
-{% endblock %}
+<!-- Procedures Main -->
 {% block content %}
 
   <main class="main-content">
-
     <div class="top-bar">
         <div class="top-bar-left">
             <h2>All Procedures</h2>
+            <!-- Search Form -->
             <form class="search-form" action="{% url 'all-procedures' %}" method="get">
                 {{ form.query }}
                 <button class="search-button">Search</button>
             </form>
+        <!-- Add Procedure Button -->    
         </div>
         <a href="{% url 'add-procedure' %}">
             <button class="add-button">Add Procedure</button>
         </a>
     </div>
-
+<!-- Listing All Procedures -->
   <section class="patients-list">
     {% for procedure in object_list %}
       <button
@@ -31,6 +30,8 @@
       </button>
     {% endfor %}
   </section>
+  <!-- Pagination -->
+  {% include 'pagination.html' %}
 </main>
 
 {% endblock %}

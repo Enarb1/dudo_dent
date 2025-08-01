@@ -1,21 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Add Visit{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
-
+<!-- Add Visit Form -->
 {% block content %}
   <main class="main-content">
     <h2 class="form-title">Add Visit</h2>  
     <form action="{% url 'add-visit' %}" method="POST" enctype="multipart/form-data" >
         {% csrf_token %}
-        
+        <!-- Adding a return-to value -->
         {% if return_to %}
             <input type="hidden" name="return_to" value="{{ return_to }}">
         {% endif %}
-    
+        <!-- Errors -->
         {% if form.errors %}
           <div class="form-errors">
             <ul>
@@ -27,7 +24,7 @@
             </ul>
           </div>
         {% endif %}
-        
+        <!-- Form fields -->
         <div class="form-group">
             {{ form.date.label_tag }}
             {{ form.date }}

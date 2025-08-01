@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Visit Details{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
-
+<!-- Visits Main -->
 {% block content %}
   <main class="main-content">
   
@@ -13,27 +10,21 @@
         <div class="top-bar-left">
             <h2>All Visits</h2>
             <section class="patients-header">
+                <!-- Search Form -->
                 <form class="search-form" action="{% url 'all-visits' %}" method="get" >
                     {{ form.query}}
                     <button class="search-button">Search</button>
                 </form>
             </section>
+        <!-- Add Visit Button -->    
         </div>
         <a href="{% url 'add-visit' %}">
             <button class="add-button">Add Visit</button>
         </a>
     </div>
-  
-    <section class="visit-history">
-        {% for visit in visit_list %}
-            <button class="visit-card-button" onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
-                {{ visit }}
-            </button>
-        {% empty %}
-              <div class="info-header">
-                  <h4>No Visits yet</h4>
-              </div>    
-        {% endfor %}
-    </section>
+  <!-- All Visits -->    
+    {% include 'visits/visits-list.html' %}
+  <!-- Pagination -->
+   {% include 'pagination.html' %}
   </main>
 {% endblock %}

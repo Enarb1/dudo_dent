@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Patient Details{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
 
+<!-- Form -->
 {% block content %}
   <main class="main-content">
       <section class="patient-info">
+          <!-- Edit Button -->
           <div class="edit-button-wrapper">
             <a href="{% url 'edit-patient' patient.pk %}">
                 <button class="edit-button">Edit</button>
             </a>
           </div>
+          <!-- Loading Profile fields -->
           <ul>
               {% include 'common/profile-details-fields.html' %}
           </ul>
+          <!-- Delete Button -->
           <div class="delete-button-wrapper">
               <a href="{% url 'delete-patient' patient.pk %}">
                 <button class="delete-button">Delete</button>
@@ -24,19 +25,10 @@
           </div>
       </section>
       <section class="visit-history">
+          <!-- Patient Visits -->
           <h3>Visit History</h3>
-          {% for visit in visits %}
-              <button class="visit-card-button" 
-                      onclick="window.location.href='{% url 'visit-details' visit.pk %}'">
-                  {{ visit }}
-              </button>
-          {% empty %}
-              <div class="info-header">
-                  <h4>{{ patient.full_name }} has not visited us</h4>
-              </div>
-          {% endfor %}
+          {%  include 'visits/visits-list.html' %}
       </section>
   </main>
 
 {% endblock %}
-
