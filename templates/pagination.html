@@ -1,0 +1,23 @@
+{% if is_paginated %}
+  <div class="pagination">
+    <ul class="pagination-list">
+      {% if page_obj.has_previous %}
+        <li><a href="?page=1{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">« First</a></li>
+        <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">‹ Prev</a></li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="active"><span>{{ num }}</span></li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <li><a href="?page={{ num }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">Next ›</a></li>
+        <li><a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}">Last »</a></li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

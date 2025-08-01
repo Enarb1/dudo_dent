@@ -1,24 +1,22 @@
-
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Dudo Dent - Patients{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static '/css/styles.css' %}" />
-{% endblock %}
+<!-- Main View for Patients -->
 {% block content %}
-
   <main class="main-content">
     <div class="top-bar">
         <div class="top-bar-left">
             <h2>All Patients</h2>
+            <!-- Search Form -->
             {% include 'common/search-patient.html' %}
         </div>
+        <!-- Add Patient Button -->
         <a href="{% url 'add-patient' %}">
             <button class="add-button">Add Patient</button>
         </a>
     </div>
-
+<!-- Listing All Patients -->
   <section class="patients-list">
     {% for patient in patient_list %}
       <button
@@ -28,6 +26,8 @@
       </button>
     {% endfor %}
   </section>
+  <!-- Pagination -->
+  {% include 'pagination.html' %}
 </main>
 
 {% endblock %}

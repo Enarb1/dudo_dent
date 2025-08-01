@@ -11,9 +11,12 @@
             <section class="accounts-list">
                 <ul class="appointments-ul">
                     {% for a in object_list %}
-                        <li><a href="{% url 'profile' a.pk %}">{{ a.full_name }} - {{ a.role }}</a></li>
+                        <button class="visit-card-button" onclick="window.location.href='{% url 'profile' a.pk %}'">
+                            {{ a.full_name }} - {{ a.role }}
+                        </button>
                     {% endfor %}
                 </ul>
             </section>
+    {% include 'pagination.html' %}
     </main>
 {% endblock %}

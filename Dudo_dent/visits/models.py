@@ -7,6 +7,8 @@ from Dudo_dent.patients.models import Patient
 # Create your models here.
 
 class Visit(models.Model):
+    class Meta:
+        ordering = ['-date']
     date = models.DateField()
     patient = models.ForeignKey(
         to=Patient,

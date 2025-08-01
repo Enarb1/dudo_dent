@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Patient Details{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
 
+<!-- Visit Details -->
 {% block content %}
   <main class="main-content">
     <section class="patient-info">
+        <!-- Edit Button -->
         <a href="{% url 'edit-visit' visit.pk %}" class="edit-button-wrapper">
             <button class="edit-button">Edit</button>
         </a>
+        <!-- Delete Button -->
         <div class="delete-button-wrapper">
               <form method="post" action="{% url 'delete-visit' visit.pk %}">
                   {% csrf_token %}
                   <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this visit?');">Delete</button>
               </form>    
         </div>
+      <!-- Visit Info -->  
       <div class="info-header">
         <h2>{{ visit.patient.full_name }} - {{ visit.date }}</h2>
       </div>
+      <!-- Visit Fields -->  
       <ul>
         <li><strong>Date:</strong> {{ visit.date }}</li>
         <li><strong>Patient Name:</strong> {{ visit.patient.full_name }}</li>
@@ -33,6 +35,7 @@
                 No additional info
             {% endif %}
         </li>
+      <!-- Image if uploaded -->
         <li>
             <strong>Image:</strong> 
             {% if visit.image %}

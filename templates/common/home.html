@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Dudo Dent - Home{% endblock %}
-{% block extra_css %}
-	<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
+
 {% block content %}
   <main class="main-content home-centered">
+  <!-- Hello Message, if authenticated -->
   {% if request.user.is_authenticated %}
     <h2>Hello, {{ request.user.full_name }}! Welcome to Dudo Dent!</h2>
+      <!-- If Dentist or Nurse -->
       {% if request.user.is_dentist or request.user.is_staff or request.user.is_nurse %}
+          <!-- Search Form -->
         {% include 'common/search-patient.html' %}
+          <!-- Menu if Dentist -->
         <section class="section-buttons">
             <a href="{% url 'add-visit' %}"><button>Add Visit</button></a>
             <a href="{% url 'appointment-step1' %}"><button>Book Appointment</button></a>
             <a href="{% url 'appointments-main' %}"><button>All Appointments</button></a>
         </section>
       {% endif %}
+      <!-- Appointments depending on user type -->
       {% include 'appointments/appointments-list.html' %}
+      <!-- Pagination logic -->
+      {% include 'pagination.html' %}
+    <!-- Image if not logged in -->  
     {% else %}
       <img src="{% static 'images/logo.png' %}" width="600" height="auto">
     {% endif %}

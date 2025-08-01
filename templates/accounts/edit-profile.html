@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Edit Profile{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
-
+<!-- Form -->
 {% block content %}
+    
   <main class="main-content">
     <form action="" method="POST" >
         {{ form.as_p }}
@@ -14,4 +12,5 @@
         <button>Save</button>
     </form>    
   </main>
+    
 {% endblock %}

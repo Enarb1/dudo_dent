@@ -1,21 +1,19 @@
 {% extends 'base.html' %}
+<!-- Title -->
 {% block title %}Choose Date{% endblock %}
-
+<!--Form -->
 {% block content %}
     <main class="main-content">
         <form method="post">
             <h2>Choose Date</h2>
             {% csrf_token %}
             {{ form }}
-            
+            <!-- Form Errors -->
             {% if form.errors %}
                 <div class="form-errors text-red-600 my-2">
                     {{ form.errors }}
                 </div>
             {% endif %}
-
-            
-            
             <button type="submit">Next</button>
         </form>
     </main>

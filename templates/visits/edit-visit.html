@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Edit Visit{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
-
+<!-- Form -->
 {% block content %}
     <main class="main-content">
     <form action="{% url 'edit-visit' visit.pk %}" method="POST" >

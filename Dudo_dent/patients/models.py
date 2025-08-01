@@ -25,8 +25,6 @@ class PatientBase(AgeCalculatorMixin, models.Model):
     )
 
     email = models.EmailField(
-        blank=True,
-        null=True,
         unique=True,
     )
 
@@ -38,7 +36,8 @@ class PatientBase(AgeCalculatorMixin, models.Model):
 
     personal_id = models.CharField(
         max_length=30,
-        unique=True,
+        blank=True,
+        null=True,
     )
 
     gender = models.CharField(

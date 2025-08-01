@@ -20,6 +20,7 @@ class AllVisits(LoginRequiredMixin,RoleRequiredMixin,SearchMixin, ListView):
     template_name = 'visits/visits-main.html'
     form_class = SearchPatientForm
     search_param = 'patient__full_name__icontains'
+    paginate_by = 5
 
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 

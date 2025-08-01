@@ -14,6 +14,7 @@ from Dudo_dent.accounts.services.profile_display import get_profile_fields
 from Dudo_dent.appointments.models import AvailabilityRule
 from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin, RoleRequiredMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin
+from Dudo_dent.common.utils import paginate_queryset
 from Dudo_dent.visits.models import Visit
 
 # Create your views here.
@@ -59,6 +60,7 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
     model = UserModel
     template_name = 'accounts/profile-details.html'
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
+
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,7 +69,12 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
 
         if user.is_patient:
          visits = Visit.objects.filter(patient__user=user)
-         context['visits'] = visits
+         pagination_context = paginate_queryset(
+             self.request,
+             visits,
+             per_page=10,
+             context_key='visit_list')
+         context.update(pagination_context)
 
         if user.is_dentist:
             today = datetime.date.today()
@@ -76,7 +83,14 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
                 valid_to__gte=today,
             )
 
-            context['availability'] = availability
+            pagination_context = paginate_queryset(
+                self.request,
+                availability,
+                per_page=5,
+                context_key='availability'
+            )
+
+            context.update(pagination_context)
 
         if profile:
             """Here we set what type of fields should be displayed"""
@@ -135,6 +149,8 @@ class DeleteProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DeleteVi
 class AccountsListView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = UserModel
     template_name = 'accounts/all-accounts.html'
+
+    paginate_by = 5
 
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
 

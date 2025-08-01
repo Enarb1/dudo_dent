@@ -1,9 +1,13 @@
 <section class="appointments-list">
+
+<!-- If Patient -->      
 {% if request.user.is_patient %}
     <h3>Your upcoming appointments are:</h3>
 {% else %}
+<!-- If Dentist-->  
     <h3>Today's Appointments:</h3>
 {% endif %}
+<!-- Listing all appointments depending on the user -->  
     <ul class="appointments-ul">
         {% for a in appointments %}
                 <li>

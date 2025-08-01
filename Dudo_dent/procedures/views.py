@@ -20,6 +20,8 @@ class AllProcedures(LoginRequiredMixin,RoleRequiredMixin, SearchMixin, ListView)
     form_class = SearchProcedureForm
     search_param = 'name__icontains'
 
+    paginate_by = 21
+
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
     
     def get_queryset(self):

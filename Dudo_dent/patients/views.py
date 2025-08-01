@@ -20,6 +20,7 @@ class AllPatientsView(LoginRequiredMixin, RoleRequiredMixin, SearchMixin, ListVi
     template_name = 'patients/patients-main.html'
     form_class = SearchPatientForm
     search_param = 'full_name__icontains'
+    paginate_by = 21
 
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 
@@ -34,7 +35,7 @@ class PatientDetailsView(LoginRequiredMixin, RoleRequiredMixin, DetailView):
         context = super().get_context_data()
         patient = self.get_object()
         visits = self.object.visits.all().order_by('-date')
-        context['visits'] = visits
+        context['visit_list'] = visits
         context['profile_fields'] = get_profile_fields(PATIENT_PROFILE_FIELDS, profile=patient, user=None)
 
         return context

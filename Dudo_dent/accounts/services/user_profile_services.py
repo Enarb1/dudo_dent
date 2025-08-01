@@ -17,10 +17,13 @@ def handle_patient_profile(user):
     """
 
     try:
-        personal_id = getattr(user, 'personal_id', None)
-        patient = Patient.objects.get(personal_id=personal_id)
+        patient = Patient.objects.get(email=user.email)
         patient.user = user
-        patient.email = user.email
+        patient.full_name = user.full_name if user.full_name else patient.full_name
+        patient.date_of_birth = getattr(user, 'date_of_birth', patient.date_of_birth)
+        patient.personal_id = getattr(user, 'personal_id', patient.personal_id)
+        patient.phone_number = getattr(user, 'phone_number', patient.phone_number)
+        patient.gender = getattr(user, 'gender', patient.gender)
         patient.save()
     except Patient.DoesNotExist:
         Patient.objects.create(

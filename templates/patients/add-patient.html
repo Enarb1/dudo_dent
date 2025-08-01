@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!--Title -->
 {% block title %}Add Patient{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
 
+<!-- Form -->
 {% block content %}
   <main class="main-content">
     <form action="{% url 'add-patient' %}" method="POST" >
         <h2>Add Patient</h2>
-        
+        <!-- Adding return_to value if coming from Add Visit -->
         {% if return_to %}
             <input type="hidden" name="return_to" value="{{ return_to }}">
         {% endif %}
         
         {% csrf_token %}
+    
+        <!-- Error Messages -->
         {% if form.errors %}
           <div class="form-errors">
             <ul>

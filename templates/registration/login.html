@@ -1,22 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
-
+<!-- Title -->
 {% block title %}Login{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-{% endblock %}
 
+<!-- Form -->
 {% block content %}
   <main class="main-content">
     <form method="POST" >
         <h2>Login</h2>
         
-        {% if return_to %}
-            <input type="hidden" name="return_to" value="{{ return_to }}">
-        {% endif %}
-        
         {% csrf_token %}
-        
+        <!-- Errors -->
         {% if form.is_bound and form.non_field_errors %}
             <ul class="row-form-errors">
                 {% for error in form.non_field_errors %}
@@ -25,16 +19,14 @@
             </ul>
         {% endif %}
     
-    
         {{ form.as_p }}
     
         <button type="submit">Login</button>
+    <!-- Forgotten Password -->
     <div>
       <p>Password forgotten? You can reset it <a href="{% url 'password_reset' %}">here</a></p>
     </div>
     </form>
-    
-  
   
   </main>
 {% endblock %}

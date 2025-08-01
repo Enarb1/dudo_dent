@@ -34,6 +34,7 @@ class PatientRegisterForm(CustomUserCreationBaseForm):
         )
 
         self.fields['personal_id'] = forms.CharField(
+            required=False,
             max_length=30
         )
 
@@ -112,7 +113,10 @@ class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
 
 class BaseProfileForm(forms.ModelForm):
     """Base form class for the Edit Profile Forms"""
-    phone_number = forms.CharField()
+    phone_number = forms.CharField(
+        max_length=30,
+        required=False,
+    )
     date_of_birth = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={'type': 'date'})
@@ -129,12 +133,14 @@ class EditPatientProfileForm(BaseProfileForm):
 
 
         self.fields['personal_id'] = forms.CharField(
-            max_length=30
+            max_length=30,
+            required=False,
         )
 
         self.fields['gender'] = forms.ChoiceField(
             choices=PatientGenderChoices,
         )
+
     
     def save(self, commit=True):
         """Save method for editing a patient's profile.

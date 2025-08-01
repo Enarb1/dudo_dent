@@ -90,3 +90,44 @@
 h3 {
   font-weight: bold;
 }
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.pagination-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.pagination-list li {
+  display: inline;
+}
+
+.pagination-list a,
+.pagination-list span {
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #4A90E2;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pagination-list li a:hover {
+  background-color: #e6f0ff;
+}
+
+.pagination-list .active span {
+  background-color: #4A90E2;
+  color: white;
+  border-color: #4A90E2;
+}

@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+<!-- Title-->  
 {% block title %}Appointments Calendar{% endblock %}
-
+<!-- Extra CSS for the FullCalendar-->  
 {% block extra_css %}
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
   <h2 style="margin-bottom: 30px;">All Appointments</h2>
-
+<!-- Filter for the Calendar-->  
   <select id="dentistFilter" class="form-select" style="max-width: 300px; margin-bottom: 20px;">
     <option value="">Filter by Dentists</option>
     {% for dentist in dentists %}
@@ -17,7 +18,7 @@
 
   <div id="calendar"></div>
 {% endblock %}
-
+<!-- FullCalendar -->
 {% block extra_js %}
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script>
