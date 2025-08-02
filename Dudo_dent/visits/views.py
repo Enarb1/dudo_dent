@@ -6,7 +6,7 @@ from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.common.mixins.forms_mixins import SearchMixin
 from Dudo_dent.common.mixins.permissions_mixins import RoleRequiredMixin, OwnerAndRolePermissionMixin
 from Dudo_dent.common.mixins.redirect_mixins import MultiStepRedirectMixin, ReturnToRedirectMixin
-from Dudo_dent.common.mixins.views_mixins import EditDataMixin
+from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
 from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
@@ -81,8 +81,11 @@ class VisitUpdate(LoginRequiredMixin,RoleRequiredMixin,EditDataMixin, UpdateView
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 
 
-class DeleteVisit(LoginRequiredMixin,RoleRequiredMixin,DeleteView):
+class DeleteVisit(LoginRequiredMixin,RoleRequiredMixin, DeleteCancelMixIn, DeleteView):
     model = Visit
+    template_name = 'delete-conformation.html'
     success_url = reverse_lazy('all-visits')
+
+    cancel_url = 'visit-details'
 
     allowed_roles = [UserTypeChoices.DENTIST]
