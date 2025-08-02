@@ -1,11 +1,7 @@
 #TODO ALL
-    - add a logger for the errors
-    - add exception logging
-    - setup smtp server for the emails
     - add a footer
     - add more test, if time
     - work on the delete conformation form design
-
 
  #TODO Visits:
     - make it possible to upload multiple images => check if possible

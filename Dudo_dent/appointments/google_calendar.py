@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from googleapiclient.errors import HttpError
 
+from Dudo_dent.appointments.models import Appointment
 from Dudo_dent.appointments.utils import get_calendar_service
 import logging
 logger = logging.getLogger(__name__)
@@ -49,8 +50,7 @@ class GoogleCalendarService:
             body=event
         ).execute()
 
-        self.appointment.google_event_id = created_event['id']
-        self.appointment.save()
+        Appointment.objects.filter(pk=self.appointment.pk).update(google_event_id=created_event['id'])
 
         return created_event
 
