@@ -12,11 +12,10 @@
         </a>
         <!-- Delete Button -->
         <div class="delete-button-wrapper">
-              <form method="post" action="{% url 'delete-procedure' procedure.pk %}">
-                  {% csrf_token %}
-                  <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this procedure?');">Delete</button>
-              </form>    
-        </div>
+              <a href="{% url 'delete-procedure' object.pk %}">
+                <button class="delete-button">Delete</button>
+              </a>   
+          </div>
       <!-- Procedure Fields -->  
       <div class="info-header">
         <h2>{{ procedure }}</h2>

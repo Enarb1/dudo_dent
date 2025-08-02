@@ -6,7 +6,7 @@ from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.common.mixins.forms_mixins import SearchMixin
 from Dudo_dent.common.mixins.permissions_mixins import RoleRequiredMixin
 from Dudo_dent.common.mixins.redirect_mixins import ReturnToRedirectMixin
-from Dudo_dent.common.mixins.views_mixins import EditDataMixin
+from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
@@ -61,8 +61,10 @@ class EditProcedure(LoginRequiredMixin,RoleRequiredMixin,EditDataMixin, UpdateVi
     allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
 
 
-class DeleteProcedure(LoginRequiredMixin,RoleRequiredMixin,DeleteView):
+class DeleteProcedure(LoginRequiredMixin, RoleRequiredMixin, DeleteCancelMixIn, DeleteView):
     model = Procedure
+    template_name = 'delete-conformation.html'
     success_url = reverse_lazy('all-procedures')
+    cancel_url = 'procedure-details'
 
     allowed_roles = [UserTypeChoices.DENTIST]

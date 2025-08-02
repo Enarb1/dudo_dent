@@ -1,11 +1,2 @@
-#TODO ALL
-    - add a footer
-    - add more test, if time
-    - work on the delete conformation form design
 
- #TODO Visits:
-    - make it possible to upload multiple images => check if possible
-
-#TODO Ideas
-    - to make a email form which the user can send to adjust or cancel an appointment
 
