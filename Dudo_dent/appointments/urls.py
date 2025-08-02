@@ -1,12 +1,11 @@
 from django.urls import path, include
 
-from Dudo_dent import appointments
 from Dudo_dent.appointments import views
 
 urlpatterns = [
     path('', views.AppointmentsMainView.as_view(), name='appointments-main'),
     path('availability/', views.SetAvailabilityView.as_view(), name='availability'),
-    #path('json/', views.appointment_event_json, name='appointments-json'),
+    path('unavailability/', views.SetUnavailabilityView.as_view(), name='unavailability'),
     path('add/',include([
         path('step1/', views.ChooseDentistView.as_view(), name='appointment-step1'),
         path('step2/', views.ChooseDateView.as_view(), name='appointment-step2'),

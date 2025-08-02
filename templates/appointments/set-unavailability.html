@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+<!--Title -->
+{% block title %} Set Unavailability {% endblock %}
+<!--Form -->
+{% block content %}
+    <main class="main-content">
+        <form method="post">
+            <h2>Unavailability</h2>
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Save</button>
+        </form>
+    </main>
+{% endblock %}

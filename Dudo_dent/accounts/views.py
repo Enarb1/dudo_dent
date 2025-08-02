@@ -11,7 +11,7 @@ from Dudo_dent.accounts.constants import PATIENT_PROFILE_FIELDS, WORK_PROFILE_FI
 from Dudo_dent.accounts.forms import PatientRegisterForm, CustomUserCreationBaseForm, RoleBasedUserCreationForm, \
     EditPatientProfileForm, EditWorkProfileForm
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
-from Dudo_dent.appointments.models import AvailabilityRule
+from Dudo_dent.appointments.models import AvailabilityRule, UnavailabilityRule
 from Dudo_dent.common.mixins.permissions_mixins import OwnerAndRolePermissionMixin, RoleRequiredMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.common.utils import paginate_queryset
@@ -78,16 +78,33 @@ class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView
 
         if user.is_dentist:
             today = datetime.date.today()
+
+
             availability = AvailabilityRule.objects.filter(
                 dentist=user,
                 valid_to__gte=today,
-            )
+            ).order_by('valid_from',)
+
+
+            unavailability = UnavailabilityRule.objects.filter(
+                dentist=user,
+                start_date__gte=today,
+            ).order_by('start_date',)
+
+
+            availabilities = [
+                {'type': 'available', 'obj': a}
+                for a in availability
+            ] + [
+                {'type': 'unavailable', 'obj': u}
+                for u in unavailability
+            ]
 
             pagination_context = paginate_queryset(
                 self.request,
-                availability,
+                availabilities,
                 per_page=5,
-                context_key='availability'
+                context_key='availabilities'
             )
 
             context.update(pagination_context)

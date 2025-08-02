@@ -39,7 +39,7 @@
              <a href="{% url 'availability' %}">
                 <button class="set-availability-button mb-4" >Set Availability</button>
              </a>
-             <a href="#">
+             <a href="{% url 'unavailability' %}">
                 <button class="set-availability-button mb-4" >Set Unavailability</button>
              </a>
          </div>
@@ -48,11 +48,26 @@
      {% if request.user.is_dentist or request.user.is_nurse %}
          <h3>Current Availabilities</h3>
          <ul class="appointments-ul">
-            {% for a in availability %}
-                <li>{{ a.get_weekday_labels|join:", " }} - {{ a.start_time }} to {{ a.end_time }} from {{ a.valid_from }} to {{ a.valid_to }} </li>
-            {% empty %}
-                <p>No availability set</p>
-            {% endfor %}
+            
+             {% for a in availabilities %}
+                 {% if a.type == 'available' %}
+                    <li>
+                        Availability: {{ a.obj.get_weekday_labels|join:", " }} - 
+                        {{ a.obj.start_time|time:"H:i" }} to {{ a.obj.end_time|time:"H:i" }} 
+                        from {{ a.obj.valid_from }} to {{ a.obj.valid_to }} 
+                    </li>
+                 {% elif a.type == 'unavailable' %}
+                     <li>
+                        Unavailability: from {{ a.obj.start_date }} until {{ a.obj.end_date }} 
+                         - Reason: {{ a.obj.reason|default:"N/A" }}
+                    </li>
+                 {% else %}
+                     <li>
+                        You have no availabilities or unavailabilities set
+                    </li>
+                 {% endif %}
+             {% endfor %}
+         
          </ul>
      {% endif %}
     {% include 'pagination.html' %}

@@ -3,6 +3,10 @@ from django.urls import reverse_lazy
 
 
 class ReturnToRedirectMixin:
+    """
+    Used for custom redirection after submitting a form. Used for forms which can have multiple success urls
+    """
+
     return_to_param = 'return_to'
     redirect_targets = {}
 
@@ -27,7 +31,12 @@ class ReturnToRedirectMixin:
 
 
 class MultiStepRedirectMixin:
+    """
+    Multi-step redirect mixin used for storing the data between multiple step forms.
+    """
+
     redirect_actions = {}
+    return_to_param = 'return_to'
     session_key = None
     return_to_value = None
 
@@ -46,7 +55,7 @@ class MultiStepRedirectMixin:
         view which we have set in the view"""
         for action_name, redirect_view in self.redirect_actions.items():
             if action_name in request.POST:
-                request.session[self.session_key] = request.POST
+                request.session[self.session_key] = request.POST.dict()
                 return redirect(
                     reverse_lazy(redirect_view) + f'?{self.return_to_param}={self.return_to_value}'
                 )

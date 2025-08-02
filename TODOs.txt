@@ -1,39 +1,16 @@
 #TODO ALL
-    - work on the delete conformation form design
-    - setup smtp server for the emails
-
-#TODO pagination:
-
-#TODO Google Calendar integration
-
-#TODO Accounts:
-    TESTS:
-    models:
-    views:
-    - Test Register User
-    - Test User Profile view with the different user types
-
-
-#TODO Home Screen:
-
-#TODO Appointments:
-    - think about the logic for the unavailable times
     - add a back button to the appointments booking forms
+    - add a logger for the errors
+    - add exception logging
+    - setup smtp server for the emails
+    - add a footer
+    - add more test, if time
+    - work on the delete conformation form design
 
 
-#TODO Visits:
-    - make it possible to upload multiple images
-
-#TODO Patients:
-    TESTS:
-
-
-#TODO Procedures:
-
-#TODO Final improvements:
-
+ #TODO Visits:
+    - make it possible to upload multiple images => check if possible
 
 #TODO Ideas
-    - add a logger for the errors
     - to make a email form which the user can send to adjust or cancel an appointment
 

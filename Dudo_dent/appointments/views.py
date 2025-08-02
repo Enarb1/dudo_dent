@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, time
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,14 +13,15 @@ from rest_framework.views import APIView
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.constants import APPOINTMENT_FIELDS
 from Dudo_dent.accounts.services.profile_display import get_profile_fields
-from Dudo_dent.appointments.forms import EditAppointmentForm,SetAvailabilityForm, \
-    AddAppointmentChooseDentistForm, AddAppointmentChooseDateForm, AddAppointmentChooseTimeForm
+from Dudo_dent.appointments.forms import EditAppointmentForm, SetAvailabilityForm, \
+    AddAppointmentChooseDentistForm, AddAppointmentChooseDateForm, AddAppointmentChooseTimeForm, SetUnavailableForm
 from Dudo_dent.appointments.google_calendar import GoogleCalendarService
-from Dudo_dent.appointments.models import Appointment, AvailabilityRule
+from Dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 from Dudo_dent.appointments.serializers import AppointmentSerializer
 from Dudo_dent.appointments.utils import clear_booking_session, get_dentist_available_dates, get_available_time_slots
 from Dudo_dent.common.mixins.permissions_mixins import RoleRequiredMixin, \
     AppointmentAccessMixin
+from Dudo_dent.common.mixins.redirect_mixins import MultiStepRedirectMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
 from Dudo_dent.patients.models import Patient
 
@@ -43,6 +44,7 @@ class AppointmentsMainView(LoginRequiredMixin, RoleRequiredMixin, ListView):
 class ChooseDentistView(LoginRequiredMixin, RoleRequiredMixin, FormView):
     template_name = 'appointments/book-appointment/appointment-step1.html'
     form_class = AddAppointmentChooseDentistForm
+    session_key = 'appointment_step1_data'
 
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.PATIENT, UserTypeChoices.NURSE]
 
@@ -50,17 +52,31 @@ class ChooseDentistView(LoginRequiredMixin, RoleRequiredMixin, FormView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
 
+        if self.request.method == 'GET':
+            form_data = self.request.session.pop(self.session_key, None)
+            if form_data:
+                kwargs['data'] = form_data
+
         return kwargs
 
     def form_valid(self, form):
+        self.request.session[self.session_key] = self.request.POST.dict()
+
         self.request.session['patient_id'] = form.cleaned_data['patient'].id
         self.request.session['dentist_id'] = form.cleaned_data['dentist'].id
         return redirect('appointment-step2')
 
 
-class ChooseDateView(LoginRequiredMixin, RoleRequiredMixin, FormView):
+class ChooseDateView(LoginRequiredMixin, RoleRequiredMixin,MultiStepRedirectMixin, FormView):
     template_name = 'appointments/book-appointment/appointment-step2.html'
     form_class = AddAppointmentChooseDateForm
+
+    session_key = 'appointment_step2_data'
+    return_to_param = 'return_to'
+    return_to_value = 'step1'
+    redirect_actions = {
+        'back': 'appointment-step1'
+    }
 
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.PATIENT, UserTypeChoices.NURSE]
 
@@ -71,17 +87,32 @@ class ChooseDateView(LoginRequiredMixin, RoleRequiredMixin, FormView):
         available_dates = get_dentist_available_dates(dentist_id) if dentist_id else []
 
         kwargs['available_dates'] = available_dates
+        print("Restoring form with data:", kwargs.get('data'))
+
         return kwargs
 
     def form_valid(self, form):
-        self.request.session['date'] =  form.cleaned_data['date'].isoformat()
+        self.request.session[self.session_key] = self.request.POST.dict()
+
+        selected_date = form.cleaned_data['date']
+        if isinstance(selected_date, str):
+            selected_date = date.fromisoformat(selected_date)
+
+        self.request.session['date'] = selected_date.isoformat()
         return redirect('appointment-step3')
 
 
-class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin, FormView):
+class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin,MultiStepRedirectMixin, FormView):
     template_name = 'appointments/book-appointment/appointment-step3.html'
     form_class = AddAppointmentChooseTimeForm
     success_url = reverse_lazy('home')
+
+    session_key = 'appointment_step3_data'
+    return_to_param = 'return_to'
+    return_to_value = 'step2'
+    redirect_actions = {
+        'back': 'appointment-step2'
+    }
 
     allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.PATIENT, UserTypeChoices.NURSE]
 
@@ -98,12 +129,17 @@ class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin, FormView):
         _, dentist_id, date_object = self._get_booking_context()
         if dentist_id and date_object:
             kwargs['available_times'] = get_available_time_slots(dentist_id, date_object)
-
+        print("Restoring form with data:", kwargs.get('data'))
         return kwargs
 
     def form_valid(self, form):
+        self.request.session[self.session_key] = self.request.POST.dict()
+
         patient_id, dentist_id, appointment_date = self._get_booking_context()
         start_time = form.cleaned_data['start_time']
+
+        if isinstance(start_time, str):
+            start_time = time.fromisoformat(start_time)
 
         if not (patient_id and dentist_id and date):
             return redirect('appointment-step1')
@@ -224,6 +260,23 @@ class SetAvailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
 
         form.instance.weekdays = new_weekdays
 
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
+
+
+class SetUnavailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
+    model = UnavailabilityRule
+    form_class = SetUnavailableForm
+    template_name = 'appointments/set-unavailability.html'
+
+    allowed_roles = [UserTypeChoices.DENTIST]
+    
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.dentist = user
+        
         return super().form_valid(form)
 
     def get_success_url(self):
