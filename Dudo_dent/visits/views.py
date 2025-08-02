@@ -86,5 +86,3 @@ class DeleteVisit(LoginRequiredMixin,RoleRequiredMixin,DeleteView):
     success_url = reverse_lazy('all-visits')
 
     allowed_roles = [UserTypeChoices.DENTIST]
-
-

@@ -90,7 +90,6 @@ class ChooseDateView(LoginRequiredMixin, RoleRequiredMixin,MultiStepRedirectMixi
         available_dates = get_dentist_available_dates(dentist_id) if dentist_id else []
 
         kwargs['available_dates'] = available_dates
-        print("Restoring form with data:", kwargs.get('data'))
 
         return kwargs
 
@@ -132,7 +131,7 @@ class ChooseTimeView(LoginRequiredMixin, RoleRequiredMixin,MultiStepRedirectMixi
         _, dentist_id, date_object = self._get_booking_context()
         if dentist_id and date_object:
             kwargs['available_times'] = get_available_time_slots(dentist_id, date_object)
-        print("Restoring form with data:", kwargs.get('data'))
+
         return kwargs
 
     def form_valid(self, form):

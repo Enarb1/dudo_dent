@@ -8,13 +8,13 @@ from Dudo_dent.appointments.tasks import send_appointment_conformation_mail, sen
 import logging
 logger = logging.getLogger(__name__)
 
-
 @receiver(post_save, sender=Appointment)
 def send_conformation_on_booking(sender, instance, created, **kwargs):
     patient = instance.patient
     dentist = instance.dentist
 
     appointment_time = f"{instance.date} at {instance.start_time}"
+
     if not patient.email:
         return
 
@@ -25,13 +25,15 @@ def send_conformation_on_booking(sender, instance, created, **kwargs):
             appointment_time,
             dentist.full_name,
         )
-    else:
-        send_appointment_update.delay(
-            patient.full_name,
-            patient.email,
-            appointment_time,
-            dentist.full_name,
-        )
+
+        return
+
+    send_appointment_update.delay(
+        patient.full_name,
+        patient.email,
+        appointment_time,
+        dentist.full_name,
+    )
 
 
 @receiver(pre_delete, sender=Appointment)
