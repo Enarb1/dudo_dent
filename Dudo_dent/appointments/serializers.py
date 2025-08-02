@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from Dudo_dent.appointments.models import Appointment
-
+import logging
+logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 

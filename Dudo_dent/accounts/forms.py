@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from Dudo_dent.accounts.choices import UserTypeChoices
 from Dudo_dent.accounts.constants import ALLOWED_ROLES_CREATION, USER_IS_STAFF
 from Dudo_dent.patients.choices import PatientGenderChoices
+import logging
+logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 

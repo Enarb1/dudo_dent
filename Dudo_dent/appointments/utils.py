@@ -5,6 +5,8 @@ from django.conf import settings
 
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 
+import logging
+logger = logging.getLogger(__name__)
 
 def get_calendar_service():
     """

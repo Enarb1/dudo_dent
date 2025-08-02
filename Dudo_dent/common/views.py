@@ -1,12 +1,13 @@
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import TemplateView
 
 from Dudo_dent.appointments.utils import get_appointments_for_today
 from Dudo_dent.common.utils import paginate_queryset
 from Dudo_dent.patients.forms import SearchPatientForm
 
-# Create your views here.
+import logging
+logger = logging.getLogger(__name__)
 
+# Create your views here.
 
 class HomeView(TemplateView):
     template_name = 'common/home.html'

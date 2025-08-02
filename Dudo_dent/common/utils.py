@@ -1,5 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+import logging
+logger = logging.getLogger(__name__)
 
 def paginate_queryset(request, queryset, per_page=10, context_key='page_obj'):
     """

@@ -6,6 +6,9 @@ from django.dispatch import receiver
 from Dudo_dent.accounts.constants import ROLE_PROFILE_HANDLERS
 from Dudo_dent.accounts.tasks import send_registration_conformation_email
 from Dudo_dent.appointments.google_calendar import GoogleCalendarManager
+import logging
+
+logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 

@@ -12,6 +12,8 @@ from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixI
 from Dudo_dent.patients.forms import PatientCreateForm, PatientEditForm, SearchPatientForm
 from Dudo_dent.patients.models import Patient
 
+import logging
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 

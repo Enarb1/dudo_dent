@@ -25,6 +25,9 @@ from Dudo_dent.common.mixins.redirect_mixins import MultiStepRedirectMixin
 from Dudo_dent.common.mixins.views_mixins import EditDataMixin, DeleteCancelMixIn
 from Dudo_dent.patients.models import Patient
 
+import logging
+logger = logging.getLogger(__name__)
+
 UserModel = get_user_model()
 # Create your views here.
 

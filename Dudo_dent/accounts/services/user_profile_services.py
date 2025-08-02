@@ -2,7 +2,8 @@ from django.contrib.auth.models import Group
 
 from Dudo_dent.accounts.models import WorkProfile
 from Dudo_dent.patients.models import Patient
-
+import logging
+logger = logging.getLogger(__name__)
 
 ROLE_GROUP_MAP = {
     'nurse': 'Nurse',
