@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from django.conf import settings
 
-from Dudo_dent.appointments.models import Appointment, AvailabilityRule
+from Dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 
 
 def get_calendar_service():
@@ -44,7 +44,14 @@ def clear_booking_session(session):
     which were added during the booking session
     """
 
-    keys = ['patient_id', 'dentist_id', 'date']
+    keys = [
+        'appointment_step1_data',
+        'appointment_step2_data',
+        'appointment_step3_data',
+        'patient_id',
+        'dentist_id',
+        'date',
+    ]
     for key in keys:
         session.pop(key, None)
 
@@ -53,25 +60,39 @@ def get_dentist_available_dates(dentist_id):
     Getting all the available dates according to the availability set for a dentist.
     """
 
-
     today = date.today()
-    rules= AvailabilityRule.objects.filter(
+
+    availability_rules= AvailabilityRule.objects.filter(
         dentist_id=dentist_id,
         valid_to__gte=today,
     )
 
+    unavailability_rules = UnavailabilityRule.objects.filter(
+        dentist_id=dentist_id,
+        end_date__gte=today,
+    )
+
+    unavailable_dates = set()
+
+    for rule in unavailability_rules:
+        current = rule.start_date
+        while current <= rule.end_date:
+            unavailable_dates.add(current)
+            current += timedelta(days=1)
+
     available_dates = set()
 
-    for rule in rules:
+    for rule in availability_rules:
         start_date = max(today, rule.valid_from)
         end_date = rule.valid_to
-
         current = start_date
+
         while current <= end_date:
             weekday_str = str(current.isoweekday())
-            if weekday_str in rule.weekdays:
+            if weekday_str in rule.weekdays and current not in unavailable_dates:
                 available_dates.add(current)
             current += timedelta(days=1)
+
     return sorted(available_dates)
 
 def get_available_time_slots(dentist_id, selected_date):
@@ -83,6 +104,14 @@ def get_available_time_slots(dentist_id, selected_date):
      After this we create a list with all bookings for the selected date
      and we generate all available timeslots, which are not booked.
     """
+
+    if UnavailabilityRule.objects.filter(
+            dentist_id=dentist_id,
+            start_date__lte=selected_date,
+            end_date__gte=selected_date,
+    ).exists():
+        return []
+
     rules = AvailabilityRule.objects.filter(
         dentist_id=dentist_id,
         valid_from__lte=selected_date,
@@ -90,7 +119,6 @@ def get_available_time_slots(dentist_id, selected_date):
     )
 
     weekday_str = str(selected_date.isoweekday())
-
     time_slots = []
 
     for rule in rules:
@@ -113,23 +141,4 @@ def get_available_time_slots(dentist_id, selected_date):
     available_time_slots = [slot for slot in time_slots if slot not in booked_times]
 
     return available_time_slots
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from Dudo_dent.appointments.choices import WeekdayChoices
-from Dudo_dent.appointments.models import Appointment, AvailabilityRule
+from Dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 from Dudo_dent.patients.models import Patient
 
 UserModel = get_user_model()
@@ -41,7 +41,6 @@ class AddAppointmentChooseDentistForm(BaseAppointmentForm):
         else:
             self.fields['patient'].queryset = Patient.objects.all()
 
-#TODO need to change the Date Field to select
 class AddAppointmentChooseDateForm(BaseAppointmentForm):
     """
     In the __init__ method we get the available dates from the view and
@@ -94,7 +93,6 @@ class EditAppointmentForm(BaseAppointmentForm):
 class DeleteAppointmentForm(BaseAppointmentForm):
     pass
 
-#TODO the weekdays choices should be better
 
 class SetAvailabilityForm(forms.ModelForm):
     weekdays = forms.MultipleChoiceField(
@@ -116,11 +114,13 @@ class SetAvailabilityForm(forms.ModelForm):
         }
 
 
-
-
-
-
-
-
-
+class SetUnavailableForm(forms.ModelForm):
+    class Meta:
+        model = UnavailabilityRule
+        exclude = ('dentist',)
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'reason': forms.Textarea()
+        }
 
