@@ -2,6 +2,9 @@ from django import forms
 
 from Dudo_dent.procedures.models import Procedure
 
+import logging
+logger = logging.getLogger(__name__)
+
 class ProcedureBaseForm(forms.ModelForm):
     class Meta:
         model = Procedure

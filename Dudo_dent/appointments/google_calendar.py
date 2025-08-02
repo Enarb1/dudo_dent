@@ -4,7 +4,8 @@ from django.conf import settings
 from googleapiclient.errors import HttpError
 
 from Dudo_dent.appointments.utils import get_calendar_service
-
+import logging
+logger = logging.getLogger(__name__)
 
 class GoogleCalendarService:
     """Class for Create, Update, and Delete Google Calendar events"""

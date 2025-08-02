@@ -3,6 +3,8 @@ from django import forms
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.visits.models import Visit
 
+import logging
+logger = logging.getLogger(__name__)
 
 class VisitBaseForm(forms.ModelForm):
     procedure = forms.ModelMultipleChoiceField(

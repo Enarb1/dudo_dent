@@ -2,6 +2,8 @@ from django import forms
 
 from Dudo_dent.patients.models import Patient
 
+import logging
+logger = logging.getLogger(__name__)
 
 class PatientBaseForm(forms.ModelForm):
     class Meta:

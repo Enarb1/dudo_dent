@@ -5,6 +5,9 @@ from Dudo_dent.appointments.models import Appointment
 from Dudo_dent.appointments.tasks import send_appointment_conformation_mail, send_appointment_update, \
     send_appointment_cancellation_email
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 @receiver(post_save, sender=Appointment)
 def send_conformation_on_booking(sender, instance, created, **kwargs):

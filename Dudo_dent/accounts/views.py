@@ -17,6 +17,9 @@ from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.common.utils import paginate_queryset
 from Dudo_dent.visits.models import Visit
 
+import logging
+logger = logging.getLogger(__name__)
+
 # Create your views here.
 UserModel = get_user_model()
 

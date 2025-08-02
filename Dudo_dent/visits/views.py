@@ -11,6 +11,8 @@ from Dudo_dent.patients.forms import SearchPatientForm
 from Dudo_dent.visits.forms import VisitCreateForm, VisitEditForm
 from Dudo_dent.visits.models import Visit
 
+import logging
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 

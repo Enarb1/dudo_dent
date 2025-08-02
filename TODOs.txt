@@ -1,5 +1,4 @@
 #TODO ALL
-    - add a back button to the appointments booking forms
     - add a logger for the errors
     - add exception logging
     - setup smtp server for the emails

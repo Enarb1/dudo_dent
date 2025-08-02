@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from Dudo_dent.appointments.choices import WeekdayChoices
 from Dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 from Dudo_dent.patients.models import Patient
+import logging
+logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
 

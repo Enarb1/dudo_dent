@@ -10,6 +10,8 @@ from Dudo_dent.common.mixins.views_mixins import EditDataMixin
 from Dudo_dent.procedures.models import Procedure
 from Dudo_dent.procedures.forms import ProcedureAddForm, ProcedureEditForm, SearchProcedureForm
 
+import logging
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
