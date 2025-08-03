@@ -243,47 +243,51 @@ LOGGING = {
             'filename': os.path.join(BASE_DIR, 'logs/django.log'),
             'formatter': 'verbose',
         },
+        },
+        'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'Dudo_dent.appointments': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Dudo_dent.visits': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Dudo_dent.patients': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Dudo_dent.procedures': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Dudo_dent.accounts': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Dudo_dent.common': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
-    'loggers': {
-    'django': {
+        'root': {
         'handlers': ['console', 'file'],
         'level': 'DEBUG',
-        'propagate': True,
-    },
-    'django.request': {
-        'handlers': ['console', 'file'],
-        'level': 'ERROR',
-        'propagate': False,
-    },
-    'Dudo_dent.appointments': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-    'Dudo_dent.visits': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-    'Dudo_dent.patients': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-    'Dudo_dent.procedures': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-    'Dudo_dent.accounts': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-    'Dudo_dent.common': {
-        'handlers': ['console', 'file'],
-        'level': 'DEBUG',
-        'propagate': False,
-    },
-},
+        },
 }
