@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 import logging
+import json
 from pathlib import Path
-
-from decouple import config
 
 import cloudinary
 import cloudinary.uploader
@@ -24,23 +23,23 @@ from django.urls import reverse_lazy
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #Google Calender settings
-GOOGLE_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR,'credentials', config('GOOGLE_SERVICE_ACCOUNT_FILE'))
-GOOGLE_CALENDAR_ID = config('GOOGLE_CALENDAR_ID')
-GOOGLE_ADMIN_EMAIL = config('GOOGLE_ADMIN_EMAIL')
+GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO'))
+GOOGLE_CALENDAR_ID = os.environ.get('GOOGLE_CALENDAR_ID')
+GOOGLE_ADMIN_EMAIL = os.environ.get('GOOGLE_ADMIN_EMAIL')
 
 #Cloudinary settings
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET'),
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 cloudinary.config(
-  cloud_name = config('CLOUD_NAME'),
-  api_key = config('API_KEY'),
-  api_secret = config('API_SECRET')
+  cloud_name = os.environ.get('CLOUD_NAME'),
+  api_key = os.environ.get('API_KEY'),
+  api_secret = os.environ.get('API_SECRET')
 )
 
 
@@ -49,12 +48,12 @@ cloudinary.config(
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -118,11 +117,11 @@ WSGI_APPLICATION = 'Dudo_dent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST',),
-        'PORT': config('DB_PORT',),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST',),
+        'PORT': int(os.environ.get('DB_PORT',)),
     }
 }
 
@@ -187,24 +186,24 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGOUT_REDIRECT_URL = reverse_lazy('home')
 
-EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT',587))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true').lower() == 'true'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 
 #Celery
 
 # Celery configuration
-CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 
-
+os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
 LOGGING = {
     'version': 1,
