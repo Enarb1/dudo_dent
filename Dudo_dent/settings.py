@@ -18,6 +18,9 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from django.urls import reverse_lazy
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +58,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://dudo-dent-f6a0hhg6cdbphvcz.italynorth-01.azurewebsites.net'
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Application definition
