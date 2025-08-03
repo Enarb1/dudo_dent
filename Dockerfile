@@ -21,14 +21,15 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Prepare logs dir (for Django logging config)
+# Prepare logs directory
 RUN mkdir -p /app/logs && touch /app/logs/django.log
 
-# Collect static files (WhiteNoise)
-RUN python manage.py collectstatic --noinput
+# Copy entrypoint script and make it executable
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # Expose app port
 EXPOSE 8000
 
-# Start server with Gunicorn
-CMD ["gunicorn", "Dudo_dent.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Start using entrypoint
+CMD ["/app/entrypoint.sh"]
