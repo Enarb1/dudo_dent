@@ -23,7 +23,8 @@ from django.urls import reverse_lazy
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #Google Calender settings
-GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO'))
+GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO')) \
+    if 'GOOGLE_SERVICE_ACCOUNT_INFO' in os.environ else {}
 GOOGLE_CALENDAR_ID = os.environ.get('GOOGLE_CALENDAR_ID')
 GOOGLE_ADMIN_EMAIL = os.environ.get('GOOGLE_ADMIN_EMAIL')
 
