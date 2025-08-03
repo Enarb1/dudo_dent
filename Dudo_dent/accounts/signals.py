@@ -38,12 +38,15 @@ def create_google_calendar_for_dentist(sender, instance, created, **kwargs):
     if not created or not instance.is_dentist:
         return
 
-    profile = instance.get_profile()
+    try:
+        profile = instance.get_profile()
 
-    if profile and not profile.google_calendar_id:
-        calendar_id = GoogleCalendarManager().create(instance.full_name, instance.pk)
-        profile.google_calendar_id = calendar_id
-        profile.save()
+        if profile and not profile.google_calendar_id:
+            calendar_id = GoogleCalendarManager().create(instance.full_name, instance.pk)
+            profile.google_calendar_id = calendar_id
+            profile.save()
+    except Exception as e:
+        logger.exception(f"[Calendar ERROR] Could not create calendar for user {instance.pk}: {e}")
 
 
 @receiver(pre_delete, sender=UserModel)
