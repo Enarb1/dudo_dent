@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %}Availability Details{% endblock %}
+<!-- Availability Details -->
+{% block content %}
+  <main class="main-content">
+    <section class="patient-info">
+        
+        <!-- Delete Button -->
+        <div class="delete-button-wrapper">
+              <a href="{% url 'delete-availability' object.pk %}">
+                <button class="delete-button">Delete</button>
+              </a>   
+          </div>
+      <!-- Fields -->  
+      <div class="info-header">
+        <h2>Availability</h2>
+      </div>
+      <ul>
+        <li><strong>Weekdays:</strong> {{ object.get_weekday_labels|join:", " }}</li>
+        <li><strong>Hours:</strong> {{ object.start_time|time:"H:i" }} to {{ object.end_time|time:"H:i" }} </li>
+        <li><strong>Valid:</strong> from {{ object.valid_from }} to {{ object.valid_to }} </li>
+      </ul>
+    </section>
+  </main>
+{% endblock %}

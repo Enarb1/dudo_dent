@@ -98,6 +98,10 @@ class AvailabilityRule(models.Model):
    def get_weekday_labels(self):
        return [WeekdayChoices(value).label for value in self.weekdays]
 
+   def __str__(self):
+       return (f"{self.dentist.full_name}: {self.valid_from} to {self.valid_to} "
+               f"Weekdays: {', '.join(self.get_weekday_labels())}")
+
 
 class UnavailabilityRule(models.Model):
    dentist = models.ForeignKey(
@@ -114,3 +118,6 @@ class UnavailabilityRule(models.Model):
        blank=True,
        null=True,
    )
+
+   def __str__(self):
+       return f"{self.dentist.full_name}: {self.start_date} until {self.end_date} - {self.reason}"

@@ -268,6 +268,23 @@ class SetAvailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
         return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
 
 
+class DeleteAvailabilityView(LoginRequiredMixin, RoleRequiredMixin,DeleteCancelMixIn, DeleteView):
+    model = AvailabilityRule
+    template_name = 'delete-conformation.html'
+    cancel_url = 'availability-details'
+    allowed_roles = [UserTypeChoices.DENTIST]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
+
+
+class AvailabilityDetailsView(LoginRequiredMixin, RoleRequiredMixin, DetailView):
+    model = AvailabilityRule
+    template_name = 'appointments/availability-details.html'
+
+    allowed_roles = [UserTypeChoices.NURSE, UserTypeChoices.DENTIST]
+
+
 class SetUnavailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = UnavailabilityRule
     form_class = SetUnavailableForm
@@ -283,6 +300,25 @@ class SetUnavailabilityView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
+
+
+class UnavailabilityDetailsView(LoginRequiredMixin, RoleRequiredMixin, DetailView):
+    model = UnavailabilityRule
+    template_name = 'appointments/unavailability-details.html'
+
+    allowed_roles = [UserTypeChoices.DENTIST, UserTypeChoices.NURSE]
+
+
+class UnavailabilityUpdateDeleteView(LoginRequiredMixin, RoleRequiredMixin, DeleteCancelMixIn, DeleteView):
+    model = UnavailabilityRule
+    template_name = 'delete-conformation.html'
+    cancel_url = 'unavailability-details'
+
+    allowed_roles = [UserTypeChoices.DENTIST]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.id})
+
 
 class AppointmentListAPIView(APIView):
     """

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- Title -->
+{% block title %}Unavailability Details{% endblock %}
+<!-- Unavailability Details -->
+{% block content %}
+  <main class="main-content">
+    <section class="patient-info">
+        
+        <!-- Delete Button -->
+        {% if request.user == object.dentist or request.user.is_superuser %}
+        <div class="delete-button-wrapper">
+              <a href="{% url 'delete-unavailability' object.pk %}">
+                <button class="delete-button">Delete</button>
+              </a>   
+          </div>
+        {% endif %}
+      <!-- Fields -->  
+      <div class="info-header">
+        <h2>Unavailability</h2>
+      </div>
+      <ul>
+        <li><strong>Period:</strong> from {{ object.start_date }} until {{ object.end_date }}</li>
+        <li><strong>Reason:</strong> {{ object.reason|default:"N/A" }}</li>
+      </ul>
+    </section>
+  </main>
+{% endblock %}

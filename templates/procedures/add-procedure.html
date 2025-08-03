@@ -14,8 +14,10 @@
     
         {{ form }}
         {% csrf_token %}
+        <!-- Form Errors -->
+        {% include 'form-errors.html' %}
     
-        <button>Save</button>
+        <button type="submit" class="search-button">Save</button>
     </form>
   </main>
 {% endblock %}

@@ -8,7 +8,9 @@
             <h2>Availability</h2>
             {% csrf_token %}
             {{ form }}
-            <button type="submit">Save</button>
+            <!-- Form Errors -->
+            {% include 'form-errors.html' %}
+            <button type="submit" class="search-button">Save</button>
         </form>
     </main>
 {% endblock %}

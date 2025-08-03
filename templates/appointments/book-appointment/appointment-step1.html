@@ -8,7 +8,9 @@
             <h2>Choose Dentist</h2>
             {% csrf_token %}
             {{ form }}
-            <button type="submit">Next</button>
+            <!-- Form Errors -->
+            {% include 'form-errors.html' %}
+            <button type="submit" class="search-button">Next</button>
         </form>
     </main>
 {% endblock %}

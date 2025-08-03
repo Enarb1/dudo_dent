@@ -14,22 +14,11 @@
         {% endif %}
         
         {% csrf_token %}
-    
-        <!-- Error Messages -->
-        {% if form.errors %}
-          <div class="form-errors">
-            <ul>
-              {% for field, errors in form.errors.items %}
-                {% for error in errors %}
-                  <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
-                {% endfor %}
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
         {{ form.as_p }}
+        <!-- Form Errors -->
+        {% include 'form-errors.html' %}
     
-        <button type="submit">Save</button>
+        <button type="submit" class="search-button">Save</button>
     </form>
   </main>
 {% endblock %}

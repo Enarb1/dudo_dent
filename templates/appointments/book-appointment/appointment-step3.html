@@ -8,8 +8,10 @@
             <h2>Choose Time</h2>
             {% csrf_token %}
             {{ form }}
-            <button type="submit" name="back" >Back</button>
-            <button type="submit">Book</button>
+            <!-- Form Errors -->
+            {% include 'form-errors.html' %}
+            <button type="submit" name="back" class="search-button">Back</button>
+            <button type="submit" class="search-button">Book</button>
         </form>
     </main>
 {% endblock %}

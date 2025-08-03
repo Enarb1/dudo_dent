@@ -10,18 +10,12 @@
         <h2>Login</h2>
         
         {% csrf_token %}
-        <!-- Errors -->
-        {% if form.is_bound and form.non_field_errors %}
-            <ul class="row-form-errors">
-                {% for error in form.non_field_errors %}
-                    {{ error }}
-                {% endfor %}
-            </ul>
-        {% endif %}
-    
         {{ form.as_p }}
-    
-        <button type="submit">Login</button>
+  
+        <!-- Form Errors -->
+        {% include 'form-errors.html' %}
+        
+        <button type="submit" class="search-button">Login</button>
     <!-- Forgotten Password -->
     <div>
       <p>Password forgotten? You can reset it <a href="{% url 'password_reset' %}">here</a></p>

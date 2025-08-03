@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 <!-- Title -->
-{% block title %}Add Patient{% endblock %}
+{% block title %}Edit Patient{% endblock %}
 <!-- Form -->
 {% block content %}
   <main class="main-content">
     <form action="{% url 'edit-patient' patient.pk %}" method="POST" >
         {{ form.as_p }}
         {% csrf_token %}
-        <button>Save</button>
+        <!-- Form Errors -->
+        {% include 'form-errors.html' %}
+        <button class="search-button">Save</button>
     </form>    
   </main>
 {% endblock %}

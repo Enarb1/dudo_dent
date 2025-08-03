@@ -23,7 +23,6 @@ class BaseAppointmentForm(forms.ModelForm):
             }),
         }
 
-
 class AddAppointmentChooseDentistForm(BaseAppointmentForm):
     """
     In the __init__ method we define what to be shown, based on the User Type
@@ -89,7 +88,23 @@ class AddAppointmentChooseTimeForm(BaseAppointmentForm):
 
 
 class EditAppointmentForm(BaseAppointmentForm):
-    pass
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get('date')
+        start_time = cleaned_data.get('start_time')
+        dentist = cleaned_data.get('dentist')
+
+        if date and start_time and dentist:
+            appointment = Appointment.objects.filter(
+                date=date,
+                start_time=start_time,
+                dentist=dentist
+            ).exclude(pk=self.instance.pk).exists()
+
+            if appointment:
+                raise forms.ValidationError("There is an appointment for this date and time!")
+
+        return cleaned_data
 
 
 class DeleteAppointmentForm(BaseAppointmentForm):
@@ -116,6 +131,10 @@ class SetAvailabilityForm(forms.ModelForm):
         }
 
 
+class DeleteAvailabilityForm(SetAvailabilityForm):
+    pass
+
+
 class SetUnavailableForm(forms.ModelForm):
     class Meta:
         model = UnavailabilityRule
@@ -126,3 +145,5 @@ class SetUnavailableForm(forms.ModelForm):
             'reason': forms.Textarea()
         }
 
+class DeleteUnavailableForm(SetUnavailableForm):
+    pass

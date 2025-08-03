@@ -1,0 +1,13 @@
+{% if form.errors %}
+    <div class="form-errors text-red-600 my-2">
+        {{ form.errors }}
+    </div>
+{% endif %}
+
+{% if form.non_field_errors %}
+  <div class="form-errors text-red-600 my-2">
+    {% for error in form.non_field_errors %}
+      <p style="color: #dc2626 !important;">{{ error }}</p>
+    {% endfor %}
+  </div>
+{% endif %}

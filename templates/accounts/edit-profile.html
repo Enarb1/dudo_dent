@@ -9,7 +9,10 @@
     <form action="" method="POST" >
         {{ form.as_p }}
         {% csrf_token %}
-        <button>Save</button>
+        <!-- Form Errors -->
+        {% include 'form-errors.html' %}
+       
+        <button class="search-button">Save</button>
     </form>    
   </main>
     

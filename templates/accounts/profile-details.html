@@ -18,14 +18,12 @@
               {% include 'common/profile-details-fields.html' %}
           </ul>
       <!-- Delete Button  -->  
-      {% if request.user.is_dentist %}
-          {% if object.is_patient or object.is_nurse or request.user.pk == object.pk%}
-              <div class="delete-button-wrapper">
-                  <a href="{% url 'delete-profile' object.pk %}">
-                    <button class="delete-button">Delete</button>
-                  </a>
-              </div>
-          {% endif %}
+      {% if request.user.is_dentist or request.user.pk == object.pk %}
+          <div class="delete-button-wrapper">
+              <a href="{% url 'delete-profile' object.pk %}">
+                <button class="delete-button">Delete</button>
+              </a>
+          </div>
       {% endif %}
       </section>
     <!-- Visit Info -->
@@ -52,14 +50,18 @@
              {% for a in availabilities %}
                  {% if a.type == 'available' %}
                     <li>
-                        Availability: {{ a.obj.get_weekday_labels|join:", " }} - 
-                        {{ a.obj.start_time|time:"H:i" }} to {{ a.obj.end_time|time:"H:i" }} 
-                        from {{ a.obj.valid_from }} to {{ a.obj.valid_to }} 
+                        <a href="{% url 'availability-details' a.obj.pk %}">
+                            Availability: {{ a.obj.get_weekday_labels|join:", " }} - 
+                            {{ a.obj.start_time|time:"H:i" }} to {{ a.obj.end_time|time:"H:i" }} 
+                            from {{ a.obj.valid_from }} to {{ a.obj.valid_to }} 
+                        </a>
                     </li>
                  {% elif a.type == 'unavailable' %}
                      <li>
-                        Unavailability: from {{ a.obj.start_date }} until {{ a.obj.end_date }} 
-                         - Reason: {{ a.obj.reason|default:"N/A" }}
+                        <a href="{% url 'unavailability-details' a.obj.pk %}">
+                            Unavailability: from {{ a.obj.start_date }} until {{ a.obj.end_date }} 
+                             - Reason: {{ a.obj.reason|default:"N/A" }}
+                        </a>
                     </li>
                  {% else %}
                      <li>
