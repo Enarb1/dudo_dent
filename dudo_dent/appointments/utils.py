@@ -13,11 +13,14 @@ def get_calendar_service():
     """
     Getting the Google Calendar service.
     """
+    info = settings.GOOGLE_SERVICE_ACCOUNT_INFO
+    if isinstance(info, str):
+        info = json.loads(info)
 
     credentials = service_account.Credentials.from_service_account_info(
-        json.loads(settings.GOOGLE_SERVICE_ACCOUNT_INFO),
-        scopes=['https://www.googleapis.com/auth/calendar'],
+        info, scopes=['https://www.googleapis.com/auth/calendar']
     )
+
     service = build('calendar', 'v3', credentials=credentials)
 
     return service
