@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from Dudo_dent.accounts.choices import UserTypeChoices
-from Dudo_dent.accounts.forms import PatientRegisterForm, RoleBasedUserCreationForm
-from Dudo_dent.patients.choices import PatientGenderChoices
+from dudo_dent.accounts.choices import UserTypeChoices
+from dudo_dent.accounts.forms import PatientRegisterForm, RoleBasedUserCreationForm
+from dudo_dent.patients.choices import PatientGenderChoices
 
 
 UserModel = get_user_model()

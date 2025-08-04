@@ -4,12 +4,12 @@ from django.contrib.auth.models import Group
 from django.db.models.signals import post_save
 from django.test import TestCase
 
-from Dudo_dent.accounts.choices import UserTypeChoices
-from Dudo_dent.accounts.models import WorkProfile, CustomUser
-from Dudo_dent.accounts.services.user_profile_services import handle_patient_profile, handle_work_profile
-from Dudo_dent.accounts.signals import create_profile, create_google_calendar_for_dentist
-from Dudo_dent.patients.choices import PatientGenderChoices
-from Dudo_dent.patients.models import Patient
+from dudo_dent.accounts.choices import UserTypeChoices
+from dudo_dent.accounts.models import WorkProfile, CustomUser
+from dudo_dent.accounts.services.user_profile_services import handle_patient_profile, handle_work_profile
+from dudo_dent.accounts.signals import create_profile, create_google_calendar_for_dentist
+from dudo_dent.patients.choices import PatientGenderChoices
+from dudo_dent.patients.models import Patient
 
 
 
@@ -51,7 +51,7 @@ class TestSignalsProfileCreation(TestCase):
 
         return user
 
-    @patch.dict("Dudo_dent.accounts.signals.ROLE_PROFILE_HANDLERS", {
+    @patch.dict("dudo_dent.accounts.signals.ROLE_PROFILE_HANDLERS", {
         UserTypeChoices.PATIENT: handle_patient_profile
     })
     def test_create_patient_profile_from_signal_expect_success(self):
@@ -64,8 +64,8 @@ class TestSignalsProfileCreation(TestCase):
         self.assertEqual(patient.email, user.email)
 
 
-    @patch("Dudo_dent.accounts.signals.send_registration_conformation_email.delay")
-    @patch.dict("Dudo_dent.accounts.signals.ROLE_PROFILE_HANDLERS", {
+    @patch("dudo_dent.accounts.signals.send_registration_conformation_email.delay")
+    @patch.dict("dudo_dent.accounts.signals.ROLE_PROFILE_HANDLERS", {
         UserTypeChoices.PATIENT: handle_patient_profile
     })
     def test_create_patient_send_conformation_email_expect_success(self, mock_send_email):
@@ -76,7 +76,7 @@ class TestSignalsProfileCreation(TestCase):
 
         mock_send_email.assert_called_once_with("Patient One", "p@test.com")
 
-    @patch('Dudo_dent.accounts.signals.GoogleCalendarManager')
+    @patch('dudo_dent.accounts.signals.GoogleCalendarManager')
     def test_creating_google_calendar_on_profile_creation_expect_success(self, mock_calendar_manager_class):
         mock_calendar_manager = MagicMock()
         mock_calendar_manager.create.return_value = "dentist test calendar"

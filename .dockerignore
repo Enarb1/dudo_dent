@@ -1,0 +1,29 @@
+# Bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local development envs
+.venv/
+venv/
+env/
+
+# MacOS metadata
+.DS_Store
+
+# PyCharm and editor configs
+.idea/
+.vscode/
+
+# Environment files (you already pass .env explicitly)
+.env
+.env.*
+
+# Static and media (if you're collecting them during build)
+staticfiles/
+media/
+
+# Logs
+*.log
+logs/

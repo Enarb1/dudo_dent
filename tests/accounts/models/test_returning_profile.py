@@ -5,12 +5,12 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.test import TestCase
 
-from Dudo_dent.accounts.choices import UserTypeChoices
-from Dudo_dent.accounts.models import CustomUser, WorkProfile
-from Dudo_dent.accounts.services.user_profile_services import handle_work_profile, handle_patient_profile
-from Dudo_dent.accounts.signals import create_profile
-from Dudo_dent.patients.choices import PatientGenderChoices
-from Dudo_dent.patients.models import Patient
+from dudo_dent.accounts.choices import UserTypeChoices
+from dudo_dent.accounts.models import CustomUser, WorkProfile
+from dudo_dent.accounts.services.user_profile_services import handle_work_profile, handle_patient_profile
+from dudo_dent.accounts.signals import create_profile
+from dudo_dent.patients.choices import PatientGenderChoices
+from dudo_dent.patients.models import Patient
 
 UserModel = get_user_model()
 
@@ -31,7 +31,7 @@ class TestReturningProfile(TestCase):
         )
 
 
-    @patch('Dudo_dent.accounts.signals.GoogleCalendarManager.create')
+    @patch('dudo_dent.accounts.signals.GoogleCalendarManager.create')
     def test_get_dentist_profile_expect_success(self, mock_calendar_create):
         mock_calendar_create.return_value = 'mock calendar_id'
 
@@ -43,7 +43,7 @@ class TestReturningProfile(TestCase):
         self.assertIsInstance(user.get_profile(), WorkProfile,)
 
 
-    @patch('Dudo_dent.accounts.signals.GoogleCalendarManager.create')
+    @patch('dudo_dent.accounts.signals.GoogleCalendarManager.create')
     def test_get_nurse_profile_expect_success(self, mock_calendar_create):
         mock_calendar_create.return_value = 'mock calendar_id'
 
@@ -55,7 +55,7 @@ class TestReturningProfile(TestCase):
 
 
 
-    @patch('Dudo_dent.accounts.signals.send_registration_conformation_email.delay')
+    @patch('dudo_dent.accounts.signals.send_registration_conformation_email.delay')
     def test_patient_custom_user_and_patient_user_connection_expect_success(self, mock_send_mail):
         mock_send_mail.return_value = 'mock_email'
 
