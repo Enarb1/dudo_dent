@@ -30,3 +30,4 @@ htmlcov/
 
 credentials/
 *.json
+docker-context.tar
