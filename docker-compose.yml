@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: gunicorn Dudo_dent.wsgi:application --bind 0.0.0.0:8000 --workers=3 --threads=2
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: always
+
+  celery:
+    build: .
+    command: celery -A Dudo_dent worker --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: always
+
+  celery-beat:
+    build: .
+    command: celery -A Dudo_dent beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: always

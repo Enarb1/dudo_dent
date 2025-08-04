@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 import logging
 import json
+import ssl
 from pathlib import Path
 
 import cloudinary
@@ -25,9 +26,12 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#Google Calender settings
-GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO')) \
-    if 'GOOGLE_SERVICE_ACCOUNT_INFO' in os.environ else {}
+# Google Calendar settings (safe loading)
+try:
+    GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO', '{}'))
+except json.JSONDecodeError:
+    GOOGLE_SERVICE_ACCOUNT_INFO = {}
+    logging.error("Invalid JSON in GOOGLE_SERVICE_ACCOUNT_INFO")
 GOOGLE_CALENDAR_ID = os.environ.get('GOOGLE_CALENDAR_ID')
 GOOGLE_ADMIN_EMAIL = os.environ.get('GOOGLE_ADMIN_EMAIL')
 
@@ -60,7 +64,7 @@ DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://dudo-dent-f6a0hhg6cdbphvcz.italynorth-01.azurewebsites.net'
+    "https://dudodent-hnfvgracaye9e8c2.italynorth-01.azurewebsites.net"
 ]
 
 CSRF_COOKIE_SECURE = True
@@ -80,6 +84,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary',
     'cloudinary_storage',
+
 
     'Dudo_dent.common.apps.CommonConfig',
     'Dudo_dent.patients.apps.PatientsConfig',
@@ -213,38 +218,51 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
+# SSL options for rediss://
 
+CELERY_BROKER_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE
+}
+
+CELERY_REDIS_BACKEND_USE_SSL = {
+    'ssl_cert_reqs': ssl.CERT_NONE
+}
+
+
+
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+
     'formatters': {
         'verbose': {
             'format': '[{asctime}] {levelname} {name} — {message}',
             'style': '{',
         },
-
         'simple': {
             'format': '{levelname} — {message}',
             'style': '{',
         },
     },
+
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-
         'file': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/django.log'),
+            'filename': os.path.join(LOG_DIR, 'django.log'),
             'formatter': 'verbose',
         },
-        },
-        'loggers': {
+    },
+
+    'loggers': {
         'django': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
@@ -255,39 +273,16 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'Dudo_dent.appointments': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Dudo_dent.visits': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Dudo_dent.patients': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Dudo_dent.procedures': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Dudo_dent.accounts': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'Dudo_dent.common': {
+        'Dudo_dent': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': False,
         },
     },
-        'root': {
+
+    'root': {
         'handlers': ['console', 'file'],
         'level': 'DEBUG',
-        },
+    },
 }
+
