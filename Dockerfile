@@ -2,8 +2,8 @@
 FROM python:3.12-slim
 
 # Disable .pyc and buffer
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /app
@@ -21,9 +21,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy project files
 COPY . /app/
 
-# Prepare logs directory
-RUN mkdir -p /app/logs && touch /app/logs/django.log
-
 # Copy entrypoint script and make it executable
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
@@ -31,5 +28,5 @@ RUN chmod +x /app/entrypoint.sh
 # Expose app port
 EXPOSE 8000
 
-# Start using entrypoint
+# Use entrypoint
 CMD ["/app/entrypoint.sh"]

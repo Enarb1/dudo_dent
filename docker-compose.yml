@@ -3,7 +3,6 @@ version: '3.9'
 services:
   web:
     build: .
-    command: gunicorn Dudo_dent.wsgi:application --bind 0.0.0.0:8000 --workers=3 --threads=2
     volumes:
       - .:/app
     ports:
@@ -16,7 +15,8 @@ services:
 
   celery:
     build: .
-    command: celery -A Dudo_dent worker --loglevel=info
+    environment:
+      - RUN_WORKER=true
     volumes:
       - .:/app
     env_file:

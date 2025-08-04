@@ -27,11 +27,15 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Google Calendar settings (safe loading)
+
 try:
     GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO', '{}'))
 except json.JSONDecodeError:
     GOOGLE_SERVICE_ACCOUNT_INFO = {}
     logging.error("Invalid JSON in GOOGLE_SERVICE_ACCOUNT_INFO")
+
+
+
 GOOGLE_CALENDAR_ID = os.environ.get('GOOGLE_CALENDAR_ID')
 GOOGLE_ADMIN_EMAIL = os.environ.get('GOOGLE_ADMIN_EMAIL')
 
@@ -63,9 +67,8 @@ DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://dudodent-hnfvgracaye9e8c2.italynorth-01.azurewebsites.net"
-]
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -182,9 +185,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     BASE_DIR / 'static',
-)
+]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
