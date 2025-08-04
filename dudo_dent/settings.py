@@ -236,17 +236,6 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
-# SSL options for rediss://
-
-CELERY_BROKER_USE_SSL = {
-    'ssl_cert_reqs': ssl.CERT_NONE
-}
-
-CELERY_REDIS_BACKEND_USE_SSL = {
-    'ssl_cert_reqs': ssl.CERT_NONE
-}
-
-
 
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
