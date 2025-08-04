@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class PatientsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Dudo_dent.patients'
+    name = 'dudo_dent.patients'

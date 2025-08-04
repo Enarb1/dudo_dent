@@ -100,12 +100,12 @@ INSTALLED_APPS = [
     'cloudinary_storage',
 
 
-    'Dudo_dent.common.apps.CommonConfig',
-    'Dudo_dent.patients.apps.PatientsConfig',
-    'Dudo_dent.visits.apps.VisitsConfig',
-    'Dudo_dent.procedures.apps.ProceduresConfig',
-    'Dudo_dent.accounts.apps.AccountsConfig',
-    'Dudo_dent.appointments.apps.AppointmentsConfig'
+    'dudo_dent.common.apps.CommonConfig',
+    'dudo_dent.patients.apps.PatientsConfig',
+    'dudo_dent.visits.apps.VisitsConfig',
+    'dudo_dent.procedures.apps.ProceduresConfig',
+    'dudo_dent.accounts.apps.AccountsConfig',
+    'dudo_dent.appointments.apps.AppointmentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -119,7 +119,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Dudo_dent.urls'
+ROOT_URLCONF = 'dudo_dent.urls'
 
 TEMPLATES = [
     {
