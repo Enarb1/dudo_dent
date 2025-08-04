@@ -68,6 +68,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '64.225.104.177',
     'dudodent.online',
     'www.dudodent.online'
 ]
