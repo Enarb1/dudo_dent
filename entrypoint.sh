@@ -11,8 +11,8 @@ if [ "$DEBUG" = "true" ]; then
   sleep infinity
 elif [ "$RUN_WORKER" = "true" ]; then
   echo "Starting Celery worker..."
-  exec celery -A Dudo_dent worker --loglevel=info
+  exec celery -A dudo_dent worker --loglevel=info
 else
   echo "Starting Gunicorn server..."
-  exec gunicorn Dudo_dent.wsgi:application --bind 0.0.0.0:8000
+  exec gunicorn dudo_dent.wsgi:application --bind 0.0.0.0:8000
 fi
