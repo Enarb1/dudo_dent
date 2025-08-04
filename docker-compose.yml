@@ -9,7 +9,7 @@ services:
       - .env
     working_dir: /app
     volumes:
-      - ./credentials:/app/credentials
+      - ./credentials:/app/credentials:ro
     depends_on:
       - redis
     environment:

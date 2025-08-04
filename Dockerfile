@@ -15,8 +15,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . /app/
 
-COPY credentials/dudodent-ce4bcccada27.json /app/credentials/
-
 RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
