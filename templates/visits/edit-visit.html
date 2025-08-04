@@ -5,7 +5,7 @@
 <!-- Form -->
 {% block content %}
     <main class="main-content">
-    <form action="{% url 'edit-visit' visit.pk %}" method="POST" >
+    <form action="{% url 'edit-visit' visit.pk %}" method="POST" enctype="multipart/form-data">
         {{ form }}
         {% csrf_token %}
         
