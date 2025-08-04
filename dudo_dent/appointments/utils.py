@@ -13,7 +13,7 @@ def get_calendar_service():
     Getting the Google Calendar service.
     """
     credentials = service_account.Credentials.from_service_account_file(
-        settings.GOOGLE_SERVICE_ACCOUNT_FILE,
+        settings.GOOGLE_SERVICE_ACCOUNT_INFO,
         scopes=['https://www.googleapis.com/auth/calendar'],
     )
     service = build('calendar', 'v3', credentials=credentials)
