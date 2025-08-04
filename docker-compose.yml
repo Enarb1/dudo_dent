@@ -8,6 +8,8 @@ services:
     env_file:
       - .env
     working_dir: /app
+    volumes:
+      - ./credentials:/app/credentials
     depends_on:
       - redis
     environment:

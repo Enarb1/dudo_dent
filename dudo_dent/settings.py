@@ -30,14 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Google Calendar settings (safe loading)
 
-try:
-    GOOGLE_SERVICE_ACCOUNT_INFO = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_INFO', '{}'))
-except json.JSONDecodeError:
-    GOOGLE_SERVICE_ACCOUNT_INFO = {}
-    logging.error("Invalid JSON in GOOGLE_SERVICE_ACCOUNT_INFO")
-
-
-
+GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 GOOGLE_CALENDAR_ID = os.environ.get('GOOGLE_CALENDAR_ID')
 GOOGLE_ADMIN_EMAIL = os.environ.get('GOOGLE_ADMIN_EMAIL')
 
