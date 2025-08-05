@@ -3,6 +3,8 @@ from datetime import date, timedelta, datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from django.conf import settings
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail.mail import Mail
 
 from dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
 
@@ -147,3 +149,21 @@ def get_available_time_slots(dentist_id, selected_date):
 
     return available_time_slots
 
+
+def send_mail_via_sendgrid(subject, content, to_emails):
+    message = Mail(
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to_emails=to_emails,
+        subject=subject,
+        plain_text_content=content,
+    )
+
+    try:
+        sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+        response = sg.send(message)
+        logger.info(f"[SendGrid] Email sent successfully: {response.status_code}")
+    except Exception as e:
+        logger.exception(f"[SendGrid ERROR] Email failed with error: {e}")
+        return None
+
+    return response.status_code
