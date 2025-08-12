@@ -5,7 +5,7 @@
 <!-- Add Visit Form -->
 {% block content %}
   <main class="main-content">
-    <h2 class="form-title">Add Visit</h2>  
+    <h2 class="form-title">Добави Посещение</h2>  
     <form action="{% url 'add-visit' %}" method="POST" enctype="multipart/form-data" >
         {% csrf_token %}
         <!-- Adding a return-to value -->
@@ -53,7 +53,7 @@
         <!-- Form Errors -->
         {% include 'form-errors.html' %}
         
-        <button type="submit" class="search-button">Save</button>
+        <button type="submit" class="search-button">Запази</button>
     </form>
   </main>
 {% endblock %}

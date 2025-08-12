@@ -1,1 +1,5 @@
+#TODO
+    -translate in Bulgarian
+    -send reset email
+
 

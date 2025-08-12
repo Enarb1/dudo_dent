@@ -8,18 +8,18 @@
   
      <div class="top-bar">
         <div class="top-bar-left">
-            <h2>All Visits</h2>
+            <h2>Посещения</h2>
             <section class="patients-header">
                 <!-- Search Form -->
                 <form class="search-form" action="{% url 'all-visits' %}" method="get" >
                     {{ form.query}}
-                    <button class="search-button">Search</button>
+                    <button class="search-button">Търси</button>
                 </form>
             </section>
         <!-- Add Visit Button -->    
         </div>
         <a href="{% url 'add-visit' %}">
-            <button class="add-button">Add Visit</button>
+            <button class="add-button">Добави Посещение</button>
         </a>
     </div>
   <!-- All Visits -->    

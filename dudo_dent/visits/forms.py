@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.procedures.models import Procedure
 from dudo_dent.visits.models import Visit
@@ -13,6 +14,7 @@ class VisitBaseForm(forms.ModelForm):
             'class': 'form-control',
             'size': 6,
         }),
+        label=_("Процедура"),
     )
 
     class Meta:
@@ -21,6 +23,11 @@ class VisitBaseForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'additional_info': forms.Textarea(attrs={'rows': 4}),
+        }
+        labels = {
+            'date': _('Дата'),
+            'patient': _('Пациент'),
+            'additional_info': _('Допълнителна информация')
         }
         
     def __init__(self, *args, **kwargs):

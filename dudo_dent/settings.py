@@ -60,18 +60,27 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'false').lower() == 'true'
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '64.225.104.177',
-    'dudodent.online',
-    'www.dudodent.online'
-]
+if DEBUG:
+    ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'localhost',
+    ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://dudodent.online',
-    'https://www.dudodent.online'
-]
+    CSRF_TRUSTED_ORIGINS = []
+else:
+
+    ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'localhost',
+        '64.225.104.177',
+        'dudodent.online',
+        'www.dudodent.online'
+    ]
+
+    CSRF_TRUSTED_ORIGINS = [
+        'https://dudodent.online',
+        'https://www.dudodent.online'
+    ]
 
 
 CSRF_COOKIE_SECURE = not DEBUG
@@ -137,20 +146,31 @@ WSGI_APPLICATION = 'dudo_dent.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get('DB_NAME'),
+            "USER": os.environ.get('DB_USER'),
+            "PASSWORD": os.environ.get('DB_PASSWORD'),
+            "HOST": os.environ.get('DB_HOST'),
+            "PORT": os.environ.get('DB_PORT'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
+            'HOST': os.environ.get('DB_HOST'),
+            'PORT': os.environ.get('DB_PORT'),
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
+        }
+    }
 
 
 AUTHENTICATION_BACKENDS = [

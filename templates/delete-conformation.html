@@ -4,9 +4,9 @@
 
 {% block content %}
   <form method="post">
-    <h2>Are you sure?</h2>
+    <h2>Сигурни ли сте?</h2>
     {% csrf_token %}
-    <button type="submit" class="delete-button">Confirm Delete</button>
-    <a href="{{ cancel_url }}"><button type="button" class="add-button">Cancel</button></a>
+    <button type="submit" class="delete-button">Потвърди Изтриване</button>
+    <a href="{{ cancel_url }}"><button type="button" class="add-button">Отмени</button></a>
   </form>
 {% endblock %}

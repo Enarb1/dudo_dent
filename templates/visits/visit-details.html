@@ -9,12 +9,12 @@
     <section class="patient-info">
         <!-- Edit Button -->
         <a href="{% url 'edit-visit' visit.pk %}" class="edit-button-wrapper">
-            <button class="edit-button">Edit</button>
+            <button class="edit-button">Обработи</button>
         </a>
         <!-- Delete Button -->
         <div class="delete-button-wrapper">
               <a href="{% url 'delete-visit' object.pk %}">
-                <button class="delete-button">Delete</button>
+                <button class="delete-button">Изтрий</button>
               </a>   
           </div>
       <!-- Visit Info -->  
@@ -23,24 +23,24 @@
       </div>
       <!-- Visit Fields -->  
       <ul>
-        <li><strong>Date:</strong> {{ visit.date }}</li>
-        <li><strong>Patient Name:</strong> {{ visit.patient.full_name }}</li>
-        <li><strong>Procedure/s:</strong> {{ visit.get_procedures }}</li>  
+        <li><strong>Дата:</strong> {{ visit.date }}</li>
+        <li><strong>Име:</strong> {{ visit.patient.full_name }}</li>
+        <li><strong>Процедура/и:</strong> {{ visit.get_procedures }}</li>  
         <li>
-            <strong>Additional Info:</strong> 
+            <strong>Допълнителна Информация:</strong> 
             {% if visit.additional_info %}
                 {{ visit.additional_info }}
             {% else %}
-                No additional info
+                Няма инфомация
             {% endif %}
         </li>
       <!-- Image if uploaded -->
         <li>
-            <strong>Image:</strong> 
+            <strong>Снимка:</strong> 
             {% if visit.image %}
                 <img src="{{ visit.image.url }}" alt="Visit Image" style="max-width: 500px; max-height: 400px; width: auto; height: auto; display: block;">
             {% else %}    
-                No uploaded images
+                Няма снимка
             {% endif %}
         </li>  
       </ul>

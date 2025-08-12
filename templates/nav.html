@@ -1,19 +1,19 @@
 <nav class="nav-buttons">
   {% if request.user.is_authenticated %}
-      <a href="{% url 'home' %}"><button>Home</button></a>
+      <a href="{% url 'home' %}"><button>Начало</button></a>
       {% if request.user.is_dentist or request.user.is_staff or request.user.is_nurse %}
-          <a href="{% url 'all-visits' %}"><button>Visits</button></a>  
-          <a href="{% url 'all-patients' %}"><button>Patients</button></a>
-          <a href="{% url 'all-procedures' %}"><button>Procedures</button></a>
-          <a href="{% url 'all-accounts' %}"><button>Manage Users</button></a>
+          <a href="{% url 'all-visits' %}"><button>Посещения</button></a>  
+          <a href="{% url 'all-patients' %}"><button>Пациенти</button></a>
+          <a href="{% url 'all-procedures' %}"><button>Процедури</button></a>
+          <a href="{% url 'all-accounts' %}"><button>Потребители</button></a>
           {% else %}
-          <a href="{% url 'appointment-step1' %}"><button>Book Appointment</button></a>
+          <a href="{% url 'appointment-step1' %}"><button>Запази Час</button></a>
       {% endif %} 
-       <a href="{% url 'profile' request.user.pk %}"><button>Profile</button></a>
-      <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><button class="logout">Logout</button></a> 
+       <a href="{% url 'profile' request.user.pk %}"><button>Профил</button></a>
+      <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()"><button class="logout">Изход</button></a> 
   {% else %}  
-      <a href="{% url 'login' %}"><button class="login">Login</button></a>  
-      <a href="{% url 'register' %}"><button class="login">Register</button></a>
+      <a href="{% url 'login' %}"><button class="login">Вход</button></a>  
+      <a href="{% url 'register' %}"><button class="login">Регистрация</button></a>
   {% endif %}  
 
 </nav>
