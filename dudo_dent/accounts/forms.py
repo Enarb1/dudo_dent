@@ -1,15 +1,65 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
+    SetPasswordForm
+from django.template import loader
 from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.accounts.choices import UserTypeChoices
 from dudo_dent.accounts.constants import ALLOWED_ROLES_CREATION, USER_IS_STAFF
+from dudo_dent.appointments.utils import send_mail_via_sendgrid
 from dudo_dent.patients.choices import PatientGenderChoices
 import logging
 logger = logging.getLogger(__name__)
 
 UserModel = get_user_model()
+
+
+
+class CustomLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = _("Имейл")
+        self.fields['password'].label = _("Парола")
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].label = _("Имейл")
+
+    def send_mail(
+        self,
+        subject_template_name,
+        email_template_name,
+        context,
+        from_email,
+        to_email,
+        html_email_template_name =None,
+    ):
+        subject = loader.render_to_string(subject_template_name, context)
+        subject = "".join(subject.splitlines())
+        text_body = loader.render_to_string(email_template_name, context)
+
+        send_mail_via_sendgrid(subject=subject, content=text_body, to_emails=[to_email])
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].label = _("Нова Парола")
+        self.fields['new_password2'].label = _("Потвърди Парола")
+        self.fields['new_password1'].help_text = _(
+            "<ul>"
+            "<li>Паролата не трябва да съвпада с другите Ви лични данни.</li>"
+            "<li>Паролата трябва да съдържа поне 8 символа.</li>"
+            "<li>Паролата не може да бъде често използвана парола.</li>"
+            "<li>Паролата не може да бъде изцяло от цифри.</li>"
+            "</ul>"
+        )
+        self.fields['new_password2'].help_text = _("Потвърдете паролата")
+
+
 
 class CustomUserCreationBaseForm(UserCreationForm):
     password1 = forms.CharField(

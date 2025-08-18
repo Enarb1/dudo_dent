@@ -3,15 +3,16 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 from django.urls import path, include
 
 from dudo_dent.accounts import views
+from dudo_dent.accounts.forms import CustomLoginForm, CustomPasswordResetForm, CustomSetPasswordForm
 
 urlpatterns = [
     path('register/', views.UserRegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(authentication_form=CustomLoginForm), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
 
-    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/', PasswordResetView.as_view(form_class=CustomPasswordResetForm), name='password_reset'),
     path('password-reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(form_class=CustomSetPasswordForm), name='password_reset_confirm'),
     path('reset/done/',PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
 
