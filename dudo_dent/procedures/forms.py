@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.procedures.models import Procedure
 
@@ -9,6 +10,22 @@ class ProcedureBaseForm(forms.ModelForm):
     class Meta:
         model = Procedure
         fields = '__all__'
+        widgets = {
+            'name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Име на процедура',
+                }
+            ),
+            'description': forms.Textarea(
+                attrs={
+                    'placeholder': 'Описание (полето не задължително)',
+                }
+            ),
+        }
+        labels = {
+            'name':_('Име'),
+            'description':_('Описане'),
+        }
 
 
 class ProcedureAddForm(ProcedureBaseForm):
@@ -32,7 +49,7 @@ class SearchProcedureForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Search for procedure...',
+                'placeholder': 'Намери процедура...',
                 'class': 'search-input',
             }
         )

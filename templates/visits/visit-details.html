@@ -19,11 +19,11 @@
           </div>
       <!-- Visit Info -->  
       <div class="info-header">
-        <h2>{{ visit.patient.full_name }} - {{ visit.date }}</h2>
+        <h2>{{ visit.patient.full_name }} - {{ visit.date|date:'d.m.Y' }}</h2>
       </div>
       <!-- Visit Fields -->  
       <ul>
-        <li><strong>Дата:</strong> {{ visit.date }}</li>
+        <li><strong>Дата:</strong> {{ visit.date|date:'d.m.Y' }}</li>
         <li><strong>Име:</strong> {{ visit.patient.full_name }}</li>
         <li><strong>Процедура/и:</strong> {{ visit.get_procedures }}</li>  
         <li>

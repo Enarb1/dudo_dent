@@ -22,7 +22,10 @@ class VisitBaseForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
-            'additional_info': forms.Textarea(attrs={'rows': 4}),
+            'additional_info': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'Допълнителна информация (това поле не е задължително)'
+            }),
         }
         labels = {
             'date': _('Дата'),

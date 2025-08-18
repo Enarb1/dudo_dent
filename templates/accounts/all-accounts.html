@@ -2,17 +2,17 @@
 {% block title %}Accounts Manager{% endblock %}
 {% block content %}
     <main class="main-content">
-        <h2> Account Manager</h2>
+        <h2>Потребители</h2>
     <div class="availability-buttons">
         <a href="{% url 'register' %}">
-            <button class="set-availability-button mb-4">Add New User</button>
+            <button class="set-availability-button mb-4">Добави Потребител</button>
         </a>    
     </div>
             <section class="accounts-list">
                 <ul class="appointments-ul">
                     {% for a in object_list %}
                         <button class="visit-card-button" onclick="window.location.href='{% url 'profile' a.pk %}'">
-                            {{ a.full_name }} - {{ a.role }}
+                            {{ a.full_name }} - {% if a.role == 'dentist' %}Зъболекар{% else %}Сестра{% endif %} 
                         </button>
                     {% endfor %}
                 </ul>

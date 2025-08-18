@@ -2,6 +2,6 @@ from django.db import models
 
 class PatientGenderChoices(models.TextChoices):
 
-    MALE = 'Male', 'Male'
-    FEMALE = 'Female', 'Female'
-    OTHER = 'Other', 'Other'
+    MALE = 'Male', 'Мъж'
+    FEMALE = 'Female', 'Жена'
+    OTHER = 'Other', 'Друг'

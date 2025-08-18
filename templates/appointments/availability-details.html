@@ -10,17 +10,17 @@
         <!-- Delete Button -->
         <div class="delete-button-wrapper">
               <a href="{% url 'delete-availability' object.pk %}">
-                <button class="delete-button">Delete</button>
+                <button class="delete-button">Изтрий</button>
               </a>   
           </div>
       <!-- Fields -->  
       <div class="info-header">
-        <h2>Availability</h2>
+        <h2>Работно Време</h2>
       </div>
       <ul>
-        <li><strong>Weekdays:</strong> {{ object.get_weekday_labels|join:", " }}</li>
-        <li><strong>Hours:</strong> {{ object.start_time|time:"H:i" }} to {{ object.end_time|time:"H:i" }} </li>
-        <li><strong>Valid:</strong> from {{ object.valid_from }} to {{ object.valid_to }} </li>
+        <li><strong>Дни:</strong> {{ object.get_weekday_labels|join:", " }}</li>
+        <li><strong>Часове:</strong> от {{ object.start_time|time:"H:i" }}ч. до {{ object.end_time|time:"H:i" }}ч. </li>
+        <li><strong>Валидоност:</strong> от {{ object.valid_from|date:"d.m.Y" }} до {{ object.valid_to|date:"d.m.Y" }} </li>
       </ul>
     </section>
   </main>

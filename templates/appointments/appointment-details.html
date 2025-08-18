@@ -5,6 +5,7 @@
 {% block content %}
     <main class="main-content">
       <section class="patient-info">
+        <h2>Информация за запазен час</h2>
           <!-- Appointment Manage Buttons -->  
           {% include 'appointments/appointments-manage-buttons.html' %}
           <!-- Profile fields depending on the profile type -->  
@@ -13,7 +14,7 @@
           </ul>
           <!-- Message for the patient  -->    
           {% if request.user.is_patient %}
-              <p style="font-style: italic">If you want to cancel or adjust an appointment, please call us at: 02 983 25 56</p>
+              <p style="font-style: italic">Ако искате да отмените часът си, позвънете на: 02 983 25 56</p>
           {% endif %}
       </section>
       

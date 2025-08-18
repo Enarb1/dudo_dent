@@ -23,27 +23,27 @@ ROLE_PROFILE_HANDLERS = {
 }
 
 PATIENT_PROFILE_FIELDS = {
-    'full_name': 'Name',
+    'full_name': 'Име',
     'email': 'Email',
-    'phone_number': 'Phone',
-    'personal_id': 'Personal ID',
-    'gender': 'Gender',
-    'age': 'Age',
+    'phone_number': 'Телефон',
+    'personal_id': 'ЕГН',
+    'gender': 'Пол',
+    'age': 'Години',
 }
 
 WORK_PROFILE_FIELDS = {
-    'full_name': 'Name',
+    'full_name': 'Име',
     'email': 'Email',
-    'phone_number': 'Phone',
-    'address': 'Address',
-    'age': 'Age',
+    'phone_number': 'Телефон',
+    'address': 'Адрес',
+    'age': 'Години',
 }
 
 APPOINTMENT_FIELDS = {
-    'patient': 'Name',
-    'dentist': 'Dentist',
-    'datetime_display': 'Appointment Date',
-    'additional_info': 'Additional Info',
+    'patient': 'Име',
+    'dentist': 'Д-р',
+    'datetime_display': 'Дата',
+    'additional_info': 'Допълнителна информация',
 }
 
 

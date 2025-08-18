@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.appointments.choices import WeekdayChoices
 from dudo_dent.appointments.models import Appointment, AvailabilityRule, UnavailabilityRule
@@ -18,7 +19,7 @@ class BaseAppointmentForm(forms.ModelForm):
             'start_time': forms.TimeInput(attrs={'type': 'time'}),
             'additional_info': forms.Textarea(attrs={
                 'rows': 5,
-                'placeholder': 'Add Additional Info for your Appointment...',
+                'placeholder': 'Допълнителна информация (полето не е задължително)...',
                 'style': 'resize: none',
             }),
         }
@@ -29,6 +30,10 @@ class AddAppointmentChooseDentistForm(BaseAppointmentForm):
     """
     class Meta(BaseAppointmentForm.Meta):
         fields = ['patient', 'dentist']
+        labels = {
+            'patient': _('Пациент'),
+            'dentist': _('Зъболекар'),
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -49,6 +54,9 @@ class AddAppointmentChooseDateForm(BaseAppointmentForm):
     """
     class Meta(BaseAppointmentForm.Meta):
         fields = ['date']
+        labels = {
+            'date': _('Дата')
+        }
 
     def __init__(self, *args, **kwargs):
         available_dates = kwargs.pop('available_dates', [])
@@ -72,22 +80,32 @@ class AddAppointmentChooseTimeForm(BaseAppointmentForm):
             'start_time': forms.TimeInput(attrs={'type': 'time'}),
             'additional_info': forms.Textarea(attrs={
                 'rows': 5,
-                'placeholder': 'Add Additional Info for your Appointment...',
+                'placeholder': 'Допълнителна информация (полето не е задължително)...',
                 'style': 'resize: none',
             }),
+        }
+        labels = {
+            'start_time': _('Час'),
+            'additional_info': _('Допълнтелна информация'),
         }
 
     def __init__(self, *args, **kwargs):
         available_times = kwargs.pop('available_times', [])
         super().__init__(*args, **kwargs)
 
-        self.fields['start_time'].label = 'Time'
         self.fields['start_time'].widget = forms.Select(
             choices=[(t.strftime('%H:%M'), t.strftime('%H:%M')) for t in available_times]
         )
 
 
 class EditAppointmentForm(BaseAppointmentForm):
+    class Meta(BaseAppointmentForm.Meta):
+        labels = {
+            'patient': _('Пациент'),
+            'dentist': _('Зъболекар'),
+            'start_time': _('Час'),
+            'additional_info': _('Допълнителна информация'),
+        }
     def clean(self):
         cleaned_data = super().clean()
         date = cleaned_data.get('date')
@@ -102,7 +120,7 @@ class EditAppointmentForm(BaseAppointmentForm):
             ).exclude(pk=self.instance.pk).exists()
 
             if appointment:
-                raise forms.ValidationError("There is an appointment for this date and time!")
+                raise forms.ValidationError("Вече има запазен час за тогава!")
 
         return cleaned_data
 
@@ -118,6 +136,7 @@ class SetAvailabilityForm(forms.ModelForm):
             'class': 'w-full border px-2 py-1 rounded',
             'size': 4
         }),
+        help_text='Може да изберете повече от един ден, като задържите CTRL',
     )
 
     class Meta:
@@ -128,6 +147,13 @@ class SetAvailabilityForm(forms.ModelForm):
             'end_time': forms.TimeInput(attrs={'type': 'time'}),
             'valid_from': forms.DateInput(attrs={'type': 'date'}),
             'valid_to': forms.DateInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'weekdays': _('Дни от Седмицата'),
+            'start_time': _('от (Час)'),
+            'end_time': _('до (Час)'),
+            'valid_from': _('от (Дата)'),
+            'valid_to': _('до (Дата)'),
         }
 
 
@@ -142,7 +168,12 @@ class SetUnavailableForm(forms.ModelForm):
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
-            'reason': forms.Textarea()
+            'reason': forms.Textarea(attrs={'placeholder': 'Полето не е задължително'})
+        }
+        labels = {
+            'start_date': _('от (Дата)'),
+            'end_date': _('до (Дата)'),
+            'reason': _('Причина'),
         }
 
 class DeleteUnavailableForm(SetUnavailableForm):

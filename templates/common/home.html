@@ -7,16 +7,16 @@
   <main class="main-content home-centered">
   <!-- Hello Message, if authenticated -->
   {% if request.user.is_authenticated %}
-    <h2>Hello, {{ request.user.full_name }}! Welcome to Dudo Dent!</h2>
+    <h2>Здравей, {{ request.user.full_name }}! Добре дошли в Dudo Dent!</h2>
       <!-- If Dentist or Nurse -->
       {% if request.user.is_dentist or request.user.is_staff or request.user.is_nurse %}
           <!-- Search Form -->
         {% include 'common/search-patient.html' %}
           <!-- Menu if Dentist -->
         <section class="section-buttons">
-            <a href="{% url 'add-visit' %}"><button>Add Visit</button></a>
-            <a href="{% url 'appointment-step1' %}"><button>Book Appointment</button></a>
-            <a href="{% url 'appointments-main' %}"><button>All Appointments</button></a>
+            <a href="{% url 'add-visit' %}"><button>Добави Посещение</button></a>
+            <a href="{% url 'appointment-step1' %}"><button>Запази Час</button></a>
+            <a href="{% url 'appointments-main' %}"><button>Календар</button></a>
         </section>
       {% endif %}
       <!-- Appointments depending on user type -->

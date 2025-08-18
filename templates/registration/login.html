@@ -7,7 +7,7 @@
 {% block content %}
   <main class="main-content">
     <form method="POST" >
-        <h2>Login</h2>
+        <h2>Вход</h2>
         
         {% csrf_token %}
         {{ form.as_p }}
@@ -15,10 +15,10 @@
         <!-- Form Errors -->
         {% include 'form-errors.html' %}
         
-        <button type="submit" class="search-button">Login</button>
+        <button type="submit" class="search-button">Влез</button>
     <!-- Forgotten Password -->
     <div>
-      <p>Password forgotten? You can reset it <a href="{% url 'password_reset' %}">here</a></p>
+      <p>Забравена парола? Може да я подновите <a href="{% url 'password_reset' %}">тук</a></p>
     </div>
     </form>
   

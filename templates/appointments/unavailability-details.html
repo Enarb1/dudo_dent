@@ -11,17 +11,17 @@
         {% if request.user == object.dentist or request.user.is_superuser %}
         <div class="delete-button-wrapper">
               <a href="{% url 'delete-unavailability' object.pk %}">
-                <button class="delete-button">Delete</button>
+                <button class="delete-button">Изтрий</button>
               </a>   
           </div>
         {% endif %}
       <!-- Fields -->  
       <div class="info-header">
-        <h2>Unavailability</h2>
+        <h2>Почивни Дни</h2>
       </div>
       <ul>
-        <li><strong>Period:</strong> from {{ object.start_date }} until {{ object.end_date }}</li>
-        <li><strong>Reason:</strong> {{ object.reason|default:"N/A" }}</li>
+        <li><strong>Период:</strong> от {{ object.start_date|date:"d.m.Y" }} до {{ object.end_date|date:"d.m.Y" }}</li>
+        <li><strong>Причина:</strong> {{ object.reason|default:"N/A" }}</li>
       </ul>
     </section>
   </main>

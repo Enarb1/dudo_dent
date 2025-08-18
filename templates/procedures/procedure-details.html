@@ -8,12 +8,12 @@
     <section class="patient-info">
         <!-- Edit Button -->
          <a href="{% url 'edit-procedure' procedure.pk %}" class="edit-button-wrapper">
-            <button class="edit-button">Edit</button>
+            <button class="edit-button">Обработка</button>
         </a>
         <!-- Delete Button -->
         <div class="delete-button-wrapper">
               <a href="{% url 'delete-procedure' object.pk %}">
-                <button class="delete-button">Delete</button>
+                <button class="delete-button">Изтрий</button>
               </a>   
           </div>
       <!-- Procedure Fields -->  
@@ -21,7 +21,7 @@
         <h2>{{ procedure }}</h2>
       </div>
       <ul>
-        <li><strong>Description:</strong> {{ procedure.description|default:"No Description" }}</li>
+        <li><strong>Описание:</strong> {{ procedure.description|default:"No Description" }}</li>
       </ul>
     </section>
   </main>

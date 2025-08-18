@@ -4,10 +4,10 @@
 
 
   <form method="post">
-    <h2>Are you sure you want to delete the profile?</h2>
+    <h2>Сигурни ли сте, че искате да изтриете този профил?</h2>
     {% csrf_token %}
-    <button type="submit" class="delete-button">Confirm Delete</button>
-    <a href="{% url 'profile' request.user.pk %}"><button type="button" class="add-button"> Cancel</button></a>
+    <button type="submit" class="delete-button">Потвърди изтриване</button>
+    <a href="{% url 'profile' request.user.pk %}"><button type="button" class="add-button"> Отмени</button></a>
   </form>
 
 {% endblock %}

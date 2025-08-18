@@ -3,13 +3,13 @@
 {% if object|can_be_managed:request.user %}
   <div class="edit-button-wrapper">
     <a href="{% url 'appointment-edit' object.pk  %}">
-      <button class="edit-button">Edit</button>
+      <button class="edit-button">Обработи</button>
     </a>
   </div>
 <!--Cancel Button -->
   <div class="delete-button-wrapper">
     <a href="{% url 'appointment-delete' object.pk %}">
-      <button class="delete-button">Cancel</button>
+      <button class="delete-button">Откажи Час</button>
     </a>
   </div>
 {% endif %}

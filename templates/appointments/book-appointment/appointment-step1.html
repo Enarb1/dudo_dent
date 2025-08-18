@@ -5,12 +5,12 @@
 {% block content %}
     <main class="main-content">
         <form method="post">
-            <h2>Choose Dentist</h2>
+            <h2>Избери Зъболекар</h2>
             {% csrf_token %}
             {{ form }}
             <!-- Form Errors -->
             {% include 'form-errors.html' %}
-            <button type="submit" class="search-button">Next</button>
+            <button type="submit" class="search-button">Следваща</button>
         </form>
     </main>
 {% endblock %}

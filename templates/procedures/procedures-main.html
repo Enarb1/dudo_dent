@@ -8,16 +8,16 @@
   <main class="main-content">
     <div class="top-bar">
         <div class="top-bar-left">
-            <h2>All Procedures</h2>
+            <h2>Процедури</h2>
             <!-- Search Form -->
             <form class="search-form" action="{% url 'all-procedures' %}" method="get">
                 {{ form.query }}
-                <button class="search-button">Search</button>
+                <button class="search-button">Търси</button>
             </form>
         <!-- Add Procedure Button -->    
         </div>
         <a href="{% url 'add-procedure' %}">
-            <button class="add-button">Add Procedure</button>
+            <button class="add-button">Добави Процедура</button>
         </a>
     </div>
 <!-- Listing All Procedures -->

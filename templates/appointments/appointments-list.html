@@ -2,10 +2,10 @@
 
 <!-- If Patient -->      
 {% if request.user.is_patient %}
-    <h3>Your upcoming appointments are:</h3>
+    <h3>Запазени Часове:</h3>
 {% else %}
 <!-- If Dentist-->  
-    <h3>Today's Appointments:</h3>
+    <h3>Запазени Часове за {% now "d.m.Y" %}:</h3>
 {% endif %}
 <!-- Listing all appointments depending on the user -->  
     <ul class="appointments-ul">
@@ -13,16 +13,16 @@
                 <li>
                     <a href="{% url 'appointment-details' a.pk %}">
                         {% if request.user.is_dentist %}
-                            {{ a.patient }} - {{ a.date }} at {{ a.start_time }}
+                            {{ a.patient }} в {{ a.start_time|date:"H:i" }}ч.
                         {% elif request.user.is_patient %}
-                            {{ a.date }} at {{ a.start_time }} with {{ a.dentist }}
+                            {{ a.date|date:"d.m.Y" }} в {{ a.start_time|date:"H:i" }}ч. с др.{{ a.dentist }}
                         {% else %}
-                            {{ a.patient }} - {{ a.date }} at {{ a.start_time }} with {{ a.dentist }}
+                            {{ a.patient }} - {{ a.date|date:"d.m.Y" }} в {{ a.start_time|date:"H:i" }}ч. с др.{{ a.dentist }}
                         {% endif %}
                     </a>
                 </li>
         {% empty %}
-            <li>No Appointments</li>
+            <li>Нямате запазени часове</li>
         {% endfor %}
     </ul>
 </section>

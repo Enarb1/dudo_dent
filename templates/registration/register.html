@@ -6,14 +6,14 @@
 {% block content %}
   <main class="main-content">
     <form method="POST" >
-        <h2>Register</h2>
+        <h2>Регистрация</h2>
      
         {% csrf_token %}
         {{ form.as_p }}
         <!-- Form Errors -->
         {% include 'form-errors.html' %}
         
-        <button type="submit" class="search-button">Register</button>
+        <button type="submit" class="search-button">Регистрирай</button>
     </form>
   </main>
 {% endblock %}

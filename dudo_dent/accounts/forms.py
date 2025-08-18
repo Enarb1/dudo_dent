@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.accounts.choices import UserTypeChoices
 from dudo_dent.accounts.constants import ALLOWED_ROLES_CREATION, USER_IS_STAFF
@@ -11,10 +12,35 @@ logger = logging.getLogger(__name__)
 UserModel = get_user_model()
 
 class CustomUserCreationBaseForm(UserCreationForm):
+    password1 = forms.CharField(
+        label=_('Парола'),
+        widget=forms.PasswordInput(attrs={'placeholder': 'Въведи Парола'}),
+        help_text=_(
+            "<ul>"
+            "<li>Паролата не трябва да съвпада с другите Ви лични данни.</li>"
+            "<li>Паролата трябва да съдържа поне 8 символа.</li>"
+            "<li>Паролата не може да бъде често използвана парола.</li>"
+            "<li>Паролата не може да бъде изцяло от цифри.</li>"
+            "</ul>"
+        ),
+    )
+    password2 = forms.CharField(
+        label=_('Потвърдете паролата'),
+        widget=forms.PasswordInput(attrs={'placeholder': 'Повтори Парола'})
+    )
     class Meta(UserCreationForm.Meta):
         model = UserModel
         fields = ('full_name', 'email', 'role')
-        widgets = {}
+        widgets = {
+            'full_name': forms.TextInput(attrs={'placeholder': 'Име и Фамилия'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Въведете валиден имейл адрес'}),
+        }
+        labels = {
+            'full_name': _('Име'),
+            'email': 'Email',
+            'role': _('Роля'),
+        }
+
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -66,15 +92,20 @@ class PatientRegisterForm(CustomUserCreationBaseForm):
 class RoleBasedUserCreationForm(CustomUserCreationBaseForm):
     phone_number = forms.CharField(
         max_length=30,
-        required=False
+        required=False,
+        label='Телефон',
+        widget=forms.TextInput(attrs={'placeholder':'Телефон (полето не е задължително)'})
     )
     address =  forms.CharField(
         max_length=200,
-        required=False
+        required=False,
+        label='Адрес',
+        widget=forms.TextInput(attrs={'placeholder':'Адрес (полето не е задължително)'})
     )
     date_of_birth = forms.DateField(
         required=False,
-        widget=forms.DateInput(attrs={'type': 'date'})
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label = 'Дата на раждане'
     )
 
     def __init__(self, *args, **kwargs):
@@ -118,15 +149,28 @@ class BaseProfileForm(forms.ModelForm):
     phone_number = forms.CharField(
         max_length=30,
         required=False,
+        label='Телефон',
     )
     date_of_birth = forms.DateField(
         required=False,
-        widget=forms.DateInput(attrs={'type': 'date'})
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Дата на раждане',
     )
+
+    address = forms.CharField(
+        max_length=200,
+        required=False,
+        label='Адрес'
+    )
+
 
     class Meta:
         model = UserModel
         fields = ('full_name', 'email',)
+        labels = {
+            'full_name': _('Име'),
+        }
+
 
 
 class EditPatientProfileForm(BaseProfileForm):
@@ -176,7 +220,8 @@ class EditWorkProfileForm(BaseProfileForm):
 
         self.fields['address'] = forms.CharField(
             max_length=200,
-            required=False
+            required=False,
+            label='Адрес'
         )
 
     def save(self, commit=True):

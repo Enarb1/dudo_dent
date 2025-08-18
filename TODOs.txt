@@ -1,5 +1,8 @@
 #TODO
     -translate in Bulgarian
+    -translate the integrated forms
+    -make sure when a patient edits his profile, it edits the patient profile too
     -send reset email
+    -see how to make it possible to remove image when editing a visit
 
 

@@ -10,7 +10,7 @@
           <!-- Edit Button -->
           <div class="edit-button-wrapper">
             <a href="{% url 'edit-patient' patient.pk %}">
-                <button class="edit-button">Edit</button>
+                <button class="edit-button">Обработи</button>
             </a>
           </div>
           <!-- Loading Profile fields -->
@@ -20,13 +20,13 @@
           <!-- Delete Button -->
           <div class="delete-button-wrapper">
               <a href="{% url 'delete-patient' patient.pk %}">
-                <button class="delete-button">Delete</button>
+                <button class="delete-button">Изтрий</button>
               </a>   
           </div>
       </section>
       <section class="visit-history">
           <!-- Patient Visits -->
-          <h3>Visit History</h3>
+          <h3>Посещения</h3>
           {%  include 'visits/visits-list.html' %}
       </section>
   </main>
