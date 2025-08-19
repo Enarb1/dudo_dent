@@ -58,7 +58,6 @@ class UserRegisterView(CreateView):
         return response
 
 
-
 class UserProfileView(LoginRequiredMixin,OwnerAndRolePermissionMixin, DetailView):
     model = UserModel
     template_name = 'accounts/profile-details.html'

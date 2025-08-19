@@ -1,5 +1,4 @@
 #TODO
-    -make sure when a patient edits his profile, it edits the patient profile too
-    -see how to make it possible to remove image when editing a visit
+    -show error messages in form
 
 

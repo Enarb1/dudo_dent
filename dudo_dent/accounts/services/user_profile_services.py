@@ -21,10 +21,10 @@ def handle_patient_profile(user):
         patient = Patient.objects.get(email=user.email)
         patient.user = user
         patient.full_name = user.full_name if user.full_name else patient.full_name
-        patient.date_of_birth = getattr(user, 'date_of_birth', patient.date_of_birth)
-        patient.personal_id = getattr(user, 'personal_id', patient.personal_id)
-        patient.phone_number = getattr(user, 'phone_number', patient.phone_number)
-        patient.gender = getattr(user, 'gender', patient.gender)
+        patient.date_of_birth = user.age if user.age else patient.date_of_birth
+        patient.personal_id = user.personal_id if user.personal_id else patient.personal_id
+        patient.phone_number = user.phone_number if user.phone_number else patient.phone_number
+        patient.gender = user.gender if user.gender else patient.gender
         patient.save()
     except Patient.DoesNotExist:
         Patient.objects.create(

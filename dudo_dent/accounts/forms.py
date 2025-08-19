@@ -101,7 +101,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 class PatientRegisterForm(CustomUserCreationBaseForm):
     class Meta(CustomUserCreationBaseForm.Meta):
-        exclude = ('role',)
+        fields = ('full_name', 'email')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

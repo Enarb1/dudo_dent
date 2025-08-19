@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ClearableFileInput
 from django.utils.translation import gettext_lazy as _
 
 from dudo_dent.procedures.models import Procedure
@@ -15,6 +16,11 @@ class VisitBaseForm(forms.ModelForm):
             'size': 6,
         }),
         label=_("Процедура"),
+    )
+
+    image = forms.FileField(
+        required=False,
+        widget=ClearableFileInput
     )
 
     class Meta:
