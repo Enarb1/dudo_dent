@@ -6,11 +6,11 @@
 {% block content %}
     <main class="main-content">
     <form action="{% url 'edit-visit' visit.pk %}" method="POST" enctype="multipart/form-data">
+        
+        {% include 'form-errors.html' %}
         {{ form }}
         {% csrf_token %}
-        
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
+     
         <button class="search-button">Запази</button>
     </form>
   </main>

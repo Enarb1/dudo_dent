@@ -12,11 +12,10 @@
         {% if return_to %}
             <input type="hidden" name="return_to" value="{{ return_to }}">
         {% endif %}
-        
+    
+        {% include 'form-errors.html' %}
         {% csrf_token %}
         {{ form.as_p }}
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
     
         <button type="submit" class="search-button">Запази</button>
     </form>

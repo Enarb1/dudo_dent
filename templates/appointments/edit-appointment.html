@@ -7,11 +7,9 @@
   <main class="main-content">
     <form method="POST" >
         <h2>Запазен час обработка</h2>
+        {% include 'form-errors.html' %}
         {{ form.as_p }}
         {% csrf_token %}
-        
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
         
         <button class="search-button">Запази</button>
     </form>    

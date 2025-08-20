@@ -6,10 +6,10 @@
     <main class="main-content">
         <form method="post">
             <h2>Работно Време</h2>
+            {% include 'form-errors.html' %}
             {% csrf_token %}
             {{ form }}
-            <!-- Form Errors -->
-            {% include 'form-errors.html' %}
+            
             <button type="submit" class="search-button">Запази</button>
         </form>
     </main>

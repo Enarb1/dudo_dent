@@ -12,7 +12,13 @@
         {% if return_to %}
             <input type="hidden" name="return_to" value="{{ return_to }}">
         {% endif %}
+    
+        <!-- Form Errors -->
+    
+        {% include 'form-errors.html' %}
+    
         <!-- Form fields -->
+    
         <div class="form-group">
             {{ form.date.label_tag }}
             {{ form.date }}
@@ -49,9 +55,7 @@
             {{ form.image.label_tag }}
             {{ form.image }}
         </div>
-        
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
+    
         
         <button type="submit" class="search-button">Запази</button>
     </form>

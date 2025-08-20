@@ -9,12 +9,10 @@
     <form method="POST" >
         <h2>Вход</h2>
         
+        {% include 'form-errors.html' %}
         {% csrf_token %}
         {{ form.as_p }}
   
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
-        
         <button type="submit" class="search-button">Влез</button>
     <!-- Forgotten Password -->
     <div>

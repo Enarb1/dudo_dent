@@ -7,12 +7,11 @@
   <main class="main-content">
     <form method="POST" >
         <h2>Регистрация</h2>
-     
+        
+        {% include 'form-errors.html' %}
         {% csrf_token %}
         {{ form.as_p }}
-        <!-- Form Errors -->
-        {% include 'form-errors.html' %}
-        
+     
         <button type="submit" class="search-button">Регистрирай</button>
     </form>
   </main>
